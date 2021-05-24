@@ -1,0 +1,12 @@
+{
+  "name": "projeto-integrado-app",
+  "displayName": "projeto-integrado-app",
+  "expo": {
+    "name": "projeto-integrado-app",
+    "slug": "projeto-integrado-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
