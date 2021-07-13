@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View,Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {
   createDrawerNavigator,
@@ -21,11 +22,13 @@ function Home({ navigation }: any) {
 }
 
 function Notifications() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications Screen</Text>
-    </View>
-  );
+ console.log("ASDADS")
+ return(<></>)
+  // return (
+  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //     <Text>Notifications Screen</Text>
+  //   </View>
+  // );
 }
 
 function CustomDrawerContent(props: any) {
@@ -44,13 +47,30 @@ function CustomDrawerContent(props: any) {
   );
 }
 
+const Tab = createBottomTabNavigator();
+
+function TAbs (){
+  return(
+    <Tab.Navigator>
+        <Tab.Screen name="SettingsA" component={Home}
+        listeners={({ navigation }) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.openDrawer();
+          }
+        })}
+        />
+    </Tab.Navigator>
+  );
+}
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
+    <Drawer.Navigator>
+      
+      <Drawer.Screen name="Home" component={TAbs} />  
+      <Drawer.Screen name="Settings" component={Notifications} />
     </Drawer.Navigator>
   );
 }
