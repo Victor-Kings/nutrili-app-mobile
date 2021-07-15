@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View,Button } from 'react-native';
+import { StyleSheet, Text, View,Button,Image} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import MenuLogo from './src/assets/img/menu.svg';
 
 import {
   createDrawerNavigator,
@@ -17,13 +19,26 @@ function Home({ navigation }: any) {
       <View>
         <Button title="Open drawer" onPress={() => navigation.openDrawer()} />
       </View>
+      <View>
+      {/* <Logo></Logo> */}
+      {/* <SvgUri
+        width="100%"
+        height="100%"
+        uri ='./src/assets/img/menu.svg'
+      /> */}
+      <MenuLogo/>
+    </View>
     </View>
   );
 }
 
 function Notifications() {
  console.log("ASDADS")
- return(<></>)
+  return(
+    <View>
+      <MenuLogo></MenuLogo>
+    </View>
+  );
   // return (
   //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
   //     <Text>Notifications Screen</Text>
@@ -49,10 +64,28 @@ function CustomDrawerContent(props: any) {
 
 const Tab = createBottomTabNavigator();
 
-function TAbs (){
+function Tabs (){
   return(
-    <Tab.Navigator>
-        <Tab.Screen name="SettingsA" component={Home}
+    <Tab.Navigator
+        initialRouteName="HOME"
+        tabBarOptions = {{
+          style: { height: 100, backgroundColor: "#4197E5"},
+          tabStyle: { },
+          labelPosition: 'below-icon',
+          labelStyle:{ color : "#fff", fontSize: 24,fontWeight:'600' , paddingBottom: 10}
+        }
+      }
+        
+    >
+        <Tab.Screen 
+        name="Home" 
+        component={Home}
+        options={{
+          title:"HOME",
+          tabBarIcon: ({})=>(
+            <MenuLogo width="40px"/> 
+          ),
+        }}
         listeners={({ navigation }) => ({
           tabPress: e => {
             e.preventDefault();
@@ -69,7 +102,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator>
       
-      <Drawer.Screen name="Home" component={TAbs} />  
+      <Drawer.Screen name="Home" component={Tabs} />  
       <Drawer.Screen name="Settings" component={Notifications} />
     </Drawer.Navigator>
   );
