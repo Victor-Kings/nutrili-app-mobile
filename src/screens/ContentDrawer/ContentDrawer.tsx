@@ -25,8 +25,9 @@ export function ContentDrawer({ ...props }) {
     props.navigation.closeDrawer()
   };
 
-  const handler = () => {
-    props.navigation.navigate("Home");
+  const handler = (page?:string) => {
+    console.log(page);
+    props.navigation.navigate(page);
   }
   return (
     <Container>
@@ -40,6 +41,7 @@ export function ContentDrawer({ ...props }) {
             sizeImageHeight={34}
             sizeImageWidth={34}
             handleClick={handler}
+            page="Home"
           ></ButtonMenu>
           <HeaderContentUser>
             <Avatar

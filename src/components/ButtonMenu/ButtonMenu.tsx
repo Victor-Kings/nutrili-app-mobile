@@ -12,11 +12,12 @@ export const ButtonMenu: FC<IButtomMenuProps> = ({
   sizeImageHeight = 40,
   sizeImageWidth = 40,
   sizeText = 18,
-  containerSize = 80
+  containerSize = 80,
+  page
 }) => {
   const handle = () => {
     if (handleClick) {
-      handleClick();
+      handleClick(page);
     }
   };
 
