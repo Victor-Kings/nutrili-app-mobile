@@ -8,12 +8,15 @@
         "test": "jest"
     },
     "dependencies": {
+        "@expo-google-fonts/open-sans": "^0.2.0",
         "@react-native-community/masked-view": "0.1.10",
         "@react-navigation/bottom-tabs": "^5.11.11",
         "@react-navigation/drawer": "^5.12.5",
         "@react-navigation/material-bottom-tabs": "^5.3.15",
         "@react-navigation/native": "^5.9.4",
         "expo": "~41.0.1",
+        "expo-app-loading": "^1.1.2",
+        "expo-font": "~9.1.0",
         "expo-splash-screen": "~0.10.2",
         "expo-updates": "~0.5.4",
         "react": "16.13.1",
@@ -22,6 +25,7 @@
         "react-native-gesture-handler": "~1.10.2",
         "react-native-paper": "^4.9.2",
         "react-native-reanimated": "~2.1.0",
+        "react-native-responsive-fontsize": "^0.5.1",
         "react-native-safe-area-context": "3.2.0",
         "react-native-screens": "~3.0.0",
         "react-native-svg": "12.1.0",
