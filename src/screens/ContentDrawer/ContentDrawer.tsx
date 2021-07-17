@@ -9,7 +9,6 @@ import IconPlus from "../../assets/img/iconPlus.svg";
 
 import {
   Container,
-  Texts,
   Header,
   HeaderContentUser,
   Avatar,
@@ -19,7 +18,7 @@ import {
   BodyButtons,
 } from "./styles";
 
-import ButtonMenu from "../../components/ButtonMenu";
+import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 
 export function ContentDrawer({ ...props }) {
   const handlerOnClickBack = () => {
