@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View,Button,Image , TouchableOpacity} from 'react-native';
-import {Header, Container, MenuButton,TextButton,ImagePerfil,HeaderContent,TextHeader} from './style';
+import {Header, Container, MenuButton,TextButton,ImagePerfil,HeaderContent,TextHeader} from './styles';
 import MenuLogo from '../../assets/img/menu.svg';
 
 const MainTemplate = ({navigation, children, content}:any) =>{

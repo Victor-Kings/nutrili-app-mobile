@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View } from "react-native";
-import MainTemplate from "../components/templateMain";
+import MainTemplate from "../components/MainTemplate";
 import { ContentDrawer } from "../screens/ContentDrawer/ContentDrawer";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import Home  from '../screens/Home/Home';
 const Drawer = createDrawerNavigator();
 
 const content = {
@@ -22,9 +22,9 @@ export function MyDrawer() {
       <Drawer.Screen name="Home">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <View style={{ height: "100%" }}>
-              <Text>OAUHDOUAHDOUASHDOUAHSDUHAODHOASD</Text>
-            </View>
+            
+              <Home/> 
+            
           </MainTemplate>
         )}
       </Drawer.Screen>
