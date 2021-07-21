@@ -4,16 +4,9 @@ export const Container = styled.View`
     background-color: white;
     display: flex;
     flex: 1;
-    margin: 10px;
+    margin: 4%;
     border-radius: 4px;
     
-`;
-
-export const ContainerCamera = styled.View`
-    display: flex;
-    flex: 1;
-    padding: 10px;
-    border-radius: 4px;
 `;
 
 export const ButtonPhoto = styled.TouchableOpacity`
@@ -27,5 +20,7 @@ export const ButtonPhoto = styled.TouchableOpacity`
     flex: 1;
     align-items: center;
     justify-content: center;
+
+    margin-bottom: 3%;
 
 `;
