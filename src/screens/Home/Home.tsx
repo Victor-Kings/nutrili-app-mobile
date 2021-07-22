@@ -17,7 +17,7 @@ function sendImageIA({ImageData} :any){
 const Home = ({}) =>{
 
     const [hasPermission,setHasPermission] = useState(null);
-    const [resonseFood, setResonseFood] = useState(null);
+    const [responseFood, setResponseFood] = useState(null);
     const camRef= useRef(null);
     const [capturedPhoto, setcapturedPhoto] = useState(null);
 
@@ -40,7 +40,7 @@ const Home = ({}) =>{
     async function  takePhoto() {
         if(camRef){
             const data = await camRef.current.takePictureAsync();
-            setResonseFood(sendImageIA( data.uri ));
+            setResponseFood(sendImageIA( data.uri ));
             setcapturedPhoto(data.uri);
             setModalOpen(true);
             console.log(data);
@@ -59,8 +59,8 @@ const Home = ({}) =>{
                     TIRAR FOTO DA REFEIÇÃO
                 </Text>
             </ButtonPhoto>
-            {capturedPhoto&&resonseFood&&
-                <ModalConfirmationFood modalOpen={modalOpen} resonseFood={resonseFood.Foods} handleModal={handleModal} capturedPhoto={capturedPhoto} />
+            {capturedPhoto&&responseFood&&
+                <ModalConfirmationFood modalOpen={modalOpen} responseFood={responseFood.Foods} handleModal={handleModal} capturedPhoto={capturedPhoto} />
             }
 
         </Container>
