@@ -1,12 +1,15 @@
 import React,{useState, useEffect} from "react";
-import { View, Text,TouchableOpacity, Modal, Image } from "react-native";
+import { View, Text,TouchableOpacity, Modal } from "react-native";
 import { ContainerModal, CardFood, TextCardFood, ButtonTouch, TextButton, ContainerViews, ContainerButtons,CardAddFood } from './styles';
 
-
+interface IMap{
+    value: string;
+    i: number;
+}
 const ModalConfirmationFood = ({modalOpen, handleModal, capturedPhoto, responseFood}:any) =>{
     
-    const[edit, setEdit] = useState(false);
-    const[listFood, setListFood] = useState([]);
+    const[edit, setEdit] = useState<any>(false);
+    const[listFood, setListFood] = useState<any>([]);
     const a = listFood;
 
     useEffect(() => {
@@ -15,17 +18,16 @@ const ModalConfirmationFood = ({modalOpen, handleModal, capturedPhoto, responseF
 
     console.log('opaaa'+listFood);
 
-    const removeItem = ({index}:any) =>{
-        const list = listFood;
-        list.splice(index, 1);
-        setListFood(()=>list);
-        console.log("LISTA AKI \n"+listFood);
+    const removeItem = (value:string) =>{
+        const list = listFood.filter((item:string) => item !== value);
+        setListFood(list);
+        console.log("LISTA AKI \n"+listFood+"|||"+value+"|||");
     }
 
-    const buttonText = !edit?<TextButton size={24}>
+    const buttonText = !edit?<TextButton /*size={24}*/>
                                 CONFIRMAR
                             </TextButton>:
-                            <TextButton size={20}>
+                            <TextButton /*size={20}*/>
                                 SALVAR ALTERAÇÕES
                             </TextButton>;
     return(
@@ -38,7 +40,7 @@ const ModalConfirmationFood = ({modalOpen, handleModal, capturedPhoto, responseF
                 <ContainerViews>
                     <Text style={{color:'#757575', fontWeight: '600', fontSize: 26, lineHeight: 35 }}>Alimentos Encontrados:</Text>
                     {
-                        listFood.map((value,i:any)=>{
+                        listFood.map((value:string,i:number)=>{
                             console.log(value);
                             return (
                                 <CardFood key={value} color = '#fff'>
@@ -46,7 +48,7 @@ const ModalConfirmationFood = ({modalOpen, handleModal, capturedPhoto, responseF
                                         {`\u2022 ${value}`}
                                     </TextCardFood>
                                     {edit &&
-                                     <TouchableOpacity style={{backgroundColor: 'black'}} onPress={()=>{removeItem(i); console.log("AATOUCH  "+ i)}}>
+                                     <TouchableOpacity style={{backgroundColor: 'black'}} onPress={()=>{removeItem(value); console.log("AATOUCH  "+ i)}}>
                                         <Text style={{color:'red'}}>Remove</Text>
                                      </TouchableOpacity>
                                      }

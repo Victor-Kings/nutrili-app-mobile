@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
 
+
+interface IStyledProps {
+    color: string;
+}
+
 export const ContainerModal = styled.View`
     flex: 1;
     justify-content: center;
@@ -11,7 +16,7 @@ export const ContainerModal = styled.View`
 `;
 
 export const CardFood = styled.View`
-    background-color: ${(props: any)=>props.color};
+    background-color: ${({color}: IStyledProps)=> color};
     height: 45px;
     width: 100%;
     border-radius: 5px;
@@ -23,7 +28,7 @@ export const CardFood = styled.View`
 `;
 
 export const CardAddFood = styled.TouchableOpacity`
-    background-color: ${(props: any)=>props.color};
+    background-color: ${({color}: IStyledProps)=> color};
     height: 45px;
     width: 100%;
     border-radius: 5px;
@@ -46,7 +51,7 @@ export const ButtonTouch = styled.TouchableOpacity`
     width: 50%;
     max-height: 57px;
     border-radius: 44px;
-    background-color: ${(props: any)=>props.color};
+    background-color: ${({color}: IStyledProps)=> color};
     align-self: center;
 
     flex: 1;
@@ -56,7 +61,7 @@ export const ButtonTouch = styled.TouchableOpacity`
 
 export const TextButton = styled.Text`
     color: white;
-    font-size: 20px;//${(props: any)=> props.size}px;
+    font-size: 20px;
     text-align:center;
     font-weight: 600;
 `;

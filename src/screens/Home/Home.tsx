@@ -16,10 +16,10 @@ function sendImageIA({ImageData} :any){
 }
 const Home = ({}) =>{
 
-    const [hasPermission,setHasPermission] = useState(null);
-    const [responseFood, setResponseFood] = useState(null);
-    const camRef= useRef(null);
-    const [capturedPhoto, setcapturedPhoto] = useState(null);
+    const [hasPermission,setHasPermission] = useState<any>(null);
+    const [responseFood, setResponseFood] = useState<any>(null);
+    const camRef= useRef<any>(null);
+    const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
 
     const[modalOpen, setModalOpen] = useState(false);
 
