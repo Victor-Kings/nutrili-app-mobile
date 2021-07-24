@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, TouchableOpacity, Modal, KeyboardAvoidingView, Platform } from "react-native";
+import { Text,View, TouchableOpacity, Modal, KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import IconAddFood from "../../assets/img/iconAddFood.svg";
 import {
   ContainerModal,
@@ -24,7 +24,8 @@ const ModalConfirmationFood = ({
   capturedPhoto,
   responseFood,
 }: any) => {
-  const [edit, setEdit] = useState<any>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [addFood, setAddFood] = useState<boolean>(false);
   const [listFood, setListFood] = useState<any>([]);
   const a = listFood;
 
@@ -37,63 +38,75 @@ const ModalConfirmationFood = ({
   const removeItem = (value: string) => {
     const list = listFood.filter((item: string) => item !== value);
     setListFood(list);
-    console.log("LISTA AKI \n" + listFood + "|||" + value + "|||");
+   
   };
-
+  const handlerAddFood = (food:string)=>{
+    listFood.push(food);
+    setListFood([...listFood]);
+  }
+  const confirmationButton = ()=>{
+    if(edit) setEdit(false);
+    else handleModal()
+  }
   const buttonText = !edit ? (
     <TextButton size={24}>CONFIRMAR</TextButton>
   ) : (
     <TextButton size={20}>SALVAR ALTERAÇÕES</TextButton>
   );
   return (
-    <Modal animationType="slide" transparent={true} visible={modalOpen}>
-      <ContainerModal>
-        <ContainerViews>
-          <TextHeader>Alimentos Encontrados:</TextHeader>
-          {listFood.map((value: string, i: number) => (
-            <CardFood key={value} color="#fff">
-              <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
-              {edit && (
-                <TouchableOpacity
-                  style={{ backgroundColor: "black" }}
-                  onPress={() => removeItem(value)}
-                >
-                  <Text style={{ color: "red" }}>Remove</Text>
-                </TouchableOpacity>
-              )}
-            </CardFood>
-          ))}
-          <CardAddFood
-            onPress={() => {
-              console.log("OEAEEAIIII");
-            }}
-          >
-            <TextCardFood style={{ color: "#4197E5" }}>
-              Adicionar Alimento
-            </TextCardFood>
-            <IconAddFood />
-          </CardAddFood>
-          <Input/>
-        </ContainerViews>
-        <ContainerButtons>
-          <ButtonTouch color="#4197E5" onPress={() => handleModal()}>
-            <TextButton>{buttonText}</TextButton>
-          </ButtonTouch>
+     
+    <Modal animationType="slide" transparent={false} visible={modalOpen}>
+       <View style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+            <ContainerModal enabled  behavior={Platform.OS === "android" ? "height" : "padding"}>
+                <ScrollView  keyboardShouldPersistTaps="handled">
+                    <TextHeader>Alimentos Encontrados:</TextHeader>
+                    <ContainerViews>
+                                {listFood.map((value: string, i: number) => (
+                                    <CardFood key={value} color="#fff">
+                                    <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
+                                    {edit && (
+                                        <TouchableOpacity
+                                        style={{ backgroundColor: "black" }}
+                                        onPress={() => removeItem(value)}
+                                        >
+                                        <Text style={{ color: "red" }}>Remove</Text>
+                                        </TouchableOpacity>
+                                    )}
+                                    </CardFood>
+                                ))}
+                                {addFood && edit && <Input handlerAddFood={handlerAddFood}/>}
+                                {edit && <CardAddFood
+                                    onPress={() => {
+                                        setAddFood(true)
+                                    }}
+                                >
 
-          <ButtonTouch
-            color="#D93F3F"
-            onPress={() => setEdit(true)}
-            style={{ marginVertical: "2%" }}
-          >
-            <TextButton>EDITAR</TextButton>
-          </ButtonTouch>
-        </ContainerButtons>
+                                    <TextCardFood style={{ color: "#4197E5" }}>
+                                        Adicionar Alimento
+                                    </TextCardFood>
+                                    <IconAddFood />
+                                </CardAddFood>}
+                    </ContainerViews>
+                    <ContainerButtons>
+                        <ButtonTouch color="#4197E5" onPress={() => confirmationButton()}>
+                            <TextButton>{buttonText}</TextButton>
+                        </ButtonTouch>
 
-        {/* <Image 
-                    style={{width:'100%',height:300, borderRadius: 20}}
-                    source={{uri: capturedPhoto }}
-                    /> */}
-      </ContainerModal>
+                        <ButtonTouch
+                            color="#D93F3F"
+                            onPress={() => setEdit(true)}
+                            style={{ marginVertical: "2%" }}
+                        >
+                            <TextButton>EDITAR</TextButton>
+                        </ButtonTouch>
+                    </ContainerButtons>
+                    {/* <Image 
+                                style={{width:'100%',height:300, borderRadius: 20}}
+                                source={{uri: capturedPhoto }}
+                                /> */}
+                </ScrollView>
+            </ContainerModal>
+        </View>
     </Modal>
   );
 };

@@ -10,11 +10,10 @@ interface ICardFoodProps {
     color?: ColorValue | undefined; 
 }
 
-export const ContainerModal = styled.View`
-    flex: 1;
-    justify-content: center;
+export const ContainerModal = styled.KeyboardAvoidingView`
+    height: 90%;
     margin: 10% 4%;
-    background-color: #a9a9a9;
+    background-color: #F6F6F6;
     border-radius: 5px;
     padding: 0 8px;
 `;
@@ -54,6 +53,7 @@ export const ButtonTouch = styled.TouchableOpacity`
     max-width: 185px;
     width: 50%;
     max-height: 57px;
+    min-height: 45px;
     border-radius: 44px;
     background-color: ${({color}: ICardFoodProps):any => color ? color : 'FFFFF'};
     align-self: center;
@@ -72,20 +72,23 @@ export const TextButton = styled.Text`
 
 export const ContainerViews =  styled.View`
     flex: 1;
-    max-height: 80%;
+    /* height: 70%; */
+    /* background-color: darksalmon; */
 `;
 
 export const ContainerButtons =  styled.View`
-    flex: 1;
-    max-height: 20%;
-    background-color: aquamarine; 
+    /* min-height: 25%; */
+    /* background-color: lightsteelblue; */
+    padding-top: 2%;
 `;
 
 export const TextHeader = styled.Text`
+    /* height: 5%; */
     color: #757575;
     margin-top: 24px;
     margin-bottom: 18px;
     font-weight: 600;
     font-size: 26px;
     line-height: 35px;
+    /* background-color: olivedrab; */
 `;
