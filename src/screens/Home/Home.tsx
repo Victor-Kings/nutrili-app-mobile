@@ -8,16 +8,22 @@ import ModalConfirmationFood from "../../components/ModalConfirmationFood";
 import FormData from "form-data";
 import api from "../../service/api";
 
+function ArrayOrganizeFoods(data:any){
+  var foods = [];  
+  for(let food of data){
+    foods.push(food.food)
+  }
 
+  return foods
+}
 
 const Home = ({}) => {
   const [hasPermission, setHasPermission] = useState<any>(null);
-  const [responseFood, setResponseFood] = useState<any>(null);
+  const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
   const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -34,12 +40,12 @@ const Home = ({}) => {
   }
 
   async function takePhoto() {
+    console.log("FetchingInfos...")
     if (camRef) {
       const data = await camRef.current.takePictureAsync();
       await sendImageIA(data);
       setcapturedPhoto(data.uri);
       setModalOpen(true);
-      console.log(data);
     }
   }
 
@@ -49,10 +55,6 @@ const Home = ({}) => {
 
   async function  sendImageIA( ImageData: any) {
     var form = new FormData();
-
-    const FoodFound = {
-        Foods: ["Arroz", "Cenoura", "Tomate", "Alface", "Carne Bovina", "Feijão"],
-      };
     form.append("file1", {
       type: "image/jpeg",
       name: `alimento.jpg`,
@@ -64,9 +66,11 @@ const Home = ({}) => {
         "Content-Type": "multipart/form-data",
         },
     })
-    .then((apiResponse) => setResponseFood(FoodFound))
+    .then((apiResponse) => {
+      setResponseFood(ArrayOrganizeFoods(apiResponse.data))
+    })
     .catch((error)=>{
-        console.log(error)
+        console.error(error)
     })
   }
 
@@ -81,7 +85,7 @@ const Home = ({}) => {
       {capturedPhoto && responseFood && (
         <ModalConfirmationFood
           modalOpen={modalOpen}
-          responseFood={responseFood.Foods}
+          responseFood={responseFood}
           handleModal={handleModal}
           capturedPhoto={capturedPhoto}
         />

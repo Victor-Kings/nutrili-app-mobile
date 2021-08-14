@@ -34,14 +34,11 @@ const ModalConfirmationFood = ({
 }: any) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [addFood, setAddFood] = useState<boolean>(false);
-  const [listFood, setListFood] = useState<any>([]);
-  const a = listFood;
+  const [listFood, setListFood] = useState<any>(responseFood||[""]);
 
   useEffect(() => {
-    setListFood(responseFood);
-  }, []);
-
-  console.log("opaaa" + listFood);
+    setListFood(responseFood||[""]);
+  }, [responseFood]);
 
   const removeItem = (value: string) => {
     const list = listFood.filter((item: string) => item !== value);
@@ -110,10 +107,6 @@ const ModalConfirmationFood = ({
                 <TextButton>EDITAR</TextButton>
               </ButtonTouch>
             </ContainerButtons>
-            {/* <Image 
-                                style={{width:'100%',height:300, borderRadius: 20}}
-                                source={{uri: capturedPhoto }}
-                                /> */}
           </ScrollView>
         </ContainerModal>
       </View>
