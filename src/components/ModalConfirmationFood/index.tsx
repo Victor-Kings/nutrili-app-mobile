@@ -68,7 +68,7 @@ const ModalConfirmationFood = ({
             <TextHeader>Alimentos Encontrados:</TextHeader>
             <ContainerViews>
               {listFood.map((value: string, i: number) => (
-                <CardFood key={value} color="#fff">
+                <CardFood key={`${value}${i}`} color="#fff">
                   <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
                   {edit && (
                     <TouchableOpacity

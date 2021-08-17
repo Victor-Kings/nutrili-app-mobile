@@ -49,8 +49,12 @@ const Home = ({}) => {
     }
   }
 
-  const handleModal = () => {
+  const handleModal = async () => {
     setModalOpen(false);
+    await api.post("/post_recognized_foods",{
+      Recognized_Foods: responseFood
+    })
+    .then((apiResponse) => { console.log(apiResponse.data) })
   };
 
   async function  sendImageIA( ImageData: any) {
@@ -61,13 +65,13 @@ const Home = ({}) => {
       uri: ImageData.uri,
     });
     await api
-    .post("/postImg", form, {
+    .post("/post_image", form, {
         headers: {
         "Content-Type": "multipart/form-data",
         },
     })
     .then((apiResponse) => {
-      setResponseFood(ArrayOrganizeFoods(apiResponse.data))
+      setResponseFood(apiResponse.data.Recognized_Foods)
     })
     .catch((error)=>{
         console.error(error)
