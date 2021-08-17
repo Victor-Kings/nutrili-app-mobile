@@ -1,33 +1,31 @@
-import {
-  React, createContext, useContext,useMemo,useState
-} from 'react';
+import
+  React,{ createContext, useContext,useState}
+ from 'react';
 
 export const AuthContext = createContext({});
 
-// export function AuthContextProvider({ children }:any) {
-//     const [userToken, setUserToken] = useState("");
-//     const [userSignedIn, setUserSignedIn] = useState(false);
+export function AuthContextProvider({ children }:any) {
+    const [userToken, setUserToken] = useState("null");
+    const [userSignedIn, setUserSignedIn] = useState(false);
+
+    const signIn = () => {
+      setUserSignedIn(true);
+      setUserToken(() => "asdf");
+    }
   
-//     const authContext = useMemo(() => {
-//       return {
-//         signIn: () => {
-//           setUserSignedIn(true);
-//           setUserToken("asdf");
-//         },
-//         signUp: () => {
-//           setUserToken("asdf");
-//         },
-//         signOut: () => {
-//           setUserToken("");
-//         }
-//       };
-//     }, []);
+    const signUp = () => {
+      setUserToken(() => "asdf");
+    }
+  
+    const signOut = () => {
+      setUserToken(() => '');
+    }
+    
+  return (
+    <AuthContext.Provider value={{signIn, signUp, signOut, userToken}}>
+      {children}
+    </AuthContext.Provider> 
+  );
+}
 
-//   return (
-//     <AuthContext.Provider value={{authContext, userSignedIn}}>
-//       {children}
-//     </AuthContext.Provider> 
-//   );
-// }
-
-// export const useAuthContext = () => useContext(AuthContext);
+ export const useAuthContext = () => useContext(AuthContext);
