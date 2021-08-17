@@ -17,7 +17,7 @@ function ArrayOrganizeFoods(data:any){
   return foods
 }
 
-const Home = ({}) => {
+const Home = ( ) => {
   const [hasPermission, setHasPermission] = useState<any>(null);
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);

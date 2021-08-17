@@ -1,10 +1,9 @@
 import React from "react";
-import { Text, View } from "react-native";
 import MainTemplate from "../components/MainTemplate";
 import { ContentDrawer } from "../screens/ContentDrawer/ContentDrawer";
-
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home  from '../screens/Home/Home';
+
 const Drawer = createDrawerNavigator();
 
 const content = {
