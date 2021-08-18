@@ -5,7 +5,7 @@ import
 export const AuthContext = createContext({});
 
 export function AuthContextProvider({ children }:any) {
-    const [userToken, setUserToken] = useState("null");
+    const [userToken, setUserToken] = useState<any>('');
     const [userSignedIn, setUserSignedIn] = useState(false);
 
     const signIn = () => {

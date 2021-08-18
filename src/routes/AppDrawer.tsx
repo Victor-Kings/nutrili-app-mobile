@@ -12,11 +12,11 @@ const content = {
   name: "Silvio Santos",
 };
 
-export function MyDrawer() {
+export function AppDrawer() {
   return (
     <Drawer.Navigator
       drawerStyle={{ width: "100%", backgroundColor: "#4197E5" }}
-      drawerContent={(props) => <ContentDrawer {...props} />}
+      drawerContent={(props:any) => <ContentDrawer {...props} />}
     >
       <Drawer.Screen name="Home">
         {(props) => (
