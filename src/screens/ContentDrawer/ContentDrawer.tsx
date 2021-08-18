@@ -26,7 +26,6 @@ export function ContentDrawer({ ...props }) {
   };
 
   const handler = (page?:string) => {
-    console.log(page);
     props.navigation.navigate(page);
   }
   return (

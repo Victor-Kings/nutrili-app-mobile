@@ -26,7 +26,7 @@ export function Login ({ navigation }:any){
                 placeholderTextColor="#C9C9C9"
             />
 
-           <ButtonTouch color ="#4197E5" onPress={() => navigation.goBack()}>
+           <ButtonTouch color ="#4197E5" onPress={() => navigation.navigate('LoginAuth')}>
                 <TextButton>ENTRAR</TextButton>
             </ButtonTouch>
         </Container>

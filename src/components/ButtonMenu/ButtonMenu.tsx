@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { IButtomMenuProps } from "./ButtonMenu.interface";
-import IconBack from "../../assets/img/iconBack.svg";
 import { RFValue } from "react-native-responsive-fontsize";
 
 import { Container, Text, Button } from "./styles";
@@ -13,7 +12,8 @@ export const ButtonMenu: FC<IButtomMenuProps> = ({
   sizeImageWidth = 40,
   sizeText = 18,
   containerSize = 80,
-  page
+  page,
+  color
 }) => {
   const handle = () => {
     if (handleClick) {
@@ -25,7 +25,7 @@ export const ButtonMenu: FC<IButtomMenuProps> = ({
     <Container containerSize={containerSize}>
       <Button onPress={handle}>
         {Icon ? <Icon width={RFValue(sizeImageHeight)} height={RFValue(sizeImageWidth)} /> : <></>}
-        <Text size={sizeText}>{text}</Text>
+        <Text size={sizeText} color={color}>{text}</Text>
       </Button>
     </Container>
   );

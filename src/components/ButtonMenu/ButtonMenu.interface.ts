@@ -8,4 +8,5 @@ export interface IButtomMenuProps{
     sizeImageHeight?: number;
     containerSize?: number;
     page?: string;
+    color?: string
 }
