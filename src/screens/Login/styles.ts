@@ -8,27 +8,26 @@ type OpaqueColorValue = symbol & { __TYPE__: 'Color' };
 export type ColorValue = string | OpaqueColorValue;
 
 interface ICardFoodProps {
-    color?: ColorValue | undefined; 
+    color?: ColorValue | undefined;
 }
 
 
-export const PlaceHolder  = {
-    color:"#575757",
+export const PlaceHolder = {
+    color: "#575757",
     height: 40,
     width: "80%",
     marginBottom: 20,
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    borderColor :"#C9C9C9"
+    borderColor: "#C9C9C9"
 }
 
 export const Container = styled.View`
     align-items: center;
     background-color: #F6F6F6;
-    width: 100%;
-    height: 100%;
     padding-top: 30%;
+    height: 100%;
 `;
 
 export const Title = styled.Text`
@@ -43,8 +42,9 @@ export const ButtonTouch = styled.TouchableOpacity`
     max-width: 180px;
     width: 45%;
     max-height: 50px;
+    min-height: 50px;
     border-radius: 9px;
-    background-color: ${({color}: ICardFoodProps):any => color ? color : 'FFFFF'};
+    background-color: ${({ color }: ICardFoodProps): any => color ? color : 'FFFFF'};
     align-self: center;
     flex: 1;
     align-items: center;
@@ -72,15 +72,15 @@ export const SquaresTopLeft = styled.View`
    height: 100px;
    background-color:  #4197E5;
    position:absolute;
-   top: 40%; left: -90%;
+   top: 250px; left: -90%;
    transform: rotate(-70deg);
 `;
 
 export const SquaresBottom = styled.View`
    width: 500px;
-   height: 150px;
+   height: 500px;
    background-color:  #4197E5;
-   position:absolute;
-   bottom: -24%; left: -10%;
+   position: relative;
+   bottom: 0px; left: 0%;
    transform: rotate(12deg);
 `;
