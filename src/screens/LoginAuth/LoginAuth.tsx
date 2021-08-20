@@ -45,7 +45,7 @@ export function LoginAuth({ ...props }: any) {
   };
 
   useEffect(() => {
-    if (code == "ABCD1234") {
+    if (code == "A") {
       props.navigation.navigate("LoginQuestion");
     }
   }, [code]);
