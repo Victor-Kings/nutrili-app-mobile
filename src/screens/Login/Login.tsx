@@ -31,7 +31,7 @@ export function Login({ navigation }: any) {
             options={{
               maskType: "BRL",
               withDDD: true,
-              dddMark: "(99) ",
+              dddMask: '(99) ',
             }}
             onChangeText={onChangeNumber}
             value={number}

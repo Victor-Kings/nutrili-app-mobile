@@ -1,124 +1,162 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native"
-import { BackButtonContainer, TextContainer, ButtonTouch, Title, TextButton } from "./styles";
-import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
+import { View, Text, Button } from "react-native";
+import { TextContainer, ButtonTouch, Title, TextButton } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
-import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate"
-import {loginForm, healthForm} from '../../../__mocks__/form'
-
-
+import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
+import { loginForm, healthForm } from "../../../__mocks__/form";
+import {InsertsCustom} from './components/InsertsCustom'
 export function LoginQuestions({ ...props }: any) {
-    const [startedQuestions, setStartedQuestions] = useState(false)
-    const [currentQuestion, setCurrentQuestion] = useState({ number: 0, type: 1 })
-    const [currentQuestionContent, setCurrentQuestionContent] = useState<any>(
-        {
-            id: null,
-            question: "Vamos fazer algumas perguntas para cadastro",
-            typeAnswer: null,
-            unityMeasure: null,
-            checkQuestions: {
-                fields: null
-            },
-            nextQuestion: {
-                condition: null,
-                next: null
-            }
-        }
-    )
-    const [endQuestion, setEndQuestions] = useState(false)
+  const [startedQuestions, setStartedQuestions] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState({
+    number: 0,
+    type: 1,
+  });
 
-    const handler = (page?: string) => {
-        props.navigation.navigate(page);
-    };
+  const [currentQuestionContent, setCurrentQuestionContent] = useState<any>({
+    id: null,
+    question: "Vamos fazer algumas perguntas para cadastro",
+    typeAnswer: null,
+    unityMeasure: null,
+    placeholder: null,
+    checkQuestions: {
+      fields: null,
+    },
+    previousQuestion: 1,
+    nextQuestion: {
+      condition: null,
+      next: null,
+    },
+  });
 
-    const handleOnClick = () => {
-        setStartedQuestions(true)
-    };
+  const [response, setResponse] = useState({
+    idQuestion: 0,
+    content: ""
+  });
 
+  const [payloadResponses, setPayloadResponses] = useState([{
+    idQuestion: 0,
+    content: ""
+  }]);
 
-    const questionText =
-        <TextContainer>
-            <Title>{startedQuestions ? currentQuestionContent.question : "Vamos fazer algumas perguntas para cadastro"}</Title>
-        </TextContainer>
+  const [payloadUser, setPayloadUser] = useState({
+    nome: "",
+    phone: "",
+    gender: "",
+    birth: "",
+  });
+  const [endQuestion, setEndQuestions] = useState(false);
 
-    const handlerSetCurrentQuestion = () => {
-        if (currentQuestion.type == 1) {
-            if (currentQuestion.number < loginForm.length) {
-                setCurrentQuestion((value) => ({
-                    number: value.number + 1,
-                    type: 1
-                }))
-            } else {
-                setCurrentQuestion({
-                    number: 0,
-                    type: 2
-                })
-            }
+ 
+  const handleOnClick = () => {
+    setStartedQuestions(true);
+  };
+
+  const questionText = (
+    <TextContainer>
+      <Title>
+        {startedQuestions
+          ? currentQuestionContent.question
+          : "Vamos fazer algumas perguntas para cadastro"}
+      </Title>
+    </TextContainer>
+  );
+
+  const selectNextQuestion = (value: string): number => {
+    if (currentQuestionContent.nextQuestion.condition && value === "sim") {
+      return currentQuestionContent.nextQuestion.condition[0];
+    }
+    if (currentQuestionContent.nextQuestion.condition && value === "não") {
+      return currentQuestionContent.nextQuestion.condition[1];
+    }
+    return currentQuestionContent.nextQuestion.next;
+  };
+
+  const populateLoginForm = (data:string) => {
+    switch(currentQuestion.number){
+     case 1: setPayloadUser({...payloadUser, nome: data})
+     case 2: setPayloadUser({...payloadUser, gender: data})
+     case 3: setPayloadUser({...payloadUser, birth: data})
+    }
+  }
+  const populateQuestionsForm = (data:string) => {
+
+  }
+
+  const handlerSetCurrentQuestion = (value: string) => {
+    if (currentQuestion.type == 1) {
+      populateLoginForm(value)
+      if (currentQuestion.number < loginForm.length - 1) {
+        let nextQuestion = selectNextQuestion(value);
+        setCurrentQuestion((value) => ({
+          number: nextQuestion,
+          type: 1,
+        }));
+      } else {
+        setCurrentQuestion(() => ({
+          number: 0,
+          type: 2,
+        }));
+      }
+    }
+    if (currentQuestion.type == 2) {
+      
+        
+        if (currentQuestion.number < healthForm.length - 1) {
+          let nextQuestion = selectNextQuestion(value);
+          setCurrentQuestion((value: any) => ({
+            number:nextQuestion,
+            type: 2,
+          }));
         } else {
-            if (currentQuestion.number < healthForm.length) {
-                setCurrentQuestion((value: any) => ({
-                    number: value.number + 1,
-                    type: 2
-                }))
-            } else {
-                setEndQuestions(true)
-            }
+          setEndQuestions(true);
         }
     }
+    
+  };
 
-    let field
-    if (currentQuestionContent.typeAnswer == 'insertText') {
-        field = <Text onPress={handlerSetCurrentQuestion} >INSERTTEXT</Text>
+  const handlerBackQuestion = () => {
+    setCurrentQuestion((value: any) => ({
+        number: currentQuestionContent.previousQuestion,
+        type: value.type,
+      }));
+  }
+
+  const selectForm = () => {
+    if (currentQuestion.type == 1) {
+      return loginForm;
     }
-    if (currentQuestionContent.typeAnswer == 'insertCustom') {
-        field = <Text onPress={handlerSetCurrentQuestion} >insertCustom</Text>
-    }
-    if (currentQuestionContent.typeAnswer == 'data') {
-        field = <Text onPress={handlerSetCurrentQuestion} >data</Text>
-    }
-    if (currentQuestionContent.typeAnswer == 'insertNumber') {
-        field = <Text onPress={handlerSetCurrentQuestion} >insertNumber</Text>
-    }
-    console.log(currentQuestionContent)
+    return healthForm;
+  };
 
-    const questionsField =
-        <View>
-            <Text>AAA</Text>
-            {field}
-        </View>
+  useEffect(() => {
+    const form = selectForm();
+    setCurrentQuestionContent(form[currentQuestion.number]);
+  }, [startedQuestions, currentQuestion]);
 
-    const selectForm = () => {
-        if (currentQuestion.type == 1) {
-            return loginForm
-        }
-        return healthForm
-    }
-
-    useEffect(() => {
-        const form = selectForm()
-        setCurrentQuestionContent(form[currentQuestion.number])
-    }, [startedQuestions])
-
-    useEffect(() => {
-        const form = selectForm()
-        setCurrentQuestionContent(form[currentQuestion.number])
-    }, [currentQuestion])
-
-    const questionsTemp =
-        startedQuestions ?
-            <>
-                {questionText}
-                {questionsField}
-            </> :
-            <>
-                {questionText}
-                <ButtonTouch color="#4197E5" onPress={handleOnClick}>
-                    <TextButton>COMEÇAR</TextButton>
-                </ButtonTouch>
-            </>
-    return (
-        <QuestionsTemplate handler={handler} IconBack={IconBack} isActiveBackButton={startedQuestions}>
-            {questionsTemp}
-        </QuestionsTemplate>
-    )
+  const questionsTemp = startedQuestions ? (
+    <>
+      {questionText}
+      <View>
+      <Text>AAA</Text>
+      <InsertsCustom handleOnchange={handlerSetCurrentQuestion} value={response.content} placeholder={currentQuestionContent.placeholder} type={currentQuestionContent.typeAnswer}/>
+    </View>
+    </>
+  ) : (
+    <>
+      {questionText}
+      <ButtonTouch color="#4197E5" onPress={handleOnClick}>
+        <TextButton>COMEÇAR</TextButton>
+      </ButtonTouch>
+    </>
+  );
+  return (
+    <QuestionsTemplate
+      handler={handlerBackQuestion}
+      IconBack={IconBack}
+      isActiveBackButton={startedQuestions}
+    >
+      {questionsTemp}
+      {/* <InsertsCustom handleOnchange={handlerSetCurrentQuestion} value="OPA" placeholder="OK" type="bool"/> */}
+    </QuestionsTemplate>
+  );
 }

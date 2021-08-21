@@ -4,7 +4,9 @@ const loginForm = [
         question: "Insira seu nome",
         typeAnswer: "insertText", //'bool','insertText','checked','insertCustom','date','insertNumber'
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 0,
         nextQuestion: {
             condition: null,
             next: 2
@@ -15,9 +17,11 @@ const loginForm = [
         question: "Gênero",
         typeAnswer: "insertCustom",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: {
             fields: ['masculino', 'feminino']
         },
+        previousQuestion: 1,
         nextQuestion: {
             condition: null,
             next: 3
@@ -28,7 +32,9 @@ const loginForm = [
         question: "Data de Nascimento",
         typeAnswer: "data",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 2,
         nextQuestion: {
             condition: null,
             next: 0
@@ -42,7 +48,9 @@ const healthForm = [
         question: "Peso",
         typeAnswer: "insertNumber",
         unityMeasure: 'kg',
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 1,
         nextQuestion: {
             condition: null,
             next: 2
@@ -53,7 +61,9 @@ const healthForm = [
         question: "Houve alteração recentemente?",
         typeAnswer: "bool",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 1,
         nextQuestion: {
             condition: [3, 4],
             next: null
@@ -64,9 +74,11 @@ const healthForm = [
         question: "Ganhou ou Perdeu peso?",
         typeAnswer: "insertCustom",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: {
             fields: ['ganhei', 'perdi']
         },
+        previousQuestion: 2,
         nextQuestion: {
             condition: null,
             next: 4
@@ -77,7 +89,9 @@ const healthForm = [
         question: "Altura",
         typeAnswer: "insertNumber",
         unityMeasure: 'm',
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 3,
         nextQuestion: {
             condition: null,
             next: 5
@@ -88,7 +102,9 @@ const healthForm = [
         question: "Possui problema de saúde?",
         typeAnswer: "bool",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 4,
         nextQuestion: {
             condition: [6, 7],
             next: null
@@ -99,9 +115,11 @@ const healthForm = [
         question: "Qual?",
         typeAnswer: "insertCustom",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: {
             fields: ['diabetes, preção alta']
         },
+        previousQuestion: 5,
         nextQuestion: {
             condition: null,
             next: 7
@@ -112,7 +130,9 @@ const healthForm = [
         question: "Quantas Refeições faz ao dia?",
         typeAnswer: "insertNumber",
         unityMeasure: null,
+        placeholder: "",
         checkQuestions: null,
+        previousQuestion: 5,
         nextQuestion: {
             condition: null,
             next: 0
