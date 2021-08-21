@@ -33,10 +33,7 @@ export function LoginQuestions({ ...props }: any) {
     content: ""
   });
 
-  const [payloadResponses, setPayloadResponses] = useState([{
-    idQuestion: 0,
-    content: ""
-  }]);
+  const [payloadResponses, setPayloadResponses] = useState<any>(null);
 
   const [payloadUser, setPayloadUser] = useState({
     nome: "",
@@ -78,8 +75,20 @@ export function LoginQuestions({ ...props }: any) {
      case 3: setPayloadUser({...payloadUser, birth: data})
     }
   }
-  const populateQuestionsForm = (data:string) => {
 
+  const populateQuestionsForm = (data:string) => {
+    if(!payloadResponses){
+      setPayloadResponses([{
+        idQuestion: currentQuestion.number,
+        content: data
+      }])
+    }else{
+      payloadResponses.push({
+        idQuestion: currentQuestion.number,
+        constent: data
+      })
+      setPayloadResponses([...payloadResponses])
+    }
   }
 
   const handlerSetCurrentQuestion = (value: string) => {
@@ -98,9 +107,10 @@ export function LoginQuestions({ ...props }: any) {
         }));
       }
     }
+    
     if (currentQuestion.type == 2) {
       
-        
+      populateQuestionsForm(value)
         if (currentQuestion.number < healthForm.length - 1) {
           let nextQuestion = selectNextQuestion(value);
           setCurrentQuestion((value: any) => ({
