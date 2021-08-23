@@ -2,7 +2,7 @@ import React from "react";
 import MainTemplate from "../components/MainTemplate";
 import { ContentDrawer } from "../screens/ContentDrawer/ContentDrawer";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Home  from '../screens/Home/Home';
+import Home from '../screens/Home/Home';
 
 const Drawer = createDrawerNavigator();
 
@@ -16,14 +16,12 @@ export function AppDrawer() {
   return (
     <Drawer.Navigator
       drawerStyle={{ width: "100%", backgroundColor: "#4197E5" }}
-      drawerContent={(props:any) => <ContentDrawer {...props} />}
+      drawerContent={(props: any) => <ContentDrawer {...props} />}
     >
       <Drawer.Screen name="Home">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            
-              <Home/> 
-            
+            <Home />
           </MainTemplate>
         )}
       </Drawer.Screen>

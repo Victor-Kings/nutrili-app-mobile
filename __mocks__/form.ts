@@ -1,12 +1,15 @@
-const loginForm = [
+const form = [
     {
         id: 1,
+        typeForm: "loginForm",
         question: "Insira seu nome",
         typeAnswer: "insertText", //'bool','insertText','checked','insertCustom','date','insertNumber'
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
-        previousQuestion: 0,
+        checkQuestions: {
+            fields: null
+        },
+        previousQuestion: 1,
         nextQuestion: {
             condition: null,
             next: 2
@@ -14,6 +17,7 @@ const loginForm = [
     },
     {
         id: 2,
+        typeForm: "loginForm",
         question: "Gênero",
         typeAnswer: "insertCustom",
         unityMeasure: null,
@@ -29,54 +33,13 @@ const loginForm = [
     },
     {
         id: 3,
+        typeForm: "loginForm",
         question: "Data de Nascimento",
         typeAnswer: "data",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
-        previousQuestion: 2,
-        nextQuestion: {
-            condition: null,
-            next: 0
-        }
-    }
-]
-
-const healthForm = [
-    {
-        id: 1,
-        question: "Peso",
-        typeAnswer: "insertNumber",
-        unityMeasure: 'kg',
-        placeholder: "",
-        checkQuestions: null,
-        previousQuestion: 1,
-        nextQuestion: {
-            condition: null,
-            next: 2
-        }
-    },
-    {
-        id: 2,
-        question: "Houve alteração recentemente?",
-        typeAnswer: "bool",
-        unityMeasure: null,
-        placeholder: "",
-        checkQuestions: null,
-        previousQuestion: 1,
-        nextQuestion: {
-            condition: [3, 4],
-            next: null
-        }
-    },
-    {
-        id: 3,
-        question: "Ganhou ou Perdeu peso?",
-        typeAnswer: "insertCustom",
-        unityMeasure: null,
-        placeholder: "",
         checkQuestions: {
-            fields: ['ganhei', 'perdi']
+            fields: null
         },
         previousQuestion: 2,
         nextQuestion: {
@@ -86,11 +49,14 @@ const healthForm = [
     },
     {
         id: 4,
-        question: "Altura",
+        typeForm: "healthForm",
+        question: "Peso",
         typeAnswer: "insertNumber",
-        unityMeasure: 'm',
+        unityMeasure: 'kg',
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: null
+        },
         previousQuestion: 3,
         nextQuestion: {
             condition: null,
@@ -99,11 +65,14 @@ const healthForm = [
     },
     {
         id: 5,
-        question: "Possui problema de saúde?",
+        typeForm: "healthForm",
+        question: "Houve alteração recentemente?",
         typeAnswer: "bool",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: null
+        },
         previousQuestion: 4,
         nextQuestion: {
             condition: [6, 7],
@@ -112,12 +81,13 @@ const healthForm = [
     },
     {
         id: 6,
-        question: "Qual?",
+        typeForm: "healthForm",
+        question: "Ganhou ou Perdeu peso?",
         typeAnswer: "insertCustom",
         unityMeasure: null,
         placeholder: "",
         checkQuestions: {
-            fields: ['diabetes, preção alta']
+            fields: ['ganhei', 'perdi']
         },
         previousQuestion: 5,
         nextQuestion: {
@@ -127,17 +97,68 @@ const healthForm = [
     },
     {
         id: 7,
+        typeForm: "healthForm",
+        question: "Altura",
+        typeAnswer: "insertNumber",
+        unityMeasure: 'm',
+        placeholder: "",
+        checkQuestions: {
+            fields: null
+        },
+        previousQuestion: 5,
+        nextQuestion: {
+            condition: null,
+            next: 8
+        }
+    },
+    {
+        id: 8,
+        typeForm: "healthForm",
+        question: "Possui problema de saúde?",
+        typeAnswer: "bool",
+        unityMeasure: null,
+        placeholder: "",
+        checkQuestions: {
+            fields: null
+        },
+        previousQuestion: 7,
+        nextQuestion: {
+            condition: [9, 10],
+            next: null
+        }
+    },
+    {
+        id: 9,
+        typeForm: "healthForm",
+        question: "Qual?",
+        typeAnswer: "insertCustom",
+        unityMeasure: null,
+        placeholder: "",
+        checkQuestions: {
+            fields: ['diabetes', 'pressão alta']
+        },
+        previousQuestion: 8,
+        nextQuestion: {
+            condition: null,
+            next: 10
+        }
+    },
+    {
+        id: 10,
+        typeForm: "healthForm",
         question: "Quantas Refeições faz ao dia?",
         typeAnswer: "insertNumber",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
-        previousQuestion: 5,
+        checkQuestions: {
+            fields: null
+        },
+        previousQuestion: 9,
         nextQuestion: {
             condition: null,
-            next: 0
+            next: 11
         }
     }
 ]
 
-export {loginForm, healthForm};
+export { form };

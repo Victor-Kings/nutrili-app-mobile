@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { TextInput, Button } from "react-native";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
 
 export function InsertsCustom({
   type,
-  value,
   handleOnchange,
   placeholder,
   picker,
 }: IInsertCustomProps) {
   const pickerRef = useRef<any>();
+
+  const [response, setResponse] = useState("");
 
   function open() {
     pickerRef.current.focus();
@@ -19,6 +19,17 @@ export function InsertsCustom({
 
   function close() {
     pickerRef.current.blur();
+  }
+
+  const handlerNextQuestion = () => {
+    console.log("dentro", response)
+    handleOnchange(response)
+    console.log(response)
+    setResponse("")
+  }
+
+  const handlerResponse = (value: string) => {
+    setResponse(value)
   }
 
   function format(mask: string, number: string) {
@@ -29,59 +40,87 @@ export function InsertsCustom({
     }
     return r;
   }
+
+  const buttonNext = (
+    <Button
+      onPress={handlerNextQuestion}
+      title="PROXIMO"
+      color="blue"
+      accessibilityLabel="Button Next"
+    />
+  );
+
   if (type == "insertText") {
     return (
-      <TextInput
-        onChangeText={handleOnchange}
-        value={value}
-        placeholder={placeholder}
-      />
+      <>
+        <TextInput
+          onChangeText={handlerResponse}
+          value={response}
+          placeholder={placeholder}
+        />
+
+        {buttonNext}
+      </>
     );
   }
+
   if (type == "insertCustom") {
     return (
-      <Picker
-        ref={pickerRef}
-        selectedValue={value}
-        onValueChange={(itemValue, itemIndex) => handleOnchange(itemValue)}
-      >
-        {picker &&
-          picker.map((value) => {
-            <Picker.Item label={value} value={value} />;
-          })}
-      </Picker>
+      <>
+        <Picker
+          ref={pickerRef}
+          selectedValue={response}
+          onValueChange={(itemValue, itemIndex) => handlerResponse(itemValue)}
+        >
+
+          {picker && picker.map((value, index) =>
+            <Picker.Item label={value} value={value} key={index} />
+          )}
+
+        </Picker>
+        {buttonNext}
+      </>
     );
   }
+
   if (type == "data") {
     return (
-      <TextInput
-        onChangeText={handleOnchange}
-        value={format("XX/XX/XXXX", value)}
-        placeholder={placeholder}
-      />
+      <>
+        <TextInput
+          onChangeText={handlerResponse}
+          value={format("XX/XX/XXXX", response)}
+          placeholder={placeholder}
+        />
+        {buttonNext}
+      </>
     );
   }
+
   if (type == "insertNumber") {
     return (
-      <TextInput
-        onChangeText={handleOnchange}
-        value={value}
-        placeholder={placeholder}
-        keyboardType="number-pad"
-      />
+      <>
+        <TextInput
+          onChangeText={handlerResponse}
+          value={response}
+          placeholder={placeholder}
+          keyboardType="number-pad"
+        />
+        {buttonNext}
+      </>
     );
   }
+
   if (type == "bool") {
     return (
       <>
         <Button
-          onPress={() => handleOnchange}
+          onPress={() => { handleOnchange("yes"); setResponse("") }}
           title="Sim"
           color="#841584"
           accessibilityLabel="Button Yessss"
         />
         <Button
-          onPress={() => handleOnchange}
+          onPress={() => { handleOnchange("no"); setResponse("") }}
           title="Não"
           color="red"
           accessibilityLabel="Button Nops"
@@ -89,5 +128,5 @@ export function InsertsCustom({
       </>
     );
   }
-  return(<></>)
+  return (<></>)
 }

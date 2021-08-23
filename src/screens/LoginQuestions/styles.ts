@@ -24,7 +24,6 @@ export const ContentContainer = styled.View`
    background-color: #FFFFFF;
    width: 90%;
    height: 80%;
-    
 `;
 
 export const SquaresTopRight = styled.View`
