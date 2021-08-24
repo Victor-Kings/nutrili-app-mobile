@@ -52,7 +52,7 @@ const form = [
         typeForm: "healthForm",
         question: "Peso",
         typeAnswer: "insertNumber",
-        unityMeasure: 'kg',
+        unityMeasure: 'Kg',
         placeholder: "",
         checkQuestions: {
             fields: null
@@ -148,7 +148,7 @@ const form = [
         typeForm: "healthForm",
         question: "Quantas Refeições faz ao dia?",
         typeAnswer: "insertNumber",
-        unityMeasure: null,
+        unityMeasure: 'cm',
         placeholder: "",
         checkQuestions: {
             fields: null

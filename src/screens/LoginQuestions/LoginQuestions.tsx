@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button } from "react-native";
-import { TextContainer, ButtonTouch, Title, TextButton } from "./styles";
+import { TextContainer, ButtonTouch, Title, TextButton, ContainerButtons } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
 import { form } from "../../../__mocks__/form";
@@ -134,9 +134,11 @@ export function LoginQuestions({ ...props }: any) {
     ) : (
             <>
                 {questionText}
-                <ButtonTouch color="#4197E5" onPress={handleOnClick}>
-                    <TextButton>COMEÇAR</TextButton>
-                </ButtonTouch>
+                <ContainerButtons>
+                    <ButtonTouch color="#4197E5" onPress={handleOnClick}>
+                        <TextButton>COMEÇAR</TextButton>
+                    </ButtonTouch>
+                </ContainerButtons>
             </>
         );
 

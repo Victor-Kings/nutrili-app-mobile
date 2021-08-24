@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
-import { TextInput, Button } from "react-native";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
+import { ButtonTouch, TextButton } from "../styles";
+import { ContainerButtons, ContainerSingleButton, InsertNumber, InsertText, ContainerInsertNumber } from "./styles";
+import { Text } from "react-native";
 
 export function InsertsCustom({
   handleOnchange,
@@ -38,23 +40,21 @@ export function InsertsCustom({
   }
 
   const buttonNext = (
-    <Button
-      onPress={handlerNextQuestion}
-      title="PROXIMO"
-      color="blue"
-      accessibilityLabel="Button Next"
-    />
+    <ContainerSingleButton>
+      <ButtonTouch color="#4197E5" onPress={handlerNextQuestion}>
+        <TextButton>AVANÇAR</TextButton>
+      </ButtonTouch>
+    </ContainerSingleButton>
   );
 
   if (content.typeAnswer == "insertText") {
     return (
       <>
-        <TextInput
+        <InsertText
           onChangeText={handlerResponse}
           value={response}
           placeholder={content.placeholder}
         />
-
         {buttonNext}
       </>
     );
@@ -82,7 +82,7 @@ export function InsertsCustom({
   if (content.typeAnswer == "data") {
     return (
       <>
-        <TextInput
+        <InsertText
           onChangeText={handlerResponse}
           value={format("XX/XX/XXXX", response)}
           placeholder={content.placeholder}
@@ -95,12 +95,16 @@ export function InsertsCustom({
   if (content.typeAnswer == "insertNumber") {
     return (
       <>
-        <TextInput
-          onChangeText={handlerResponse}
-          value={response}
-          placeholder={content.placeholder}
-          keyboardType="number-pad"
-        />
+        <ContainerInsertNumber>
+          <InsertNumber
+            onChangeText={handlerResponse}
+            value={response}
+            placeholder={content.placeholder}
+            keyboardType="number-pad"
+          />
+          <Text style={{ fontSize: 20, color: "#6D6D6D" }}>{content.unityMeasure}</Text>
+        </ContainerInsertNumber>
+
         {buttonNext}
       </>
     );
@@ -108,20 +112,15 @@ export function InsertsCustom({
 
   if (content.typeAnswer == "bool") {
     return (
-      <>
-        <Button
-          onPress={() => { handleOnchange("yes"); setResponse("") }}
-          title="Sim"
-          color="#841584"
-          accessibilityLabel="Button Yessss"
-        />
-        <Button
-          onPress={() => { handleOnchange("no"); setResponse("") }}
-          title="Não"
-          color="red"
-          accessibilityLabel="Button Nops"
-        />
-      </>
+      <ContainerButtons>
+        <ButtonTouch color="#4197E5" onPress={() => { handleOnchange("yes"); setResponse("") }}>
+          <TextButton>SIM</TextButton>
+        </ButtonTouch>
+
+        <ButtonTouch color="#d8000b" onPress={() => { handleOnchange("no"); setResponse("") }} style={{ marginLeft: 5 }}>
+          <TextButton>NÃO</TextButton>
+        </ButtonTouch >
+      </ContainerButtons>
     );
   }
   return (<></>)
