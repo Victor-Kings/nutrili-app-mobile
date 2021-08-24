@@ -4,10 +4,8 @@ import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
 
 export function InsertsCustom({
-  type,
   handleOnchange,
-  placeholder,
-  picker,
+  content,
 }: IInsertCustomProps) {
   const pickerRef = useRef<any>();
 
@@ -22,9 +20,7 @@ export function InsertsCustom({
   }
 
   const handlerNextQuestion = () => {
-    console.log("dentro", response)
     handleOnchange(response)
-    console.log(response)
     setResponse("")
   }
 
@@ -50,13 +46,13 @@ export function InsertsCustom({
     />
   );
 
-  if (type == "insertText") {
+  if (content.typeAnswer == "insertText") {
     return (
       <>
         <TextInput
           onChangeText={handlerResponse}
           value={response}
-          placeholder={placeholder}
+          placeholder={content.placeholder}
         />
 
         {buttonNext}
@@ -64,7 +60,7 @@ export function InsertsCustom({
     );
   }
 
-  if (type == "insertCustom") {
+  if (content.typeAnswer == "insertCustom") {
     return (
       <>
         <Picker
@@ -73,7 +69,7 @@ export function InsertsCustom({
           onValueChange={(itemValue, itemIndex) => handlerResponse(itemValue)}
         >
 
-          {picker && picker.map((value, index) =>
+          {content.checkQuestions.fields && content.checkQuestions.fields.map((value, index) =>
             <Picker.Item label={value} value={value} key={index} />
           )}
 
@@ -83,26 +79,26 @@ export function InsertsCustom({
     );
   }
 
-  if (type == "data") {
+  if (content.typeAnswer == "data") {
     return (
       <>
         <TextInput
           onChangeText={handlerResponse}
           value={format("XX/XX/XXXX", response)}
-          placeholder={placeholder}
+          placeholder={content.placeholder}
         />
         {buttonNext}
       </>
     );
   }
 
-  if (type == "insertNumber") {
+  if (content.typeAnswer == "insertNumber") {
     return (
       <>
         <TextInput
           onChangeText={handlerResponse}
           value={response}
-          placeholder={placeholder}
+          placeholder={content.placeholder}
           keyboardType="number-pad"
         />
         {buttonNext}
@@ -110,7 +106,7 @@ export function InsertsCustom({
     );
   }
 
-  if (type == "bool") {
+  if (content.typeAnswer == "bool") {
     return (
       <>
         <Button

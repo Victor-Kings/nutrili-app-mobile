@@ -5,11 +5,11 @@ import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
 import { form } from "../../../__mocks__/form";
 import { InsertsCustom } from './components/InsertsCustom'
+import { useAuthContext } from '../../context/authContext'
 
 export function LoginQuestions({ ...props }: any) {
     const [startedQuestions, setStartedQuestions] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-
     const [currentQuestionContent, setCurrentQuestionContent] = useState<any>({
         id: null,
         typeForm: null,
@@ -26,7 +26,6 @@ export function LoginQuestions({ ...props }: any) {
             next: null,
         },
     });
-
     const [payloadResponses, setPayloadResponses] = useState<any>(null);
     const [payloadUser, setPayloadUser] = useState({
         name: "",
@@ -35,30 +34,18 @@ export function LoginQuestions({ ...props }: any) {
         birth: "",
         isNutricionist: false,
     });
-
-    const [endQuestion, setEndQuestions] = useState(false);
+    const [endQuestions, setEndQuestions] = useState(false);
+    const { signUp }: any = useAuthContext();
 
     const handleOnClick = () => {
         setStartedQuestions(true);
     };
 
-    const questionText = (
-        <TextContainer>
-            <Title>
-                {startedQuestions
-                    ? currentQuestionContent.question
-                    : "Vamos fazer algumas perguntas para cadastro"}
-            </Title>
-        </TextContainer>
-    );
-
     const selectNextQuestion = (value: string): number => {
         if (currentQuestionContent.nextQuestion.condition && value === "yes") {
-            console.log("EEEE", currentQuestionContent.nextQuestion.condition[0])
             return currentQuestionContent.nextQuestion.condition[0];
         }
         if (currentQuestionContent.nextQuestion.condition && value === "no") {
-            console.log("UUU", currentQuestionContent.nextQuestion.condition[1])
             return currentQuestionContent.nextQuestion.condition[1];
         }
         return currentQuestionContent.nextQuestion.next;
@@ -74,7 +61,6 @@ export function LoginQuestions({ ...props }: any) {
                 break
         }
     }
-
     const populateQuestionsForm = (data: string) => {
         if (!payloadResponses) {
             setPayloadResponses([{
@@ -82,11 +68,17 @@ export function LoginQuestions({ ...props }: any) {
                 content: data
             }])
         } else {
-            payloadResponses.push({
+
+            const responsesAux = payloadResponses.filter((obj: any) =>
+                obj.idQuestion !== currentQuestion
+            )
+
+            responsesAux.push({
                 idQuestion: currentQuestion,
                 constent: data
             })
-            setPayloadResponses([...payloadResponses])
+
+            setPayloadResponses(responsesAux)
         }
     }
 
@@ -97,7 +89,6 @@ export function LoginQuestions({ ...props }: any) {
             populateQuestionsForm(value)
         }
         if (currentQuestion < form.length - 1) {
-            console.log("SELECT", currentQuestionContent)
             let nextQuestion = selectNextQuestion(value);
             setCurrentQuestion(nextQuestion - 1);
         } else {
@@ -113,15 +104,30 @@ export function LoginQuestions({ ...props }: any) {
         setCurrentQuestionContent(form[currentQuestion]);
     }, [startedQuestions, currentQuestion]);
 
+    useEffect(() => {
+        if (endQuestions != false) {
+            //TODO: enviar cadastro e questões
+            signUp();
+        }
+    }, [endQuestions])
+
+    const questionText = (
+        <TextContainer>
+            <Title>
+                {startedQuestions && !endQuestions
+                    ? currentQuestionContent.question
+                    : "Vamos fazer algumas perguntas para cadastro"}
+            </Title>
+        </TextContainer>
+    );
+
     const questionsTemp = startedQuestions ? (
         <>
             <View>
                 {questionText}
                 <InsertsCustom
                     handleOnchange={handlerSetCurrentQuestion}
-                    placeholder={currentQuestionContent.placeholder}
-                    type={currentQuestionContent.typeAnswer}
-                    picker={currentQuestionContent.checkQuestions.fields}
+                    content={currentQuestionContent}
                 />
             </View>
         </>
@@ -140,8 +146,7 @@ export function LoginQuestions({ ...props }: any) {
             IconBack={IconBack}
             isActiveBackButton={startedQuestions}
         >
-            {questionsTemp}
-            {/* <InsertsCustom handleOnchange={handlerSetCurrentQuestion} value="OPA" placeholder="OK" type="bool"/> */}
+            {endQuestions ? <Text>Fazendo login ... </Text> : questionsTemp}
         </QuestionsTemplate>
     );
 }
