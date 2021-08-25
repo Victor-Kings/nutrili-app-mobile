@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
 import { ButtonTouch, TextButton } from "../styles";
-import { ContainerButtons, ContainerSingleButton, InsertNumber, InsertText, ContainerInsertNumber } from "./styles";
+import { ContainerButtons, ContainerSingleButton, InsertNumber, InsertText, ContainerInsertNumber, PickerContainer } from "./styles";
 import { Text } from "react-native";
 
 export function InsertsCustom({
@@ -63,17 +63,20 @@ export function InsertsCustom({
   if (content.typeAnswer == "insertCustom") {
     return (
       <>
-        <Picker
-          ref={pickerRef}
-          selectedValue={response}
-          onValueChange={(itemValue, itemIndex) => handlerResponse(itemValue)}
-        >
+        <PickerContainer>
+          <Picker
+            ref={pickerRef}
+            selectedValue={response}
+            onValueChange={(itemValue, itemIndex) => handlerResponse(itemValue)}
+            dropdownIconColor="#84878a"
+            itemStyle={{ fontSize: 20, fontWeight: "700" }}
+          >
+            {content.checkQuestions.fields && content.checkQuestions.fields.map((value, index) =>
+              <Picker.Item label={value} value={value} key={index} color='#84878a' />
+            )}
 
-          {content.checkQuestions.fields && content.checkQuestions.fields.map((value, index) =>
-            <Picker.Item label={value} value={value} key={index} />
-          )}
-
-        </Picker>
+          </Picker>
+        </PickerContainer>
         {buttonNext}
       </>
     );

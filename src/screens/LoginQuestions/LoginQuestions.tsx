@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, KeyboardAvoidingView, ScrollView } from "react-native";
 import { TextContainer, ButtonTouch, Title, TextButton, ContainerButtons } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
@@ -122,15 +122,21 @@ export function LoginQuestions({ ...props }: any) {
     );
 
     const questionsTemp = startedQuestions ? (
-        <>
-            <View>
-                {questionText}
-                <InsertsCustom
-                    handleOnchange={handlerSetCurrentQuestion}
-                    content={currentQuestionContent}
-                />
-            </View>
-        </>
+        <KeyboardAvoidingView
+            behavior={"padding"}
+            style={{ flex: 1, height: "90%", width: "100%", backgroundColor: "#5828b8" }}
+            keyboardVerticalOffset={-250}
+        >
+            <ScrollView style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#FFFFFF" }}>
+                <View>
+                    {questionText}
+                    <InsertsCustom
+                        handleOnchange={handlerSetCurrentQuestion}
+                        content={currentQuestionContent}
+                    />
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     ) : (
             <>
                 {questionText}
