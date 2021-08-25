@@ -122,21 +122,23 @@ export function LoginQuestions({ ...props }: any) {
     );
 
     const questionsTemp = startedQuestions ? (
-        <KeyboardAvoidingView
-            behavior={"padding"}
-            style={{ flex: 1, height: "90%", width: "100%", backgroundColor: "#5828b8" }}
-            keyboardVerticalOffset={-250}
-        >
-            <ScrollView style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#FFFFFF" }}>
-                <View>
-                    {questionText}
-                    <InsertsCustom
-                        handleOnchange={handlerSetCurrentQuestion}
-                        content={currentQuestionContent}
-                    />
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+        <View style={{ flex: 1, height: "100%" }}>
+            <KeyboardAvoidingView
+                behavior={"padding"}
+                style={{ height: "99%", width: "100%" }}
+                keyboardVerticalOffset={-120}
+            >
+                <ScrollView style={{ flex: 1, height: "100%", width: "100%" }}>
+                    <View style={{ flex: 1 }}>
+                        {questionText}
+                        <InsertsCustom
+                            handleOnchange={handlerSetCurrentQuestion}
+                            content={currentQuestionContent}
+                        />
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     ) : (
             <>
                 {questionText}
@@ -155,6 +157,9 @@ export function LoginQuestions({ ...props }: any) {
             isActiveBackButton={startedQuestions}
         >
             {endQuestions ? <Text>Fazendo login ... </Text> : questionsTemp}
+            {startedQuestions && <View style={{ height: 40, marginTop: "5%", marginBottom: "3%" }}>
+                <Text style={{ alignSelf: "center", color: "gray", fontSize: 20 }}>Pergunta {currentQuestion + 1}/{form.length}</Text>
+            </View>}
         </QuestionsTemplate>
     );
 }
