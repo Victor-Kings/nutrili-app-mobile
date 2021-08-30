@@ -6,18 +6,18 @@ import { Camera } from "expo-camera";
 import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
 import FormData from "form-data";
-import api from "../../service/api";
+import { apiRecognize } from "../../service/api";
 
-function ArrayOrganizeFoods(data:any){
-  var foods = [];  
-  for(let food of data){
+function ArrayOrganizeFoods(data: any) {
+  var foods = [];
+  for (let food of data) {
     foods.push(food.food)
   }
 
   return foods
 }
 
-const Home = ( ) => {
+const Home = () => {
   const [hasPermission, setHasPermission] = useState<any>(null);
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
@@ -51,31 +51,31 @@ const Home = ( ) => {
 
   const handleModal = async () => {
     setModalOpen(false);
-    await api.post("/post_recognized_foods",{
+    await apiRecognize.post("/post_recognized_foods", {
       Recognized_Foods: responseFood
     })
-    .then((apiResponse) => { console.log(apiResponse.data) })
+      .then((apiResponse) => { console.log(apiResponse.data) })
   };
 
-  async function  sendImageIA( ImageData: any) {
+  async function sendImageIA(ImageData: any) {
     var form = new FormData();
     form.append("file1", {
       type: "image/jpeg",
       name: `alimento.jpg`,
       uri: ImageData.uri,
     });
-    await api
-    .post("/post_image", form, {
+    await apiRecognize
+      .post("/post_image", form, {
         headers: {
-        "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
-    })
-    .then((apiResponse) => {
-      setResponseFood(apiResponse.data.Recognized_Foods)
-    })
-    .catch((error)=>{
+      })
+      .then((apiResponse) => {
+        setResponseFood(apiResponse.data.Recognized_Foods)
+      })
+      .catch((error) => {
         console.error(error)
-    })
+      })
   }
 
   return (

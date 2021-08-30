@@ -16,12 +16,40 @@ import {
 } from "./styles";
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import IconBack from "../../assets/img/iconBackBlue.svg";
+import { useAuthContext } from '../../context/authContext'
+import { apiBackend } from "../../service/api";
 
 export function LoginAuth({ ...props }: any) {
   const [consentedSms, setConsentedSms] = useState(false);
-  const [code, onChangeCode] = useState<any>();
+  const [code, onChangeCode] = useState<any>('');
   const [initialTime, setInitialTime] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
+
+  const { setUserToken }: any = useAuthContext();
+
+  const requestSmsToken = async () =>
+    await apiBackend.post("/user/smsToken", {
+      phone: props.phoneNumber
+    }, {
+      headers: {
+        "": "",
+      }
+    })
+
+
+  const confirmSmsToken = async () => {
+    var bodyFormData = new FormData();
+
+    bodyFormData.append('grant_type', 'password')
+    bodyFormData.append('username', `${props.phoneNumber}:${code}`)
+    bodyFormData.append('password', 'vintao20')
+
+    return await apiBackend.post("/user/smsToken", bodyFormData, {
+      headers: {
+        "": "",
+      }
+    })
+  }
 
   const handler = (page?: string) => {
     props.navigation.navigate(page);
@@ -39,14 +67,19 @@ export function LoginAuth({ ...props }: any) {
     }
   }, [initialTime, consentedSms]);
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
+    requestSmsToken();
     setInitialTime(60);
     setConsentedSms(true);
   };
 
   useEffect(() => {
-    if (code == "A") {
-      props.navigation.navigate("LoginQuestion");
+    if (code.length == 8) {
+      confirmSmsToken().then((response) => {
+        //TODO: verificar erros
+        setUserToken(response);
+        props.navigation.navigate("LoginQuestion");
+      })
     }
   }, [code]);
 

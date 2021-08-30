@@ -6,6 +6,7 @@ import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsT
 import { form } from "../../../__mocks__/form";
 import { InsertsCustom } from './components/InsertsCustom'
 import { useAuthContext } from '../../context/authContext'
+import { apiBackend } from "../../service/api";
 
 export function LoginQuestions({ ...props }: any) {
     const [startedQuestions, setStartedQuestions] = useState(false);
@@ -35,7 +36,7 @@ export function LoginQuestions({ ...props }: any) {
         isNutricionist: false,
     });
     const [endQuestions, setEndQuestions] = useState(false);
-    const { signUp }: any = useAuthContext();
+    const { setloged, userToken }: any = useAuthContext();
 
     const handleOnClick = () => {
         setStartedQuestions(true);
@@ -65,7 +66,7 @@ export function LoginQuestions({ ...props }: any) {
         if (!payloadResponses) {
             setPayloadResponses([{
                 idQuestion: currentQuestion,
-                content: data
+                answer: data
             }])
         } else {
 
@@ -75,7 +76,7 @@ export function LoginQuestions({ ...props }: any) {
 
             responsesAux.push({
                 idQuestion: currentQuestion,
-                constent: data
+                answer: data
             })
 
             setPayloadResponses(responsesAux)
@@ -94,7 +95,19 @@ export function LoginQuestions({ ...props }: any) {
         } else {
             setEndQuestions(true)
         }
-    };
+    }
+
+    const sendQuestion = async () =>
+        apiBackend.post("/answer/insertAnswer", payloadResponses, {
+            headers: {
+                "Authorization": `Bearer ${userToken}`
+            }
+        }).then((response) => {
+            if (response) {
+                setloged(true);
+            }
+        })
+
 
     const handlerBackQuestion = () => {
         setCurrentQuestion(currentQuestionContent.previousQuestion - 1)
@@ -106,8 +119,8 @@ export function LoginQuestions({ ...props }: any) {
 
     useEffect(() => {
         if (endQuestions != false) {
-            //TODO: enviar cadastro e questões
-            signUp();
+            //TODO: enviar cadastro
+            sendQuestion()
         }
     }, [endQuestions])
 
