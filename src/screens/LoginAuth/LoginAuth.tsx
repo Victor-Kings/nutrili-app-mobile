@@ -25,28 +25,29 @@ export function LoginAuth({ ...props }: any) {
   const [initialTime, setInitialTime] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
 
-  const { setUserToken }: any = useAuthContext();
-
-  const requestSmsToken = async () =>
-    await apiBackend.post("/user/smsToken", {
-      phone: props.phoneNumber
+  const { setUserToken, userToken }: any = useAuthContext();
+  const phoneNumber = props.route.params.phoneNumber;
+  const requestSmsToken = async () => (
+    apiBackend.post("/user/smsToken", {
+      phone: phoneNumber
     }, {
       headers: {
-        "": "",
+        "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=",
       }
     })
-
+  )
+  //console.log("AAAA", userToken.data.access_token)
 
   const confirmSmsToken = async () => {
     var bodyFormData = new FormData();
 
     bodyFormData.append('grant_type', 'password')
-    bodyFormData.append('username', `${props.phoneNumber}:${code}`)
+    bodyFormData.append('username', `${phoneNumber}:2:${code}`)
     bodyFormData.append('password', 'vintao20')
 
-    return await apiBackend.post("/user/smsToken", bodyFormData, {
+    return apiBackend.post("/user/smsToken", bodyFormData, {
       headers: {
-        "": "",
+        "Authorization": "Basic dGVzdGU6MTIzNDU=",
       }
     })
   }
@@ -68,19 +69,36 @@ export function LoginAuth({ ...props }: any) {
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
-    // requestSmsToken();
+    //requestSmsToken();
+    console.log("OBVA", phoneNumber)
+    apiBackend.post("/user/smsToken", {}, {
+      params: { phone: phoneNumber },
+      headers: {
+        "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=",
+      }
+    }).then((response) => console.log(response))
     setInitialTime(60);
     setConsentedSms(true);
   };
 
   useEffect(() => {
     if (code.length == 8) {
-      props.navigation.navigate("LoginQuestion");
-      // confirmSmsToken().then((response) => {
-      //   //TODO: verificar erros
-      //   setUserToken(response);
-      //   props.navigation.navigate("LoginQuestion");
-      // })
+      var bodyFormData = new FormData();
+      console.log(phoneNumber, code)
+      bodyFormData.append('grant_type', 'password')
+      bodyFormData.append('username', `${phoneNumber}:2:${code}`)
+      bodyFormData.append('password', 'vintao20')
+
+      apiBackend.post("/oauth/token", bodyFormData, {
+        headers: {
+          "Authorization": "Basic dGVzdGU6MTIzNDU=",
+        }
+      }).then((response: any) => {
+        //TODO: verificar erros
+        console.log(response.data.access_token)
+        setUserToken(response.data.access_token);
+        props.navigation.navigate("LoginQuestion");
+      })
     }
   }, [code]);
 

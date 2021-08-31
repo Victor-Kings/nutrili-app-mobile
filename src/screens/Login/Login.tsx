@@ -17,7 +17,6 @@ export function Login({ navigation }: any) {
 
   const handlerLogin = () => {
     const numberUnmask = numberRef.current.getRawValue();
-    console.log(numberUnmask)
     if (numberUnmask && numberUnmask.length == 11) {
       navigation.navigate("LoginAuth", { phoneNumber: numberUnmask })
     } else {

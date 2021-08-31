@@ -131,8 +131,8 @@ export function LoginQuestions({ ...props }: any) {
   useEffect(() => {
     if (endQuestions != false) {
       //TODO: enviar cadastro
-      // sendQuestion()
-      setloged(true);
+      sendQuestion()
+      //setloged(true);
     }
   }, [endQuestions]);
 
@@ -165,15 +165,15 @@ export function LoginQuestions({ ...props }: any) {
       </KeyboardAvoidingView>
     </View>
   ) : (
-    <>
-      {questionText}
-      <ContainerButtons>
-        <ButtonTouch color="#4197E5" onPress={handleOnClick}>
-          <TextButton>COMEÇAR</TextButton>
-        </ButtonTouch>
-      </ContainerButtons>
-    </>
-  );
+      <>
+        {questionText}
+        <ContainerButtons>
+          <ButtonTouch color="#4197E5" onPress={handleOnClick}>
+            <TextButton>COMEÇAR</TextButton>
+          </ButtonTouch>
+        </ContainerButtons>
+      </>
+    );
 
   return (
     <QuestionsTemplate
