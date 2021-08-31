@@ -4,7 +4,7 @@ import { TextContainer, ButtonTouch, Title, TextButton } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
 import { loginForm, healthForm } from "../../../__mocks__/form";
-import {InsertsCustom} from './components/InsertsCustom'
+import { InsertsCustom } from "./components/InsertsCustom";
 export function LoginQuestions({ ...props }: any) {
   const [startedQuestions, setStartedQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
@@ -30,7 +30,7 @@ export function LoginQuestions({ ...props }: any) {
 
   const [response, setResponse] = useState({
     idQuestion: 0,
-    content: ""
+    content: "",
   });
 
   const [payloadResponses, setPayloadResponses] = useState<any>(null);
@@ -43,7 +43,6 @@ export function LoginQuestions({ ...props }: any) {
   });
   const [endQuestion, setEndQuestions] = useState(false);
 
- 
   const handleOnClick = () => {
     setStartedQuestions(true);
   };
@@ -68,32 +67,37 @@ export function LoginQuestions({ ...props }: any) {
     return currentQuestionContent.nextQuestion.next;
   };
 
-  const populateLoginForm = (data:string) => {
-    switch(currentQuestion.number){
-     case 1: setPayloadUser({...payloadUser, nome: data})
-     case 2: setPayloadUser({...payloadUser, gender: data})
-     case 3: setPayloadUser({...payloadUser, birth: data})
+  const populateLoginForm = (data: string) => {
+    switch (currentQuestion.number) {
+      case 1:
+        setPayloadUser({ ...payloadUser, nome: data });
+      case 2:
+        setPayloadUser({ ...payloadUser, gender: data });
+      case 3:
+        setPayloadUser({ ...payloadUser, birth: data });
     }
-  }
+  };
 
-  const populateQuestionsForm = (data:string) => {
-    if(!payloadResponses){
-      setPayloadResponses([{
-        idQuestion: currentQuestion.number,
-        content: data
-      }])
-    }else{
+  const populateQuestionsForm = (data: string) => {
+    if (!payloadResponses) {
+      setPayloadResponses([
+        {
+          idQuestion: currentQuestion.number,
+          content: data,
+        },
+      ]);
+    } else {
       payloadResponses.push({
         idQuestion: currentQuestion.number,
-        constent: data
-      })
-      setPayloadResponses([...payloadResponses])
+        constent: data,
+      });
+      setPayloadResponses([...payloadResponses]);
     }
-  }
+  };
 
   const handlerSetCurrentQuestion = (value: string) => {
     if (currentQuestion.type == 1) {
-      populateLoginForm(value)
+      populateLoginForm(value);
       if (currentQuestion.number < loginForm.length - 1) {
         let nextQuestion = selectNextQuestion(value);
         setCurrentQuestion((value) => ({
@@ -107,29 +111,27 @@ export function LoginQuestions({ ...props }: any) {
         }));
       }
     }
-    
+
     if (currentQuestion.type == 2) {
-      
-      populateQuestionsForm(value)
-        if (currentQuestion.number < healthForm.length - 1) {
-          let nextQuestion = selectNextQuestion(value);
-          setCurrentQuestion((value: any) => ({
-            number:nextQuestion,
-            type: 2,
-          }));
-        } else {
-          setEndQuestions(true);
-        }
+      populateQuestionsForm(value);
+      if (currentQuestion.number < healthForm.length - 1) {
+        let nextQuestion = selectNextQuestion(value);
+        setCurrentQuestion((value: any) => ({
+          number: nextQuestion,
+          type: 2,
+        }));
+      } else {
+        setEndQuestions(true);
+      }
     }
-    
   };
 
   const handlerBackQuestion = () => {
     setCurrentQuestion((value: any) => ({
-        number: currentQuestionContent.previousQuestion,
-        type: value.type,
-      }));
-  }
+      number: currentQuestionContent.previousQuestion,
+      type: value.type,
+    }));
+  };
 
   const selectForm = () => {
     if (currentQuestion.type == 1) {
@@ -143,13 +145,25 @@ export function LoginQuestions({ ...props }: any) {
     setCurrentQuestionContent(form[currentQuestion.number]);
   }, [startedQuestions, currentQuestion]);
 
+  function verifyPicker(value: any){
+    if(value!== undefined){
+      return value;
+    }
+    return undefined
+  }
   const questionsTemp = startedQuestions ? (
     <>
       {questionText}
       <View>
-      <Text>AAA</Text>
-      <InsertsCustom handleOnchange={handlerSetCurrentQuestion} value={response.content} placeholder={currentQuestionContent.placeholder} type={currentQuestionContent.typeAnswer}/>
-    </View>
+        <Text>AAA</Text>
+        <InsertsCustom
+          handleOnchange={handlerSetCurrentQuestion}
+          value={response.content}
+          placeholder={currentQuestionContent.placeholder}
+          type={currentQuestionContent.typeAnswer}
+          picker={verifyPicker(currentQuestionContent.checkQuestions.fields)}
+        />
+      </View>
     </>
   ) : (
     <>

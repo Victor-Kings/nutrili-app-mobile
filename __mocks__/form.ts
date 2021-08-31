@@ -5,7 +5,9 @@ const loginForm = [
         typeAnswer: "insertText", //'bool','insertText','checked','insertCustom','date','insertNumber'
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 0,
         nextQuestion: {
             condition: null,
@@ -33,7 +35,9 @@ const loginForm = [
         typeAnswer: "data",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 2,
         nextQuestion: {
             condition: null,
@@ -49,7 +53,9 @@ const healthForm = [
         typeAnswer: "insertNumber",
         unityMeasure: 'kg',
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 1,
         nextQuestion: {
             condition: null,
@@ -62,7 +68,9 @@ const healthForm = [
         typeAnswer: "bool",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 1,
         nextQuestion: {
             condition: [3, 4],
@@ -90,7 +98,9 @@ const healthForm = [
         typeAnswer: "insertNumber",
         unityMeasure: 'm',
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 3,
         nextQuestion: {
             condition: null,
@@ -103,7 +113,9 @@ const healthForm = [
         typeAnswer: "bool",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 4,
         nextQuestion: {
             condition: [6, 7],
@@ -131,7 +143,9 @@ const healthForm = [
         typeAnswer: "insertNumber",
         unityMeasure: null,
         placeholder: "",
-        checkQuestions: null,
+        checkQuestions: {
+            fields: undefined
+        },
         previousQuestion: 5,
         nextQuestion: {
             condition: null,

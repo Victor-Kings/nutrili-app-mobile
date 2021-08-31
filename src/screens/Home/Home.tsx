@@ -5,19 +5,19 @@ import { Camera } from "expo-camera";
 
 import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
-import FormData from "form-data";
-import api from "../../service/api";
+import { SendFoodsArrayService } from "../../services/SendFoodsArrayService/SendFoodsArrayService";
+import { SendImageService } from "../../services/SendImageService/SendImageService";
 
-function ArrayOrganizeFoods(data:any){
-  var foods = [];  
-  for(let food of data){
-    foods.push(food.food)
+function ArrayOrganizeFoods(data: any) {
+  var foods = [];
+  for (let food of data) {
+    foods.push(food.food);
   }
 
-  return foods
+  return foods;
 }
 
-const Home = ( ) => {
+const Home = () => {
   const [hasPermission, setHasPermission] = useState<any>(null);
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
@@ -40,7 +40,7 @@ const Home = ( ) => {
   }
 
   async function takePhoto() {
-    console.log("FetchingInfos...")
+    console.log("FetchingInfos...");
     if (camRef) {
       const data = await camRef.current.takePictureAsync();
       await sendImageIA(data);
@@ -51,31 +51,44 @@ const Home = ( ) => {
 
   const handleModal = async () => {
     setModalOpen(false);
-    await api.post("/post_recognized_foods",{
-      Recognized_Foods: responseFood
-    })
-    .then((apiResponse) => { console.log(apiResponse.data) })
+    try {
+      const data = await new SendFoodsArrayService().execute(responseFood);
+      console.log(data);
+    } catch (error) {
+      console.log("ERRO");
+    }
+    // await api.post("/post_recognized_foods",{
+    //   Recognized_Foods: responseFood
+    // })
+    // .then((apiResponse) => { console.log(apiResponse.data) })
   };
 
-  async function  sendImageIA( ImageData: any) {
-    var form = new FormData();
-    form.append("file1", {
-      type: "image/jpeg",
-      name: `alimento.jpg`,
-      uri: ImageData.uri,
-    });
-    await api
-    .post("/post_image", form, {
-        headers: {
-        "Content-Type": "multipart/form-data",
-        },
-    })
-    .then((apiResponse) => {
-      setResponseFood(apiResponse.data.Recognized_Foods)
-    })
-    .catch((error)=>{
-        console.error(error)
-    })
+  async function sendImageIA(ImageData: any) {
+    try {
+      const recognizedFoods = new SendImageService().execute(ImageData);
+      setResponseFood(recognizedFoods);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // var form = new FormData();
+    // form.append("file1", {
+    //   type: "image/jpeg",
+    //   name: `alimento.jpg`,
+    //   uri: ImageData.uri,
+    // });
+    // await api
+    // .post("/post_image", form, {
+    //     headers: {
+    //     "Content-Type": "multipart/form-data",
+    //     },
+    // })
+    // .then((apiResponse) => {
+    //   setResponseFood(apiResponse.data.Recognized_Foods)
+    // })
+    // .catch((error)=>{
+    //     console.error(error)
+    // })
   }
 
   return (
