@@ -4,7 +4,7 @@ export const ImagePerfil = styled.Image`
     width: 44px;
     height: 44px;
     border-radius: 22px;
-    border: 3px;
+    border-width: 3px;
     border-color: #4197E5;
 `;
 export const Header = styled.View`

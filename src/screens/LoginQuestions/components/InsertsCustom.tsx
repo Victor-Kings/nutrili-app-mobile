@@ -31,13 +31,12 @@ export function InsertsCustom({
     setResponse(value)
   }
 
-  function format(mask: string, number: string) {
-    var s = "" + number,
-      r = "";
-    for (var im = 0, is = 0; im < mask.length && is < s.length; im++) {
-      r += mask.charAt(im) == "X" ? s.charAt(is++) : mask.charAt(im);
-    }
-    return r;
+  function formatDate(value: string) {
+    return value
+    .replace(/\D/g, "")
+    .replace(/(\d{2})(\d)/, "$1/$2")
+    .replace(/(\d{2})(\d)/, "$1/$2")
+    .replace(/(\d{4})(\d)/, "$1");
   }
 
   const buttonNext = (
@@ -88,7 +87,7 @@ export function InsertsCustom({
       <>
         <InsertText
           onChangeText={handlerResponse}
-          value={format("XX/XX/XXXX", response)}
+          value={formatDate(response)}
           placeholder={content.placeholder}
         />
         {buttonNext}

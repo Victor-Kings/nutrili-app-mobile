@@ -17,7 +17,7 @@ import {
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { useAuthContext } from '../../context/authContext'
-import { apiBackend } from "../../service/api";
+import { apiBackend } from "../../configs/api";
 
 export function LoginAuth({ ...props }: any) {
   const [consentedSms, setConsentedSms] = useState(false);
@@ -68,18 +68,19 @@ export function LoginAuth({ ...props }: any) {
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
-    requestSmsToken();
+    // requestSmsToken();
     setInitialTime(60);
     setConsentedSms(true);
   };
 
   useEffect(() => {
     if (code.length == 8) {
-      confirmSmsToken().then((response) => {
-        //TODO: verificar erros
-        setUserToken(response);
-        props.navigation.navigate("LoginQuestion");
-      })
+      props.navigation.navigate("LoginQuestion");
+      // confirmSmsToken().then((response) => {
+      //   //TODO: verificar erros
+      //   setUserToken(response);
+      //   props.navigation.navigate("LoginQuestion");
+      // })
     }
   }, [code]);
 
