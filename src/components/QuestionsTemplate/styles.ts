@@ -24,8 +24,8 @@ export const Container = styled.View`
 export const ContentContainer = styled.View`
    background-color: #FFFFFF;
    width: 90%;
-   height: 80%;
-    
+   height: 90%;
+   border-radius: 5px;
 `;
 
 export const SquaresTopRight = styled.View`

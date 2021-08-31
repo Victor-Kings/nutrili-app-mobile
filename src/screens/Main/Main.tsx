@@ -2,18 +2,18 @@ import React from 'react';
 
 import { AppDrawer } from '../../routes/AppDrawer';
 import { AuthStack } from '../../routes/AuthStack';
-import {useAuthContext} from '../../context/authContext'
+import { useAuthContext } from '../../context/authContext'
 
-export default function Main(){
-    const {userToken}:any = useAuthContext();
-    return(
-        <>
-        {userToken!="" ? (
-         <AppDrawer/>
-        ) 
+export default function Main() {
+  const { loged }: any = useAuthContext();
+  return (
+    <>
+      {loged ? (
+        <AppDrawer />
+      )
         : (
-          <AuthStack/>
+          <AuthStack />
         )}
-      </>
-    );
+    </>
+  );
 }

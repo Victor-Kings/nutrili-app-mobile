@@ -1,53 +1,18 @@
-import React, { useRef } from "react";
-import { View, Button, Text } from "react-native";
+import React, { useRef, useState } from "react";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
-import styled from "styled-components/native";
-
-const Input = styled.TextInput`
-  height: 50px;
-  margin: 12px;
-  border-width: 2px;
-  padding: 10px;
-  border-color: #4197e5;
-  border-radius: 4px;
-  background-color: #daebfb;
-`;
-
-const ButtonCustom = styled.TouchableOpacity`
-  height: 50px;
-  background-color: #4197e5;
-  border-radius: 4px;
-  width: 136px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ButtonCustomRed = styled.TouchableOpacity`
-  height: 50px;
-  background-color: #d93f3f;
-  border-radius: 4px;
-  width: 136px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TextCustom = styled.Text`
-  font-family: "OpenSans_600SemiBold";
-  color: white;
-  font-size: 22px;
-`;
+import { ButtonTouch, TextButton } from "../styles";
+import { ContainerButtons, ContainerSingleButton, InsertNumber, InsertText, ContainerInsertNumber, PickerContainer } from "./styles";
+import { Text } from "react-native";
 
 export function InsertsCustom({
-  type,
-  value,
   handleOnchange,
-  placeholder,
-  picker,
+  content,
 }: IInsertCustomProps) {
   const pickerRef = useRef<any>();
   const [myState, setMyState] = useState<any>("");
+
+  const [response, setResponse] = useState("");
 
   function open() {
     pickerRef.current.focus();
@@ -55,6 +20,15 @@ export function InsertsCustom({
 
   function close() {
     pickerRef.current.blur();
+  }
+
+  const handlerNextQuestion = () => {
+    handleOnchange(response)
+    setResponse("")
+  }
+
+  const handlerResponse = (value: string) => {
+    setResponse(value)
   }
 
   function format(mask: string, number: string) {
@@ -66,71 +40,91 @@ export function InsertsCustom({
     return r;
   }
 
-  function handleClick() {
-    handleOnchange(myState);
+  const buttonNext = (
+    <ContainerSingleButton>
+      <ButtonTouch color="#4197E5" onPress={handlerNextQuestion}>
+        <TextButton>AVANÇAR</TextButton>
+      </ButtonTouch>
+    </ContainerSingleButton>
+  );
+
+  if (content.typeAnswer == "insertText") {
+    return (
+      <>
+        <InsertText
+          onChangeText={handlerResponse}
+          value={response}
+          placeholder={content.placeholder}
+        />
+        {buttonNext}
+      </>
+    );
   }
 
-  if (type == "insertText") {
+  if (content.typeAnswer == "insertCustom") {
     return (
-      <View>
-        <Input
-          onChangeText={setMyState}
-          value={myState}
-          placeholder={placeholder}
+      <>
+        <PickerContainer>
+          <Picker
+            ref={pickerRef}
+            selectedValue={response}
+            onValueChange={(itemValue, itemIndex) => handlerResponse(itemValue)}
+            dropdownIconColor="#84878a"
+            itemStyle={{ fontSize: 20, fontWeight: "700" }}
+          >
+            {content.checkQuestions.fields && content.checkQuestions.fields.map((value, index) =>
+              <Picker.Item label={value} value={value} key={index} color='#84878a' />
+            )}
+
+          </Picker>
+        </PickerContainer>
+        {buttonNext}
+      </>
+    );
+  }
+
+  if (content.typeAnswer == "data") {
+    return (
+      <>
+        <InsertText
+          onChangeText={handlerResponse}
+          value={format("XX/XX/XXXX", response)}
+          placeholder={content.placeholder}
         />
-        <View style={{ alignItems: "center" }}>
-          <ButtonCustom onPress={handleClick}>
-            <TextCustom>AVANÇAR</TextCustom>
-          </ButtonCustom>
-        </View>
-      </View>
+        {buttonNext}
+      </>
     );
   }
-  if (type == "insertCustom") {
-    console.log(picker)
+
+  if (content.typeAnswer == "insertNumber") {
     return (
-      <Picker
-      style={{backgroundColor:"#4197e5"}}
-        ref={pickerRef}
-        selectedValue={value}
-        onValueChange={(itemValue, itemIndex) => handleOnchange(itemValue)}
-      >
-        {picker &&
-          picker.map((value) => 
-            <Picker.Item label={value} value={value} />
-          )}
-      </Picker>
+      <>
+        <ContainerInsertNumber>
+          <InsertNumber
+            onChangeText={handlerResponse}
+            value={response}
+            placeholder={content.placeholder}
+            keyboardType="number-pad"
+          />
+          <Text style={{ fontSize: 20, color: "#6D6D6D" }}>{content.unityMeasure}</Text>
+        </ContainerInsertNumber>
+
+        {buttonNext}
+      </>
     );
   }
-  if (type == "data") {
+
+  if (content.typeAnswer == "bool") {
     return (
-      <Input
-        onChangeText={handleOnchange}
-        value={format("XX/XX/XXXX", value)}
-        placeholder={placeholder}
-      />
-    );
-  }
-  if (type == "insertNumber") {
-    return (
-      <Input
-        onChangeText={handleOnchange}
-        value={value}
-        placeholder={placeholder}
-        keyboardType="number-pad"
-      />
-    );
-  }
-  if (type == "bool") {
-    return (
-      <View style={{flexDirection:"row", justifyContent:"space-around"}}>
-        <ButtonCustom onPress={handleClick}>
-          <TextCustom>SIM</TextCustom>
-        </ButtonCustom>
-        <ButtonCustomRed onPress={handleClick}>
-          <TextCustom>NÃO</TextCustom>
-        </ButtonCustomRed>
-      </View>
+      <ContainerButtons>
+        <ButtonTouch color="#4197E5" onPress={() => { handleOnchange("yes"); setResponse("") }}>
+          <TextButton>SIM</TextButton>
+        </ButtonTouch>
+
+        <ButtonTouch color="#d8000b" onPress={() => { handleOnchange("no"); setResponse("") }} style={{ marginLeft: 5 }}>
+          <TextButton>NÃO</TextButton>
+        </ButtonTouch >
+      </ContainerButtons>
     );
   }
   return (<></>)

@@ -24,7 +24,6 @@ export const ContentContainer = styled.View`
    background-color: #FFFFFF;
    width: 90%;
    height: 80%;
-    
 `;
 
 export const SquaresTopRight = styled.View`
@@ -67,16 +66,19 @@ export const TextContainer = styled.View`
    padding-bottom: 5%;
 `;
 
+export const ContainerButtons = styled.View`
+    width: 100%;
+    align-items: center;
+`;
+
 export const ButtonTouch = styled.TouchableOpacity`
+   flex: 1;
    max-width: 180px;
    width: 40%;
    max-height: 50px;
    min-height: 50px;
    border-radius: 9px;
    background-color: ${({ color }: ICardFoodProps): any => color ? color : 'FFFFF'};
-   align-self: center;
-   flex: 1;
-   align-items: center;
    justify-content: center;
 `;
 

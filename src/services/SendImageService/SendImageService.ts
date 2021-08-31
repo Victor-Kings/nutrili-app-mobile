@@ -1,4 +1,4 @@
-import api from "../../configs/api";
+import {apiRecognize} from "../../configs/api";
 import { ISendImageService } from "./SendImageService.interface";
 import FormData from "form-data";
 
@@ -14,7 +14,7 @@ export class SendImageService implements ISendImageService {
       uri: ImageData.uri,
     });
 
-    const {data:{Recognized_Foods}} = await api.post("/post_image", form, {
+    const {data:{Recognized_Foods}} = await apiRecognize.post("/post_image", form, {
         headers: {
         "Content-Type": "multipart/form-data",
         },

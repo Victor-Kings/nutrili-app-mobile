@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   PlaceHolder,
   Container,
@@ -10,9 +10,20 @@ import {
 } from "./styles";
 import { TextInputMask } from "react-native-masked-text";
 import Logo from "../../assets/img/LogoNutrili.svg";
-import { KeyboardAvoidingView, ScrollView } from "react-native";
+import { Alert, KeyboardAvoidingView, ScrollView } from "react-native";
 export function Login({ navigation }: any) {
   const [number, onChangeNumber] = useState("");
+  const numberRef = useRef<any>(null);
+
+  const handlerLogin = () => {
+    const numberUnmask = numberRef.current.getRawValue();
+    console.log(numberUnmask)
+    if (numberUnmask && numberUnmask.length == 11) {
+      navigation.navigate("LoginAuth", { phoneNumber: numberUnmask })
+    } else {
+      Alert.alert("Digite um numero de telefone")
+    }
+  }
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={-200}
@@ -38,10 +49,11 @@ export function Login({ navigation }: any) {
             placeholder="(19) 99999-9999"
             style={PlaceHolder}
             placeholderTextColor="#C9C9C9"
+            ref={numberRef}
           />
           <ButtonTouch
             color="#4197E5"
-            onPress={() => navigation.navigate("LoginAuth")}
+            onPress={handlerLogin}
           >
             <TextButton>ENTRAR</TextButton>
           </ButtonTouch>
