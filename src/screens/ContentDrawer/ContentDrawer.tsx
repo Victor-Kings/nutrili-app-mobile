@@ -4,8 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import IconBack from "../../assets/img/iconBack.svg";
 import IconResults from "../../assets/img/iconResults.svg";
 import IconPlus from "../../assets/img/iconPlus.svg";
-
-
+import IconNotification from "../../assets/img/iconNotification.svg";
 
 import {
   Container,
@@ -25,7 +24,7 @@ export function ContentDrawer({ ...props }) {
     props.navigation.closeDrawer()
   };
 
-  const handler = (page?:string) => {
+  const handler = (page?: string) => {
     props.navigation.navigate(page);
   }
   return (
@@ -61,8 +60,9 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Home"
             />
-          <ButtonMenu
+            <ButtonMenu
               text="ANCIÃO PLUS"
               Icon={IconPlus}
               sizeText={18}
@@ -70,11 +70,12 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Home"
             />
           </BodyButtons>
 
           <BodyButtons>
-          <ButtonMenu
+            <ButtonMenu
               text="RESULTADOS"
               Icon={IconResults}
               sizeText={18}
@@ -82,8 +83,9 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Home"
             />
-          <ButtonMenu
+            <ButtonMenu
               text="ANCIÃO PLUS"
               Icon={IconPlus}
               sizeText={18}
@@ -91,19 +93,21 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Home"
             />
           </BodyButtons>
           <BodyButtons>
-          <ButtonMenu
-              text="RESULTADOS"
-              Icon={IconResults}
+            <ButtonMenu
+              text="NOTIFICAÇÕES"
+              Icon={IconNotification}
               sizeText={18}
               sizeImageHeight={80}
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Notifications"
             />
-          <ButtonMenu
+            <ButtonMenu
               text="ANCIÃO PLUS"
               Icon={IconPlus}
               sizeText={18}
@@ -111,6 +115,7 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
+              page="Home"
             />
           </BodyButtons>
         </Body>
