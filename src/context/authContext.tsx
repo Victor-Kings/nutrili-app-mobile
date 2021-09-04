@@ -29,7 +29,6 @@ export function AuthContextProvider({ children }: any) {
     }
   },[])
 
-
   return (
     <AuthContext.Provider value={{ authenticationToken, signIn, registeredDatas}}>
       {children}

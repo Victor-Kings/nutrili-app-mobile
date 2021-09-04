@@ -109,6 +109,7 @@ export function LoginQuestions({ ...props }: any) {
       //TODO: enviar cadastro
       async ()=>{
         await registerDataUserService.sendResponseQuestions(payloadResponses,userToken)
+        await registerDataUserService.sendRegisterData(payloadUser,userToken)
         registeredDatas()
       }
     }
