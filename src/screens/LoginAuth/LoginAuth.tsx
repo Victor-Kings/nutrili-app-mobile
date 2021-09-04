@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextInput, KeyboardAvoidingView, ScrollView } from "react-native";
+import { TextInput, KeyboardAvoidingView, ScrollView, Alert } from "react-native";
 import {
   Container,
   SquaresTopRight,
@@ -16,41 +16,19 @@ import {
 } from "./styles";
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import IconBack from "../../assets/img/iconBackBlue.svg";
-import { useAuthContext } from '../../context/authContext'
+import { useAuthContext } from "../../context/authContext";
 import { apiBackend } from "../../configs/api";
+import { AuthService } from "../../services/AutheService/AuthService";
 
 export function LoginAuth({ ...props }: any) {
+  const authService = new AuthService();
   const [consentedSms, setConsentedSms] = useState(false);
-  const [code, onChangeCode] = useState<any>('');
+  const [code, onChangeCode] = useState<any>("");
   const [initialTime, setInitialTime] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
 
-  const { setUserToken, userToken }: any = useAuthContext();
+  const { signIn, userToken }: any = useAuthContext();
   const phoneNumber = props.route.params.phoneNumber;
-  const requestSmsToken = async () => (
-    apiBackend.post("/user/smsToken", {
-      phone: phoneNumber
-    }, {
-      headers: {
-        "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=",
-      }
-    })
-  )
-  //console.log("AAAA", userToken.data.access_token)
-
-  const confirmSmsToken = async () => {
-    var bodyFormData = new FormData();
-
-    bodyFormData.append('grant_type', 'password')
-    bodyFormData.append('username', `${phoneNumber}:2:${code}`)
-    bodyFormData.append('password', 'vintao20')
-
-    return apiBackend.post("/user/smsToken", bodyFormData, {
-      headers: {
-        "Authorization": "Basic dGVzdGU6MTIzNDU=",
-      }
-    })
-  }
 
   const handler = (page?: string) => {
     props.navigation.navigate(page);
@@ -69,36 +47,21 @@ export function LoginAuth({ ...props }: any) {
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
-    //requestSmsToken();
-    console.log("OBVA", phoneNumber)
-    apiBackend.post("/user/smsToken", {}, {
-      params: { phone: phoneNumber },
-      headers: {
-        "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=",
-      }
-    }).then((response) => console.log(response))
+    await authService.sendNumberToReceiverSMSToken(phoneNumber);
     setInitialTime(60);
     setConsentedSms(true);
   };
 
   useEffect(() => {
     if (code.length == 8) {
-      var bodyFormData = new FormData();
-      console.log(phoneNumber, code)
-      bodyFormData.append('grant_type', 'password')
-      bodyFormData.append('username', `${phoneNumber}:2:${code}`)
-      bodyFormData.append('password', 'vintao20')
-
-      apiBackend.post("/oauth/token", bodyFormData, {
-        headers: {
-          "Authorization": "Basic dGVzdGU6MTIzNDU=",
+      async () => {
+        try{
+          await signIn(phoneNumber, code);
+          props.navigation.navigate("LoginQuestion");
+        }catch(error){
+          Alert.alert("Ocorreu alguem erro no login");
         }
-      }).then((response: any) => {
-        //TODO: verificar erros
-        console.log(response.data.access_token)
-        setUserToken(response.data.access_token);
-        props.navigation.navigate("LoginQuestion");
-      })
+      };
     }
   }, [code]);
 

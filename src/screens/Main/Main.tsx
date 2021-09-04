@@ -4,11 +4,20 @@ import { AppDrawer } from '../../routes/AppDrawer';
 import { AuthStack } from '../../routes/AuthStack';
 import { useAuthContext } from '../../context/authContext'
 
+
+
 export default function Main() {
-  const { loged }: any = useAuthContext();
+  const {authenticationToken} =useAuthContext();
+
+  const verifyLoggin = (): boolean=>{
+    if(authenticationToken){
+      return authenticationToken.isRegister
+    }
+    return false
+  }
   return (
     <>
-      {loged ? (
+      {verifyLoggin() ? (
         <AppDrawer />
       )
         : (
