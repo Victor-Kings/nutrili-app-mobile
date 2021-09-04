@@ -1,7 +1,7 @@
 import
 React, { createContext, useContext, useState,useEffect } from 'react';
 import { AuthService } from '../services/AutheService/AuthService';
-import {IAuthProps, IAuthContext} from './authContext.interface';
+import {IAuthProps, IAuthContext,IResponseAuthToken} from './authContext.interface';
 import { LOCAL_STORAGE_AUTH_TOKEN } from "../configs/const"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -14,8 +14,12 @@ export function AuthContextProvider({ children }: any) {
 
   const signIn = async (phoneNumber: string, smsToken: string) => {
     const data = await authService.authenticate(phoneNumber, smsToken);
-    setAuthenticationToken(data);
+    const isNewUser = await authService.verifyIsUser(data.access_token);
+    const authData = mapToAuthenticationToken(data, isNewUser.newUser);
+    setAuthenticationToken(authData);
+    await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
   }
+
   const registeredDatas = async () => {
     if(authenticationToken)
     setAuthenticationToken({...authenticationToken, isRegister: true})
@@ -28,6 +32,16 @@ export function AuthContextProvider({ children }: any) {
       setAuthenticationToken(data);
     }
   },[])
+
+ const mapToAuthenticationToken= (data: IResponseAuthToken, isValid: boolean): IAuthProps =>{
+    data.refresh_token
+    const response = {
+        access_token: data.access_token, 
+        refresh_token: data.refresh_token,
+        isRegister: isValid //TODO:is ISREGISTERED
+    }
+    return response;
+  }
 
   return (
     <AuthContext.Provider value={{ authenticationToken, signIn, registeredDatas}}>

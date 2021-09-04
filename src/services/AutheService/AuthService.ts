@@ -9,7 +9,7 @@ export class AuthService implements IAuthServiceProps {
     sendNumberToReceiverSMSToken = async (phoneNumber: string): Promise<AxiosResponse> =>
         apiBackend.post("/user/smsToken", {}, { params: { phone: phoneNumber }, headers: { "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=" } })
 
-    authenticate = async (phoneNumber: string, smsToken: string): Promise<IAuthenticationToken> => {
+    authenticate = async (phoneNumber: string, smsToken: string): Promise<IResponseAuthToken> => {
         const formData = this.mapToFormData(phoneNumber, smsToken);
 
         const { data } = await apiBackend.post<IResponseAuthToken>("/oauth/token", formData, {
@@ -17,18 +17,22 @@ export class AuthService implements IAuthServiceProps {
                 "Authorization": "Basic dGVzdGU6MTIzNDU=",
             }
         })
-        
-        const {data: userIsResgister} = await apiBackend.get<IIsRegister>("api/user/verifyRegister", 
-        { headers: { "Authorization": "Basic dGVzdGU6MTIzNDU="} } 
+       
+
+        // const response = this.mapToAuthenticationToken(data, userIsResgister.newUser);
+
+        // if (response.access_token) {
+        //     await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(response))
+        // }
+
+        return data;
+    }
+
+    verifyIsUser = async (token:string): Promise<IIsRegister> =>{
+        const {data} = await apiBackend.get<IIsRegister>("/user/isNewUserr", 
+        { headers: { "Authorization": `Bearer ${token}`} } 
         )
-
-        const response = this.mapToAuthenticationToken(data, userIsResgister.isRegister);
-
-        if (response.access_token) {
-            await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(response))
-        }
-
-        return response;
+        return data;
     }
 
     async logout(): Promise<void> {
@@ -45,15 +49,15 @@ export class AuthService implements IAuthServiceProps {
        return null;            
     }
 
-    private mapToAuthenticationToken(data: IResponseAuthToken, isValid: boolean): IAuthenticationToken{
-        data.refresh_token
-        const response = {
-            access_token: data.access_token, 
-            refresh_token: data.refresh_token,
-            isRegister: isValid
-        }
-        return response;
-    }
+    // private mapToAuthenticationToken(data: IResponseAuthToken, isValid: boolean): IAuthenticationToken{
+    //     data.refresh_token
+    //     const response = {
+    //         access_token: data.access_token, 
+    //         refresh_token: data.refresh_token,
+    //         isRegister: isValid
+    //     }
+    //     return response;
+    // }
     private mapToFormData(phoneNumber: string, sms: string) {
         var bodyFormData = new FormData();
         bodyFormData.append('grant_type', 'password')

@@ -106,7 +106,6 @@ export function LoginQuestions({ ...props }: any) {
 
   useEffect(() => {
     if (endQuestions != false) {
-      //TODO: enviar cadastro
       async ()=>{
         await registerDataUserService.sendResponseQuestions(payloadResponses,userToken)
         await registerDataUserService.sendRegisterData(payloadUser,userToken)

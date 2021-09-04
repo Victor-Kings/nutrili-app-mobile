@@ -11,11 +11,11 @@ export interface IResponseAuthToken{
     refresh_token: string,
 }
 
+export interface IIsRegister{
+    newUser:boolean
+}
 export interface IAuthServiceProps {
     authenticate:(phoneNumber: string, smsToken: string)=>Promise<IResponseAuthToken>
     sendNumberToReceiverSMSToken: (phoneNumber: string)=>Promise<AxiosResponse>
-}
-
-export interface IIsRegister{
-    isRegister:boolean
+    verifyIsUser:(token: string)=>Promise<IIsRegister>
 }
