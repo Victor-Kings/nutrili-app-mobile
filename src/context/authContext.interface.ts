@@ -7,4 +7,5 @@ export interface IAuthProps{
 export interface IAuthContext{
     authenticationToken?:IAuthProps| null;
     signIn:(phoneNumber: string, smsToken: string) => void;
+    registeredDatas:()=>Promise<void>;
 }

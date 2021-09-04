@@ -17,13 +17,12 @@ import {
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { useAuthContext } from "../../context/authContext";
-import { apiBackend } from "../../configs/api";
 import { AuthService } from "../../services/AutheService/AuthService";
 
 export function LoginAuth({ ...props }: any) {
   const authService = new AuthService();
   const [consentedSms, setConsentedSms] = useState(false);
-  const [code, onChangeCode] = useState<any>("");
+  const [code, onChangeCode] = useState<string>("");
   const [initialTime, setInitialTime] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
 

@@ -1,4 +1,4 @@
-interface Content {
+export interface ICurrentQuestionContent{
     id?: number,
     typeForm?: string,
     question: string,
@@ -15,7 +15,15 @@ interface Content {
     },
 }
 
-export interface IInsertCustomProps {
-    handleOnchange: (value: string) => void;
-    content: Content
+export interface IPayloadUser{
+    name?: string,
+    phone?: string,
+    gender?: string,
+    birth?: string,
+    isNutricionist?: boolean,
+}
+
+export interface IpayloadResponses{
+    idQuestion?: number,
+    answer?: string,
 }

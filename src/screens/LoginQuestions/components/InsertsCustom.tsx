@@ -71,7 +71,7 @@ export function InsertsCustom({
             dropdownIconColor="#84878a"
             itemStyle={{ fontSize: 20, fontWeight: "700" }}
           >
-            {content.checkQuestions.fields && content.checkQuestions.fields.map((value, index) =>
+            {content?.checkQuestions?.fields && content.checkQuestions.fields.map((value, index) =>
               <Picker.Item label={value} value={value} key={index} color='#84878a' />
             )}
 

@@ -12,50 +12,39 @@ import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsT
 import { form } from "../../../__mocks__/form";
 import { InsertsCustom } from "./components/InsertsCustom";
 import { useAuthContext } from "../../context/authContext";
-import { apiBackend } from "../../configs/api";
+import {ICurrentQuestionContent,IPayloadUser,IpayloadResponses} from "./LoginQuestions.interface";
+import {RegisterDataUserService} from "../../services/RegisterDataUserService/RegisterDataUserService";
 
 export function LoginQuestions({ ...props }: any) {
+  const registerDataUserService = new RegisterDataUserService();
   const [startedQuestions, setStartedQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [currentQuestionContent, setCurrentQuestionContent] = useState<any>({
-    id: null,
-    typeForm: null,
+  const [currentQuestionContent, setCurrentQuestionContent] = useState<ICurrentQuestionContent>({
     question: "Vamos fazer algumas perguntas para cadastro",
-    typeAnswer: null,
-    unityMeasure: null,
-    placeholder: null,
-    checkQuestions: {
-      fields: undefined,
-    },
-    previousQuestion: 1,
-    nextQuestion: {
-      condition: undefined,
-      next: null,
-    },
+    previousQuestion:1
   });
-  const [payloadResponses, setPayloadResponses] = useState<any>(null);
-  const [payloadUser, setPayloadUser] = useState({
-    name: "",
-    phone: "",
-    gender: "",
-    birth: "",
+  const [payloadResponses, setPayloadResponses] = useState<IpayloadResponses[]|null>(null);
+  const [payloadUser, setPayloadUser] = useState<IPayloadUser>({
     isNutricionist: false,
   });
   const [endQuestions, setEndQuestions] = useState(false);
-  const { setloged, userToken }: any = useAuthContext();
+  const { userToken, registeredDatas}: any = useAuthContext();
 
   const handleOnClick = () => {
     setStartedQuestions(true);
   };
 
   const selectNextQuestion = (value: string): number => {
-    if (currentQuestionContent.nextQuestion.condition && value === "yes") {
+    if (currentQuestionContent?.nextQuestion?.condition && value === "yes") {
       return currentQuestionContent.nextQuestion.condition[0];
     }
-    if (currentQuestionContent.nextQuestion.condition && value === "no") {
+    if (currentQuestionContent?.nextQuestion?.condition && value === "no") {
       return currentQuestionContent.nextQuestion.condition[1];
     }
-    return currentQuestionContent.nextQuestion.next;
+    if( currentQuestionContent?.nextQuestion?.next){
+      return currentQuestionContent.nextQuestion.next;
+    }
+    return 1;
   };
 
   const populateLoginForm = (data: string) => {
@@ -107,19 +96,6 @@ export function LoginQuestions({ ...props }: any) {
     }
   }
 
-  const sendQuestion = async () =>
-    apiBackend
-      .post("/answer/insertAnswer", payloadResponses, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((response) => {
-        if (response) {
-          setloged(true);
-        }
-      });
-
   const handlerBackQuestion = () => {
     setCurrentQuestion(currentQuestionContent.previousQuestion - 1);
   };
@@ -131,8 +107,10 @@ export function LoginQuestions({ ...props }: any) {
   useEffect(() => {
     if (endQuestions != false) {
       //TODO: enviar cadastro
-      sendQuestion()
-      //setloged(true);
+      async ()=>{
+        await registerDataUserService.sendResponseQuestions(payloadResponses,userToken)
+        registeredDatas()
+      }
     }
   }, [endQuestions]);
 
