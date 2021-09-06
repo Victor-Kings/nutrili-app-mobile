@@ -1,14 +1,19 @@
 import React, { useRef, useState } from "react";
+import { Alert } from "react-native";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
 import { ButtonTouch, TextButton } from "../styles";
-import { ContainerButtons, ContainerSingleButton, InsertNumber, InsertText, ContainerInsertNumber, PickerContainer } from "./styles";
+import {
+  ContainerButtons,
+  ContainerSingleButton,
+  InsertNumber,
+  InsertText,
+  ContainerInsertNumber,
+  PickerContainer,
+} from "./styles";
 import { Text } from "react-native";
 
-export function InsertsCustom({
-  handleOnchange,
-  content,
-}: IInsertCustomProps) {
+export function InsertsCustom({ handleOnchange, content }: IInsertCustomProps) {
   const pickerRef = useRef<any>();
   const [myState, setMyState] = useState<any>("");
 
@@ -23,20 +28,25 @@ export function InsertsCustom({
   }
 
   const handlerNextQuestion = () => {
-    handleOnchange(response)
-    setResponse("")
-  }
+    if (response != "") {
+      handleOnchange(response);
+      setResponse("");
+    } else {
+      Alert.alert("Campo inválido")
+    }
+  };
 
   const handlerResponse = (value: string) => {
-    setResponse(value)
-  }
+    console.log("HANDLE VALUE: " + value);
+    setResponse(value);
+  };
 
   function formatDate(value: string) {
     return value
-    .replace(/\D/g, "")
-    .replace(/(\d{2})(\d)/, "$1/$2")
-    .replace(/(\d{2})(\d)/, "$1/$2")
-    .replace(/(\d{4})(\d)/, "$1");
+      .replace(/\D/g, "")
+      .replace(/(\d{2})(\d)/, "$1/$2")
+      .replace(/(\d{2})(\d)/, "$1/$2")
+      .replace(/(\d{4})(\d)/, "$1");
   }
 
   const buttonNext = (
@@ -71,10 +81,15 @@ export function InsertsCustom({
             dropdownIconColor="#84878a"
             itemStyle={{ fontSize: 20, fontWeight: "700" }}
           >
-            {content?.checkQuestions?.fields && content.checkQuestions.fields.map((value, index) =>
-              <Picker.Item label={value} value={value} key={index} color='#84878a' />
-            )}
-
+            {content?.checkQuestions?.fields &&
+              content.checkQuestions.fields.map((value, index) => (
+                <Picker.Item
+                  label={value}
+                  value={value}
+                  key={index}
+                  color="#84878a"
+                />
+              ))}
           </Picker>
         </PickerContainer>
         {buttonNext}
@@ -105,7 +120,9 @@ export function InsertsCustom({
             placeholder={content.placeholder}
             keyboardType="number-pad"
           />
-          <Text style={{ fontSize: 20, color: "#6D6D6D" }}>{content.unityMeasure}</Text>
+          <Text style={{ fontSize: 20, color: "#6D6D6D" }}>
+            {content.unityMeasure}
+          </Text>
         </ContainerInsertNumber>
 
         {buttonNext}
@@ -116,15 +133,28 @@ export function InsertsCustom({
   if (content.typeAnswer == "bool") {
     return (
       <ContainerButtons>
-        <ButtonTouch color="#4197E5" onPress={() => { handleOnchange("yes"); setResponse("") }}>
+        <ButtonTouch
+          color="#4197E5"
+          onPress={() => {
+            handleOnchange("yes");
+            setResponse("");
+          }}
+        >
           <TextButton>SIM</TextButton>
         </ButtonTouch>
 
-        <ButtonTouch color="#d8000b" onPress={() => { handleOnchange("no"); setResponse("") }} style={{ marginLeft: 5 }}>
+        <ButtonTouch
+          color="#d8000b"
+          onPress={() => {
+            handleOnchange("no");
+            setResponse("");
+          }}
+          style={{ marginLeft: 5 }}
+        >
           <TextButton>NÃO</TextButton>
-        </ButtonTouch >
+        </ButtonTouch>
       </ContainerButtons>
     );
   }
-  return (<></>)
+  return <></>;
 }

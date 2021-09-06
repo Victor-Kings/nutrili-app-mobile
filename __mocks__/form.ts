@@ -23,7 +23,7 @@ const form = [
         unityMeasure: null,
         placeholder: "",
         checkQuestions: {
-            fields: ['masculino', 'feminino']
+            fields: ['','masculino', 'feminino']
         },
         previousQuestion: 1,
         nextQuestion: {
@@ -87,7 +87,7 @@ const form = [
         unityMeasure: null,
         placeholder: "",
         checkQuestions: {
-            fields: ['ganhei', 'perdi']
+            fields: ['','ganhei', 'perdi']
         },
         previousQuestion: 5,
         nextQuestion: {
@@ -135,7 +135,7 @@ const form = [
         unityMeasure: null,
         placeholder: "",
         checkQuestions: {
-            fields: ['diabetes', 'pressão alta']
+            fields: ['','diabetes', 'pressão alta']
         },
         previousQuestion: 8,
         nextQuestion: {

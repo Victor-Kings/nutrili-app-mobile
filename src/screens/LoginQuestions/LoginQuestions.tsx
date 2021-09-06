@@ -28,7 +28,7 @@ export function LoginQuestions({ ...props }: any) {
     isNutricionist: false,
   });
   const [endQuestions, setEndQuestions] = useState(false);
-  const { userToken, registeredDatas}: any = useAuthContext();
+  const { authenticationToken, registeredDatas}: any = useAuthContext();
 
   const handleOnClick = () => {
     setStartedQuestions(true);
@@ -64,17 +64,17 @@ export function LoginQuestions({ ...props }: any) {
     if (!payloadResponses) {
       setPayloadResponses([
         {
-          idQuestion: currentQuestion,
+          idQuestion: currentQuestion+1,
           answer: data,
         },
       ]);
     } else {
       const responsesAux = payloadResponses.filter(
-        (obj: any) => obj.idQuestion !== currentQuestion
+        (obj: any) => obj.idQuestion !== currentQuestion+1
       );
 
       responsesAux.push({
-        idQuestion: currentQuestion,
+        idQuestion: currentQuestion+1,
         answer: data,
       });
 
@@ -101,16 +101,22 @@ export function LoginQuestions({ ...props }: any) {
   };
 
   useEffect(() => {
-    setCurrentQuestionContent(form[currentQuestion]);
+    var controle = true;
+    if(controle){
+      setCurrentQuestionContent(form[currentQuestion]);
+    }
+    return function cleanUp(){
+      controle = false
+    }
   }, [startedQuestions, currentQuestion]);
 
   useEffect(() => {
     if (endQuestions != false) {
-      async ()=>{
-        await registerDataUserService.sendResponseQuestions(payloadResponses,userToken)
-        await registerDataUserService.sendRegisterData(payloadUser,userToken)
+     (async () => {
+        await registerDataUserService.sendResponseQuestions(payloadResponses,authenticationToken.access_token)
+        await registerDataUserService.sendRegisterData(payloadUser,authenticationToken.access_token)
         registeredDatas()
-      }
+      })();
     }
   }, [endQuestions]);
 

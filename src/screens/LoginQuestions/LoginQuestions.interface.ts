@@ -20,7 +20,7 @@ export interface IPayloadUser{
     phone?: string,
     gender?: string,
     birth?: string,
-    isNutricionist?: boolean,
+    isNutricionist: boolean,
 }
 
 export interface IpayloadResponses{

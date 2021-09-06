@@ -27,41 +27,68 @@ export function LoginAuth({ ...props }: any) {
   const [startTimer, setStartTimer] = useState(false);
 
   const { signIn, userToken }: any = useAuthContext();
-  const phoneNumber = props.route.params.phoneNumber;
+  const phoneNumber:string = props.route.params.phoneNumber;
 
   const handler = (page?: string) => {
     props.navigation.navigate(page);
   };
 
   useEffect(() => {
-    if (initialTime > 0) {
-      setTimeout(() => {
-        setInitialTime(initialTime - 1);
-      }, 1000);
-    }
+    var controle = true;
+   
+      if (initialTime > 0) {
+        setTimeout(() => {
+          if(controle){
+            setInitialTime(initialTime - 1);
+          }
+        }, 1000);
+      }
 
-    if (initialTime === 0 && startTimer) {
-      setStartTimer(false);
-    }
+      if (initialTime === 0 && startTimer) {
+        if(controle){
+          setStartTimer(false);
+        }
+      }
+    
+  return function cleanUp() {
+    controle = false;
+  };
+
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
-    await authService.sendNumberToReceiverSMSToken(phoneNumber);
+
+      await authService.sendNumberToReceiverSMSToken(phoneNumber);
     setInitialTime(60);
     setConsentedSms(true);
   };
 
   useEffect(() => {
-    if (code.length == 8) {
-      async () => {
-        try{
-          await signIn(phoneNumber, code);
-          props.navigation.navigate("LoginQuestion");
-        }catch(error){
-          Alert.alert("Ocorreu alguem erro no login");
-        }
-      };
-    }
+    console.log(code.length)
+   
+    // async function FODASE() {
+    //   try {
+    //       const response = await fetch(
+    //           `https://www.reddit.com/r/${subreddit}.json`
+    //       );
+    //       const json = await response.json();
+    //       setPosts(json.data.children.map(it => it.data));
+    //   } catch (e) {
+    //       console.error(e);
+    //   }
+    //};
+    
+      if (code.length === 8) {
+        (async () => {
+          try{
+            await signIn(phoneNumber.toUpperCase(), code);
+            props.navigation.navigate("LoginQuestion");
+          }catch(error){
+            Alert.alert("Ocorreu alguem erro no login");
+          }
+        })();
+      }
+  
   }, [code]);
 
   const AuthScreen = () => {

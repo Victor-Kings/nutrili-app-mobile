@@ -25,10 +25,17 @@ const Home = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
+    let controle = true;
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
+      if (controle) {
+        setHasPermission(status === "granted");
+      }
     })();
+    
+    return function cleanUp() {
+      controle = false;
+    };
   }, []);
 
   if (hasPermission === null) {

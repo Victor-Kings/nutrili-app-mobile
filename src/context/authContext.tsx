@@ -4,6 +4,7 @@ import { AuthService } from '../services/AutheService/AuthService';
 import {IAuthProps, IAuthContext,IResponseAuthToken} from './authContext.interface';
 import { LOCAL_STORAGE_AUTH_TOKEN } from "../configs/const"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext); 
 
@@ -13,11 +14,26 @@ export function AuthContextProvider({ children }: any) {
   const [authenticationToken, setAuthenticationToken] = useState<IAuthProps | null>(null);
 
   const signIn = async (phoneNumber: string, smsToken: string) => {
-    const data = await authService.authenticate(phoneNumber, smsToken);
-    const isNewUser = await authService.verifyIsUser(data.access_token);
-    const authData = mapToAuthenticationToken(data, isNewUser.newUser);
-    setAuthenticationToken(authData);
-    await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
+    console.log("OPAAA")
+    let data:IResponseAuthToken | null = null
+    console.log("NUMERO: " + phoneNumber)
+    console.log("SMS: " + smsToken)
+    try{
+      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
+    }catch(error){
+      console.log("SIGNIN 1 : ", error)
+    }
+    if(data != null){
+      try{
+        const isNewUser = await authService.verifyIsUser(data.access_token);
+        console.log(isNewUser);
+        const authData = mapToAuthenticationToken(data, !isNewUser.newUser);
+        setAuthenticationToken(authData);
+        await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
+      }catch(error){
+        console.log("SIGNIN 2 : ", error)
+      }
+    }
   }
 
   const registeredDatas = async () => {

@@ -5,5 +5,5 @@ export const apiRecognize = axios.create({
 });
 
 export const apiBackend = axios.create({
-  baseURL: 'http://192.168.0.104:5000'
+  baseURL: 'http://192.168.0.176:5000'
 })

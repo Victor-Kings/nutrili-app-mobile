@@ -7,7 +7,7 @@ import { IAuthenticationToken, IAuthServiceProps,IIsRegister, IResponseAuthToken
 export class AuthService implements IAuthServiceProps {
 
     sendNumberToReceiverSMSToken = async (phoneNumber: string): Promise<AxiosResponse> =>
-        apiBackend.post("/user/smsToken", {}, { params: { phone: phoneNumber }, headers: { "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=" } })
+        apiBackend.post("/user/smsToken", null, { params: { phone: phoneNumber }, headers: { "AOBARIZATION": "Aoba dGVzdGU6MTIzNDU=" } })
 
     authenticate = async (phoneNumber: string, smsToken: string): Promise<IResponseAuthToken> => {
         const formData = this.mapToFormData(phoneNumber, smsToken);
@@ -29,7 +29,7 @@ export class AuthService implements IAuthServiceProps {
     }
 
     verifyIsUser = async (token:string): Promise<IIsRegister> =>{
-        const {data} = await apiBackend.get<IIsRegister>("/user/isNewUserr", 
+        const {data} = await apiBackend.get<IIsRegister>("/user/isNewUser",
         { headers: { "Authorization": `Bearer ${token}`} } 
         )
         return data;
