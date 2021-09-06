@@ -14,10 +14,7 @@ export function AuthContextProvider({ children }: any) {
   const [authenticationToken, setAuthenticationToken] = useState<IAuthProps | null>(null);
 
   const signIn = async (phoneNumber: string, smsToken: string) => {
-    console.log("OPAAA")
     let data:IResponseAuthToken | null = null
-    console.log("NUMERO: " + phoneNumber)
-    console.log("SMS: " + smsToken)
     try{
       data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
     }catch(error){
