@@ -26,7 +26,7 @@ export function LoginAuth({ ...props }: any) {
   const [initialTime, setInitialTime] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
 
-  const { signIn, userToken }: any = useAuthContext();
+  const { signIn }: any = useAuthContext();
   const phoneNumber:string = props.route.params.phoneNumber;
 
   const handler = (page?: string) => {

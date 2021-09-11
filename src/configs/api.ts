@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOCAL_STORAGE_AUTH_TOKEN } from "./const";
 import { IAuthProps } from "../context/authContext.interface";
+import { IAuthenticationToken } from "../services/AutheService/AuthService.interface";
 
 let isRefreshing = false;
 
@@ -24,11 +25,11 @@ const getLocalToken = async () => {
 };
 
 export const apiBackend = axios.create({
-  baseURL: "http://192.168.0.176:5000",
+  baseURL: "http://192.168.0.108:5000",
 });
 
 export const apiBackendAuthenticated = axios.create({
-  baseURL: "http://192.168.0.176:5000",
+  baseURL: "http://192.168.0.108:5000",
   headers: {
     Authorization: `Bearer ${getLocalToken}`,
   },
@@ -113,8 +114,18 @@ apiBackendAuthenticated.interceptors.response.use(
 const mapToFormData = (refresh_token: string) => {
   var bodyFormData = new FormData();
   bodyFormData.append("grant_type", "refresh_token");
-  //bodyFormData.append('username', `${phoneNumber}:2:${sms}`)
   console.log("REFRESH", refresh_token);
   bodyFormData.append("refresh_token", `${refresh_token}`);
   return bodyFormData;
 };
+
+export const getAccessToken = async ():Promise<string | null> => {
+  const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
+  
+  if(auth_token){
+    const auth:IAuthenticationToken = JSON.parse(auth_token)
+    return auth.access_token
+ }
+
+  return null
+}

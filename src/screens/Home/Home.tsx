@@ -25,7 +25,6 @@ const Home = () => {
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
   const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
-  const {authenticationToken} = useAuthContext()
 
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
@@ -52,19 +51,12 @@ const Home = () => {
 
   async function takePhoto() {
     console.log("FetchingInfos...");
-    try{
-    console.log("MEUUUU", authenticationToken?.access_token)
-    const data = await apiBackendAuthenticated.get("/user/vruum",  { headers: { "Authorization": `Bearer ${authenticationToken?.access_token}`} })
-    console.log("RETORNOU: ",data)
-    }catch(error){
-      console.log("DEU RUIM DENTRO DO HOME", error)
+    if (camRef) {
+      const data = await camRef.current.takePictureAsync();
+      await sendImageIA(data);
+      setcapturedPhoto(data.uri);
+      setModalOpen(true);
     }
-    // if (camRef) {
-    //   const data = await camRef.current.takePictureAsync();
-    //   await sendImageIA(data);
-    //   setcapturedPhoto(data.uri);
-    //   setModalOpen(true);
-    // }
   }
 
   const handleModal = async () => {
@@ -73,7 +65,7 @@ const Home = () => {
       const data = await new SendFoodsArrayService().execute(responseFood);
       console.log(data);
     } catch (error) {
-      console.log("ERRO");
+      console.log("[ERROR]");
     }
     // await api.post("/post_recognized_foods",{
     //   Recognized_Foods: responseFood

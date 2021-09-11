@@ -28,7 +28,7 @@ export function LoginQuestions({ ...props }: any) {
     isNutricionist: false,
   });
   const [endQuestions, setEndQuestions] = useState(false);
-  const { authenticationToken, registeredDatas}: any = useAuthContext();
+  const { registeredDatas}: any = useAuthContext();
 
   const handleOnClick = () => {
     setStartedQuestions(true);
@@ -114,8 +114,8 @@ export function LoginQuestions({ ...props }: any) {
     if (endQuestions != false) {
      (async () => {
        try{
-         await registerDataUserService.sendResponseQuestions(payloadResponses,authenticationToken.access_token)
-         await registerDataUserService.sendRegisterData(payloadUser,authenticationToken.access_token)
+         await registerDataUserService.sendResponseQuestions(payloadResponses)
+         await registerDataUserService.sendRegisterData(payloadUser)
        }catch(error){
          console.log('deu ruim',error)
        }

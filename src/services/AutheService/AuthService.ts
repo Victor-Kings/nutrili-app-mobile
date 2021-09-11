@@ -28,7 +28,7 @@ export class AuthService implements IAuthServiceProps {
         return data;
     }
 
-    verifyIsUser = async (token:string): Promise<IIsRegister> =>{
+    verifyIsUser = async (token: string): Promise<IIsRegister> =>{
         const {data} = await apiBackendAuthenticated.get<IIsRegister>("/user/isNewUser",
        { headers: { "Authorization": `Bearer ${token}`} } 
         )

@@ -10,55 +10,57 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function AuthContextProvider({ children }: any) {
   const authService = new AuthService();
-  
-  const [authenticationToken, setAuthenticationToken] = useState<IAuthProps | null>(null);
+  const [isRegistered, setIsRegistered] =  useState<boolean|null>()
 
   const signIn = async (phoneNumber: string, smsToken: string) => {
     let data:IResponseAuthToken | null = null
     try{
      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
     }catch(error){
-      console.log("SIGNIN 1 : ", error)
+      console.log("[ERROR] SIGNIN 1 : ", error)
     }
     if(data !== null){
-      console.log("OPAA",data.access_token)
       try{
         const isNewUser = await authService.verifyIsUser(data.access_token);
-        console.log(isNewUser);
         const authData = mapToAuthenticationToken(data, !isNewUser.newUser);
-        setAuthenticationToken(authData);
+        setIsRegistered(!isNewUser.newUser)
         await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
       }catch(error){
-        console.log("SIGNIN 2 : ", error)
+        console.log("[ERROR] SIGNIN 2 : ", error)
       }
     }
   }
 
   const registeredDatas = async () => {
-    if(authenticationToken)
-    setAuthenticationToken({...authenticationToken, isRegister: true})
-    await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify({...authenticationToken, isRegister: true}))
+    const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
+    if(auth_token){
+      const auth:IAuthProps = JSON.parse(auth_token)
+      setIsRegistered(true)
+      await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify({...auth, isRegistered: true}))
+    }
   }
 
   useEffect(()=>{
     async () =>{
-      const data = await authService.getCurrentToken();
-      setAuthenticationToken(data);
+      const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
+      if(auth_token){
+       const auth:IAuthProps = JSON.parse(auth_token)
+       setIsRegistered(auth.isRegistered);
+      }
     }
   },[])
 
  const mapToAuthenticationToken= (data: IResponseAuthToken, isValid: boolean): IAuthProps =>{
-    data.refresh_token
     const response = {
         access_token: data.access_token, 
         refresh_token: data.refresh_token,
-        isRegister: isValid //TODO:is ISREGISTERED
+        isRegistered: isValid
     }
     return response;
   }
 
   return (
-    <AuthContext.Provider value={{ authenticationToken, signIn, registeredDatas}}>
+    <AuthContext.Provider value={{ isRegistered, signIn, registeredDatas}}>
       {children}
     </AuthContext.Provider>
   );

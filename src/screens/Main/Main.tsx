@@ -7,17 +7,11 @@ import { useAuthContext } from '../../context/authContext'
 
 
 export default function Main() {
-  const {authenticationToken} =useAuthContext();
+  const {isRegistered} =useAuthContext();
 
-  const verifyLoggin = (): boolean=>{
-    if(authenticationToken){
-      return authenticationToken.isRegister
-    }
-    return false
-  }
   return (
     <>
-      {verifyLoggin() ? (
+      {isRegistered ? (
         <AppDrawer />
       )
         : (
