@@ -7,6 +7,9 @@ import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
 import { SendFoodsArrayService } from "../../services/SendFoodsArrayService/SendFoodsArrayService";
 import { SendImageService } from "../../services/SendImageService/SendImageService";
+import { apiBackendAuthenticated } from "../../configs/api";
+import { useAuthContext } from "../../context/authContext";
+import { AxiosError } from "axios";
 
 function ArrayOrganizeFoods(data: any) {
   var foods = [];
@@ -22,6 +25,7 @@ const Home = () => {
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
   const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
+  const {authenticationToken} = useAuthContext()
 
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
@@ -48,12 +52,19 @@ const Home = () => {
 
   async function takePhoto() {
     console.log("FetchingInfos...");
-    if (camRef) {
-      const data = await camRef.current.takePictureAsync();
-      await sendImageIA(data);
-      setcapturedPhoto(data.uri);
-      setModalOpen(true);
+    try{
+    console.log("MEUUUU", authenticationToken?.access_token)
+    const data = await apiBackendAuthenticated.get("/user/vruum",  { headers: { "Authorization": `Bearer ${authenticationToken?.access_token}`} })
+    console.log("RETORNOU: ",data)
+    }catch(error){
+      console.log("DEU RUIM DENTRO DO HOME", error)
     }
+    // if (camRef) {
+    //   const data = await camRef.current.takePictureAsync();
+    //   await sendImageIA(data);
+    //   setcapturedPhoto(data.uri);
+    //   setModalOpen(true);
+    // }
   }
 
   const handleModal = async () => {

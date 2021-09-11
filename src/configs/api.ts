@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LOCAL_STORAGE_AUTH_TOKEN} from "./const";
+import { LOCAL_STORAGE_AUTH_TOKEN } from "./const";
 import { IAuthProps } from "../context/authContext.interface";
 
 let isRefreshing = false;
@@ -15,28 +15,33 @@ export const apiRecognize = axios.create({
   baseURL: "http://192.168.0.104:8090",
 });
 
-const getLocalToken = async() => {
-  const authTokenStr = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
-  if(authTokenStr){
-    const authToken:IAuthProps = JSON.parse(authTokenStr);
-    return authToken.access_token
+const getLocalToken = async () => {
+  const authTokenStr = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
+  if (authTokenStr) {
+    const authToken: IAuthProps = JSON.parse(authTokenStr);
+    return authToken.access_token;
   }
-}
+};
 
 export const apiBackend = axios.create({
   baseURL: "http://192.168.0.176:5000",
-  headers:{
-    Authorization: `Bearer ${getLocalToken}`
-  }
 });
 
-apiBackend.interceptors.response.use(
+export const apiBackendAuthenticated = axios.create({
+  baseURL: "http://192.168.0.176:5000",
+  headers: {
+    Authorization: `Bearer ${getLocalToken}`,
+  },
+});
+
+apiBackendAuthenticated.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
-      if (error.response.data.code === "token.expired") {
+      console.log("FODASESEUTESTE", error.response.data.error);
+      if (error.response?.data.error === "invalid_token") {
         const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
         const originalConfig = error.config;
 
@@ -47,31 +52,36 @@ apiBackend.interceptors.response.use(
 
           if (!isRefreshing) {
             isRefreshing = true;
-
-            apiBackend
+            console.log("MEU FORM DATA: ", formData, "\n");
+            apiBackendAuthenticated
               .post("/oauth/token", formData, {
                 headers: {
                   Authorization: "Basic dGVzdGU6MTIzNDU=",
                 },
               })
               .then(async (response) => {
-                const { token } = response.data;
+                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", response);
+                const { access_token } = response.data;
+
                 await AsyncStorage.setItem(
                   LOCAL_STORAGE_AUTH_TOKEN,
                   JSON.stringify({
                     ...auth,
-                    auth_token: response.data.auth_token,
+                    access_token: response.data.access_token,
                     refresh_token: response.data.refresh_token,
                   })
                 );
 
-                apiBackend.defaults.headers['Authorization'] = `Bearer ${token}`
+                apiBackendAuthenticated.defaults.headers[
+                  "Authorization"
+                ] = `Bearer ${access_token}`;
                 failedRequestsQueue.forEach((request) =>
-                  request.onSuccess(token)
+                  request.onSuccess(access_token)
                 );
                 failedRequestsQueue = [];
               })
               .catch((err) => {
+                console.log("falhou a reautenticação");
                 failedRequestsQueue.forEach((request) => request.onFailed(err));
                 failedRequestsQueue = [];
               })
@@ -104,6 +114,7 @@ const mapToFormData = (refresh_token: string) => {
   var bodyFormData = new FormData();
   bodyFormData.append("grant_type", "refresh_token");
   //bodyFormData.append('username', `${phoneNumber}:2:${sms}`)
+  console.log("REFRESH", refresh_token);
   bodyFormData.append("refresh_token", `${refresh_token}`);
   return bodyFormData;
 };

@@ -4,7 +4,7 @@ import {
   IpayloadResponses,
   IPayloadUser,
 } from "./RegisterDataUserService.interface";
-import { apiBackend } from "../../configs/api";
+import { apiBackendAuthenticated } from "../../configs/api";
 
 export class RegisterDataUserService implements IRegisterDataUserServiceProps {
   sendResponseQuestions = async (
@@ -12,19 +12,19 @@ export class RegisterDataUserService implements IRegisterDataUserServiceProps {
     token: string
   ): Promise<AxiosResponse> =>{
       console.log("SEND RESPONSE: " , response)
-    return await apiBackend.post("/answer/insertAnswer", response, {
+    return await apiBackendAuthenticated.post("/answer/insertAnswer", response, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-}
+  }
 
   sendRegisterData = async (
     response: IPayloadUser,
     token: string
   ): Promise<AxiosResponse> => {
       console.log("SEND REGISTER: " , response)
-    return await apiBackend.put("/user/updateUser", response, {
+    return await apiBackendAuthenticated.put("/user/updateUser", response, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

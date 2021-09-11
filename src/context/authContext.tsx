@@ -16,11 +16,12 @@ export function AuthContextProvider({ children }: any) {
   const signIn = async (phoneNumber: string, smsToken: string) => {
     let data:IResponseAuthToken | null = null
     try{
-      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
+     data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
     }catch(error){
       console.log("SIGNIN 1 : ", error)
     }
-    if(data != null){
+    if(data !== null){
+      console.log("OPAA",data.access_token)
       try{
         const isNewUser = await authService.verifyIsUser(data.access_token);
         console.log(isNewUser);

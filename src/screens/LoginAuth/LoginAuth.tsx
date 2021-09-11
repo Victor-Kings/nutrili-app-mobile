@@ -58,7 +58,7 @@ export function LoginAuth({ ...props }: any) {
 
   const handleOnClick = async () => {
 
-      await authService.sendNumberToReceiverSMSToken(phoneNumber);
+    await authService.sendNumberToReceiverSMSToken(phoneNumber);
     setInitialTime(60);
     setConsentedSms(true);
   };
@@ -78,7 +78,7 @@ export function LoginAuth({ ...props }: any) {
     //   }
     //};
     
-      if (code.length === 8) {
+      if (code.length === 6) {
         (async () => {
           try{
             await signIn(phoneNumber.toUpperCase(), code);

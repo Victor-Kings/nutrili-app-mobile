@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AxiosResponse } from "axios";
-import { apiBackend } from "../../configs/api";
+import { apiBackend, apiBackendAuthenticated } from "../../configs/api";
 import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const";
 import { IAuthenticationToken, IAuthServiceProps,IIsRegister, IResponseAuthToken } from "./AuthService.interface";
 
@@ -29,8 +29,8 @@ export class AuthService implements IAuthServiceProps {
     }
 
     verifyIsUser = async (token:string): Promise<IIsRegister> =>{
-        const {data} = await apiBackend.get<IIsRegister>("/user/isNewUser",
-        { headers: { "Authorization": `Bearer ${token}`} } 
+        const {data} = await apiBackendAuthenticated.get<IIsRegister>("/user/isNewUser",
+       { headers: { "Authorization": `Bearer ${token}`} } 
         )
         return data;
     }
