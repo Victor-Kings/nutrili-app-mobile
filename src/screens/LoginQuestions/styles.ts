@@ -26,33 +26,6 @@ export const ContentContainer = styled.View`
    height: 80%;
 `;
 
-export const SquaresTopRight = styled.View`
-   width: 500px;
-   height: 100px;
-   background-color:  #4197E5;
-   position:absolute;
-   top: 0px; left: 65%;
-   transform: rotate(30deg);
-`;
-
-export const SquaresTopLeft = styled.View`
-   width: 500px;
-   height: 100px;
-   background-color:  #4197E5;
-   position:absolute;
-   top: 30%; left: -98%;
-   transform: rotate(-70deg);
-`;
-
-export const SquaresBottom = styled.View`
-   width: 500px;
-   height: 150px;
-   background-color:  #4197E5;
-   position:absolute;
-   bottom: -30%; left: -10%;
-   transform: rotate(12deg);
-`;
-
 export const BackButtonContainer = styled.View`
    margin-top: 5%;
    margin-left:5px;
@@ -95,4 +68,32 @@ export const TextButton = styled.Text`
    font-size: 20px;
    text-align:center;
    font-weight: 600;
+`;
+
+
+export const SquaresTopRight = styled.View`
+   width: 500px;
+   height: 100px;
+   background-color:  #4197E5;
+   position:absolute;
+   top: 0px; left: 65%;
+   transform: rotate(30deg);
+`;
+
+export const SquaresTopLeft = styled.View`
+   width: 500px;
+   height: 100px;
+   background-color:  #4197E5;
+   position:absolute;
+   top: 30%; left: -98%;
+   transform: rotate(-70deg);
+`;
+
+export const SquaresBottom = styled.View`
+   width: 500px;
+   height: 150px;
+   background-color:  #4197E5;
+   position:absolute;
+   bottom: -30%; left: -10%;
+   transform: rotate(12deg);
 `;

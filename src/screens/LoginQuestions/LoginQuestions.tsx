@@ -6,14 +6,15 @@ import {
   Title,
   TextButton,
   ContainerButtons,
+  Container
 } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
 import { form } from "../../../__mocks__/form";
 import { InsertsCustom } from "./components/InsertsCustom";
 import { useAuthContext } from "../../context/authContext";
-import {ICurrentQuestionContent,IPayloadUser,IpayloadResponses} from "./LoginQuestions.interface";
-import {RegisterDataUserService} from "../../services/RegisterDataUserService/RegisterDataUserService";
+import { ICurrentQuestionContent, IPayloadUser, IpayloadResponses } from "./LoginQuestions.interface";
+import { RegisterDataUserService } from "../../services/RegisterDataUserService/RegisterDataUserService";
 
 export function LoginQuestions({ ...props }: any) {
   const registerDataUserService = new RegisterDataUserService();
@@ -21,14 +22,14 @@ export function LoginQuestions({ ...props }: any) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentQuestionContent, setCurrentQuestionContent] = useState<ICurrentQuestionContent>({
     question: "Vamos fazer algumas perguntas para cadastro",
-    previousQuestion:1
+    previousQuestion: 1
   });
-  const [payloadResponses, setPayloadResponses] = useState<IpayloadResponses[]|null>(null);
+  const [payloadResponses, setPayloadResponses] = useState<IpayloadResponses[] | null>(null);
   const [payloadUser, setPayloadUser] = useState<IPayloadUser>({
     isNutricionist: false,
   });
   const [endQuestions, setEndQuestions] = useState(false);
-  const { registeredDatas}: any = useAuthContext();
+  const { registeredDatas }: any = useAuthContext();
 
   const handleOnClick = () => {
     setStartedQuestions(true);
@@ -41,7 +42,7 @@ export function LoginQuestions({ ...props }: any) {
     if (currentQuestionContent?.nextQuestion?.condition && value === "no") {
       return currentQuestionContent.nextQuestion.condition[1];
     }
-    if( currentQuestionContent?.nextQuestion?.next){
+    if (currentQuestionContent?.nextQuestion?.next) {
       return currentQuestionContent.nextQuestion.next;
     }
     return 1;
@@ -64,17 +65,17 @@ export function LoginQuestions({ ...props }: any) {
     if (!payloadResponses) {
       setPayloadResponses([
         {
-          idQuestion: currentQuestion+1,
+          idQuestion: currentQuestion + 1,
           answer: data,
         },
       ]);
     } else {
       const responsesAux = payloadResponses.filter(
-        (obj: any) => obj.idQuestion !== currentQuestion+1
+        (obj: any) => obj.idQuestion !== currentQuestion + 1
       );
 
       responsesAux.push({
-        idQuestion: currentQuestion+1,
+        idQuestion: currentQuestion + 1,
         answer: data,
       });
 
@@ -102,23 +103,23 @@ export function LoginQuestions({ ...props }: any) {
 
   useEffect(() => {
     var controle = true;
-    if(controle){
+    if (controle) {
       setCurrentQuestionContent(form[currentQuestion]);
     }
-    return function cleanUp(){
+    return function cleanUp() {
       controle = false
     }
   }, [startedQuestions, currentQuestion]);
 
   useEffect(() => {
     if (endQuestions != false) {
-     (async () => {
-       try{
-         await registerDataUserService.sendResponseQuestions(payloadResponses)
-         await registerDataUserService.sendRegisterData(payloadUser)
-       }catch(error){
-         console.log('deu ruim',error)
-       }
+      (async () => {
+        try {
+          await registerDataUserService.sendResponseQuestions(payloadResponses)
+          await registerDataUserService.sendRegisterData(payloadUser)
+        } catch (error) {
+          console.log('deu ruim', error)
+        }
         registeredDatas()
       })();
     }
@@ -164,19 +165,21 @@ export function LoginQuestions({ ...props }: any) {
     );
 
   return (
-    <QuestionsTemplate
-      handler={handlerBackQuestion}
-      IconBack={IconBack}
-      isActiveBackButton={startedQuestions}
-    >
-      {endQuestions ? <Text>Fazendo login ... </Text> : questionsTemp}
-      {startedQuestions && (
-        <View style={{ height: 40, marginTop: "5%", marginBottom: "3%" }}>
-          <Text style={{ alignSelf: "center", color: "gray", fontSize: 20 }}>
-            Pergunta {currentQuestion + 1}/{form.length}
-          </Text>
-        </View>
-      )}
-    </QuestionsTemplate>
+    <Container>
+      <QuestionsTemplate
+        handler={handlerBackQuestion}
+        IconBack={IconBack}
+        isActiveBackButton={startedQuestions}
+      >
+        {endQuestions ? <Text>Fazendo login ... </Text> : questionsTemp}
+        {startedQuestions && (
+          <View style={{ height: 40, marginTop: "5%", marginBottom: "3%" }}>
+            <Text style={{ alignSelf: "center", color: "gray", fontSize: 20 }}>
+              Pergunta {currentQuestion + 1}/{form.length}
+            </Text>
+          </View>
+        )}
+      </QuestionsTemplate>
+    </Container >
   );
 }
