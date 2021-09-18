@@ -11,105 +11,36 @@ import {
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsTemplate";
 import { form } from "../../../__mocks__/form";
-import { InsertsCustom } from "./components/InsertsCustom";
+import { InsertsCustom } from "../../components/InsertCustom/InsertsCustom";
 import { useAuthContext } from "../../context/authContext";
 import { ICurrentQuestionContent, IPayloadUser, IpayloadResponses } from "./LoginQuestions.interface";
 import { RegisterDataUserService } from "../../services/RegisterDataUserService/RegisterDataUserService";
+import { Questions } from "../../components/Questions/Questions";
+import { IQuestionParams } from "../../components/Questions/Questions.interface";
 
 export function LoginQuestions({ ...props }: any) {
   const registerDataUserService = new RegisterDataUserService();
   const [startedQuestions, setStartedQuestions] = useState(false);
+  const [endQuestions, setEndQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [currentQuestionContent, setCurrentQuestionContent] = useState<ICurrentQuestionContent>({
-    question: "Vamos fazer algumas perguntas para cadastro",
-    previousQuestion: 1
-  });
+  const { registeredDatas }: any = useAuthContext();
   const [payloadResponses, setPayloadResponses] = useState<IpayloadResponses[] | null>(null);
   const [payloadUser, setPayloadUser] = useState<IPayloadUser>({
     isNutricionist: false,
   });
-  const [endQuestions, setEndQuestions] = useState(false);
-  const { registeredDatas }: any = useAuthContext();
-
-  const handleOnClick = () => {
+  const [currentQuestionContent, setCurrentQuestionContent] =
+  useState<ICurrentQuestionContent>({
+    question: "Vamos fazer algumas perguntas para cadastro",
+    previousQuestion: 1,
+  });
+  
+  const handleOnClickStart = () => {
     setStartedQuestions(true);
   };
-
-  const selectNextQuestion = (value: string): number => {
-    if (currentQuestionContent?.nextQuestion?.condition && value === "yes") {
-      return currentQuestionContent.nextQuestion.condition[0];
-    }
-    if (currentQuestionContent?.nextQuestion?.condition && value === "no") {
-      return currentQuestionContent.nextQuestion.condition[1];
-    }
-    if (currentQuestionContent?.nextQuestion?.next) {
-      return currentQuestionContent.nextQuestion.next;
-    }
-    return 1;
-  };
-
-  const populateLoginForm = (data: string) => {
-    switch (currentQuestion + 1) {
-      case 1:
-        setPayloadUser({ ...payloadUser, name: data });
-        break;
-      case 2:
-        setPayloadUser({ ...payloadUser, gender: data });
-        break;
-      case 3:
-        setPayloadUser({ ...payloadUser, birth: data });
-        break;
-    }
-  };
-  const populateQuestionsForm = (data: string) => {
-    if (!payloadResponses) {
-      setPayloadResponses([
-        {
-          idQuestion: currentQuestion + 1,
-          answer: data,
-        },
-      ]);
-    } else {
-      const responsesAux = payloadResponses.filter(
-        (obj: any) => obj.idQuestion !== currentQuestion + 1
-      );
-
-      responsesAux.push({
-        idQuestion: currentQuestion + 1,
-        answer: data,
-      });
-
-      setPayloadResponses(responsesAux);
-    }
-  };
-
-  function handlerSetCurrentQuestion(value: string) {
-    if (currentQuestionContent.typeForm == "loginForm") {
-      populateLoginForm(value);
-    } else {
-      populateQuestionsForm(value);
-    }
-    if (currentQuestion < form.length - 1) {
-      let nextQuestion = selectNextQuestion(value);
-      setCurrentQuestion(nextQuestion - 1);
-    } else {
-      setEndQuestions(true);
-    }
-  }
-
+  
   const handlerBackQuestion = () => {
     setCurrentQuestion(currentQuestionContent.previousQuestion - 1);
   };
-
-  useEffect(() => {
-    var controle = true;
-    if (controle) {
-      setCurrentQuestionContent(form[currentQuestion]);
-    }
-    return function cleanUp() {
-      controle = false
-    }
-  }, [startedQuestions, currentQuestion]);
 
   useEffect(() => {
     if (endQuestions != false) {
@@ -125,39 +56,29 @@ export function LoginQuestions({ ...props }: any) {
     }
   }, [endQuestions]);
 
-  const questionText = (
-    <TextContainer>
-      <Title>
-        {startedQuestions && !endQuestions
-          ? currentQuestionContent.question
-          : "Vamos fazer algumas perguntas para cadastro"}
-      </Title>
-    </TextContainer>
-  );
+  const paramsQuestions = {
+    payloadUser : payloadUser,
+    setPayloadUser: setPayloadUser,
+    payloadResponses : payloadResponses,
+    setPayloadResponses: setPayloadResponses,
+    form: form,
+    currentQuestion: currentQuestion,
+    setCurrentQuestion: setCurrentQuestion,
+    currentQuestionContent:currentQuestionContent,
+    setCurrentQuestionContent: setCurrentQuestionContent,
+    startedQuestions:startedQuestions,
+    setStartedQuestions:setStartedQuestions,
+    endQuestions: endQuestions, 
+    setEndQuestions:setEndQuestions
+  }
 
   const questionsTemp = startedQuestions ? (
-    <View style={{ flex: 1, height: "100%" }}>
-      <KeyboardAvoidingView
-        behavior={"padding"}
-        style={{ height: "99%", width: "100%" }}
-        keyboardVerticalOffset={-120}
-      >
-        <ScrollView style={{ flex: 1, height: "100%", width: "100%" }}>
-          <View style={{ flex: 1 }}>
-            {questionText}
-            <InsertsCustom
-              handleOnchange={handlerSetCurrentQuestion}
-              content={currentQuestionContent}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+    <Questions Params={paramsQuestions}  />
   ) : (
       <>
-        {questionText}
+       <Text>Vamos fazer algumas perguntas para cadastro</Text>
         <ContainerButtons>
-          <ButtonTouch color="#4197E5" onPress={handleOnClick}>
+          <ButtonTouch color="#4197E5" onPress={handleOnClickStart}>
             <TextButton>COMEÇAR</TextButton>
           </ButtonTouch>
         </ContainerButtons>

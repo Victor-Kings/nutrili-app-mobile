@@ -158,7 +158,10 @@ const form = [
             condition: null,
             next: 11
         }
-    },
+    }
+]
+
+const formFindNutritionist = [
     {
         id: 11,
         typeForm: "completeForm",
@@ -288,5 +291,4 @@ const form = [
         }
     }
 ]
-
 export { form };

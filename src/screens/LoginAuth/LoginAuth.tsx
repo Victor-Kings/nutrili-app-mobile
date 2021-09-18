@@ -67,6 +67,8 @@ export function LoginAuth({ ...props }: any) {
     if (code.length === 6) {
       (async () => {
         try {
+          console.log(code, phoneNumber);
+          
           await signIn(phoneNumber.toUpperCase(), code);
           props.navigation.navigate("LoginQuestion");
         } catch (error) {
@@ -114,7 +116,7 @@ export function LoginAuth({ ...props }: any) {
           <TextInput
             onChangeText={onChangeCode}
             value={code}
-            placeholder="CD23KIUJ"
+            placeholder="CD23KJ"
             style={InputCode}
             placeholderTextColor="#C9C9C9"
           />
