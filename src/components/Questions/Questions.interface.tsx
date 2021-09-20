@@ -13,7 +13,7 @@ export interface IQuestionParams{
     startedQuestions: boolean,
     setStartedQuestions: (value: boolean)=> void,
     endQuestions: boolean, 
-    setEndQuestions: (value: boolean)=> void
+    setEndQuestions: (value: boolean)=> void,
 }
 
 export interface IQuestionProps {

@@ -13,6 +13,7 @@ export interface ICurrentQuestionContent{
       condition?: number[]|null,
       next?: number|null,
     },
+    isLastQuestion: boolean
 }
 
 export interface IPayloadUser{

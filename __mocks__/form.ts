@@ -13,7 +13,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 2
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 2,
@@ -29,7 +30,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 3
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 3,
@@ -45,7 +47,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 4
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 4,
@@ -61,7 +64,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 5
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 5,
@@ -77,7 +81,8 @@ const form = [
         nextQuestion: {
             condition: [6, 7],
             next: null
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 6,
@@ -93,7 +98,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 7
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 7,
@@ -109,7 +115,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 8
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 8,
@@ -125,7 +132,8 @@ const form = [
         nextQuestion: {
             condition: [9, 10],
             next: null
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 9,
@@ -141,7 +149,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 10
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 10,
@@ -157,7 +166,8 @@ const form = [
         nextQuestion: {
             condition: null,
             next: 11
-        }
+        },
+        isLastQuestion: true
     }
 ]
 
@@ -172,11 +182,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 11,
+        previousQuestion: 1,
         nextQuestion: {
             condition: null,
-            next: 12
-        }
+            next: 2
+        },
+        isLastQuestion: false
     },
     {
         id: 12,
@@ -190,9 +201,10 @@ const formFindNutritionist = [
         },
         previousQuestion: 11,
         nextQuestion: {
-            condition: [13,14],
+            condition: [3,4],
             next: null
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 13,
@@ -204,11 +216,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 12,
+        previousQuestion: 2,
         nextQuestion: {
             condition: null,
-            next: 14
-        }
+            next: 4
+        },
+        isLastQuestion: false
     },
     {
         id: 14,
@@ -220,11 +233,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 12,
+        previousQuestion: 2,
         nextQuestion: {
-            condition: [15,16],
+            condition: [5,6],
             next: null
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 15,
@@ -236,11 +250,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 14,
+        previousQuestion: 4,
         nextQuestion: {
             condition: null,
-            next: 16
-        }
+            next: 6
+        },
+        isLastQuestion: false
     },
     {
         id: 16,
@@ -252,11 +267,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 14,
+        previousQuestion: 4,
         nextQuestion: {
-            condition: [18,17],
+            condition: [8,7],
             next: null
-        }
+        },
+        isLastQuestion: false
     },
     {
         id: 17,
@@ -268,11 +284,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 16,
+        previousQuestion: 6,
         nextQuestion: {
             condition: null,
             next: null
-        }
+        },
+        isLastQuestion: true
     },
     {
         id: 18,
@@ -284,11 +301,12 @@ const formFindNutritionist = [
         checkQuestions: {
             fields: undefined
         },
-        previousQuestion: 16,
+        previousQuestion: 6,
         nextQuestion: {
             condition: null,
-            next: 18
-        }
+            next: 8
+        },
+        isLastQuestion: true
     }
 ]
-export { form };
+export { form, formFindNutritionist };

@@ -82,7 +82,7 @@ export function Questions({
     } else {
       populateQuestionsForm(value);
     }
-    if (currentQuestion < form.length - 1) {
+    if (!currentQuestionContent.isLastQuestion){
       let nextQuestion = selectNextQuestion(value);
       setCurrentQuestion(nextQuestion - 1);
     } else {

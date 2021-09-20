@@ -32,6 +32,7 @@ export function LoginQuestions({ ...props }: any) {
   useState<ICurrentQuestionContent>({
     question: "Vamos fazer algumas perguntas para cadastro",
     previousQuestion: 1,
+    isLastQuestion: false
   });
   
   const handleOnClickStart = () => {
