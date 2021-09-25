@@ -27,6 +27,7 @@ import IconFinder from "../../assets/img/iconFinder.svg";
 import IconLocale from "../../assets/img/iconLocale.svg";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Octicons } from '@expo/vector-icons'; 
+import { ModalSearchNutritionist } from "../../components/ModalSearchNutritionist";
 
 
 
@@ -44,6 +45,8 @@ function QuestionsLocale({ handleOK }: any) {
       previousQuestion: 1,
       isLastQuestion: false,
     });
+
+
   console.log(endQuestions);
 
   const handlerBackQuestion = () => {
@@ -111,29 +114,43 @@ function QuestionsLocale({ handleOK }: any) {
   );
 }
 
-const handlerButtonSearch = () => {
-  console.log("CLICOU");
-};
+
 function Search() {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [type, setType] = useState<string>('');
+
+  const handlerModal = () => {
+    setModalOpen(false);
+  };
+
+  const handlerButtonSearch = (type:string) => {
+    setType(type);
+    setModalOpen(true);
+    console.log("CLICOU");
+  };
+
   return (
     <QuestionsTemplate>
+
       <ContainerSearch>
         <TextCustom>AGORA VAMOS ESCOLHER O SEU NUTRIOCINISTA PLUS!</TextCustom>
         <TextCustomLittleSize>PROCURE O SEU:</TextCustomLittleSize>
         <ButtonSearch
           buttonLabel="PESQUISA POR NOME"
           IconButton={<Octicons name="search" size={35} color="#4197E5"/>}
-          handlerClick={handlerButtonSearch}
+          handlerClick={()=>handlerButtonSearch("name")}
         />
          <ButtonSearch
           buttonLabel="PESQUISA POR CIDADE"
           IconButton={<MaterialCommunityIcons name="map-marker-circle" size={50} color="#4197E5" />}
-          handlerClick={handlerButtonSearch}
+          handlerClick={()=>handlerButtonSearch("city")}
         />
       </ContainerSearch>
+      {modalOpen&&<ModalSearchNutritionist closeModal={handlerModal}  modalOpen={modalOpen} requisitionType={type}/>}
     </QuestionsTemplate>
   );
 }
+
 export function AncientPlus({ ...props }) {
   const [value, setValue] = useState(false);
 
