@@ -1,6 +1,6 @@
 import React from "react";
-import { ContainerIconSearch, ContainerSearchBar, SearchBarInput } from "../styles";
-import IconSearch from "../../../assets/img/iconSearch.svg"
+import { ContainerIconSearch, ContainerSearchBar, SearchBarInput } from "./styles";
+import IconSearch from "../../../../assets/img/iconSearch.svg"
 
 export const SearchBar = () =>{
     return(

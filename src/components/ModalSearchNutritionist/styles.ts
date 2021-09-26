@@ -8,19 +8,7 @@ export const ContainerModal = styled.View`
     padding: 4% 4%;
 `;
 
-export const ContainerSearchBar = styled.View`
-    background-color: #D5EAFD;
-    border-radius: 4px;
-    flex-direction: row;
+export const ContainerCards = styled.FlatList`
+    margin-top: 2%;
 `;
 
-export const SearchBarInput = styled.TextInput`  
-    width: 85%;
-    padding-left: 5%;
-`;
-
-export const ContainerIconSearch = styled.TouchableOpacity`
-    width: 15%;
-    flex:1;
-    align-items: center;
-`;

@@ -10,4 +10,6 @@ export interface IResponseService{
     name: string;
     city: string;
     state: string;
+    profilePicture: string;
+    phone: string;
 }
