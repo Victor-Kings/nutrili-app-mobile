@@ -10,7 +10,6 @@ export class RegisterDataUserService implements IRegisterDataUserServiceProps {
   sendResponseQuestions = async (
     response: IpayloadResponses[] | null
   ): Promise<AxiosResponse> =>{
-    console.log("SEND RESPONSE: " , response)
     const token = await getAccessToken()
     return await apiBackendAuthenticated.post("/answer/insertAnswer", response, {
       headers: {
@@ -22,7 +21,6 @@ export class RegisterDataUserService implements IRegisterDataUserServiceProps {
   sendRegisterData = async (
     response: IPayloadUser,
   ): Promise<AxiosResponse> => {
-    console.log("SEND REGISTER: " , response)
     const token = await getAccessToken()
     return await apiBackendAuthenticated.put("/user/updateUser", response, {
       headers: {

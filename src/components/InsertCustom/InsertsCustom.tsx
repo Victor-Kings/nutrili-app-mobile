@@ -37,7 +37,6 @@ export function InsertsCustom({ handleOnchange, content }: IInsertCustomProps) {
   };
 
   const handlerResponse = (value: string) => {
-    console.log("HANDLE VALUE: " + value);
     setResponse(value);
   };
 

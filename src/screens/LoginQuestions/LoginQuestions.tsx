@@ -50,7 +50,7 @@ export function LoginQuestions({ ...props }: any) {
           await registerDataUserService.sendResponseQuestions(payloadResponses)
           await registerDataUserService.sendRegisterData(payloadUser)
         } catch (error) {
-          console.log('deu ruim', error)
+          console.error('Falha no cadastro', error)
         }
         registeredDatas()
       })();

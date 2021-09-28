@@ -17,7 +17,7 @@ export function AuthContextProvider({ children }: any) {
     try{
      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
     }catch(error){
-      console.log("[ERROR] SIGNIN 1 : ", error)
+      console.error("[ERROR] SIGNIN 1 : ", error)
     }
     if(data !== null){
       try{
@@ -26,7 +26,7 @@ export function AuthContextProvider({ children }: any) {
         setIsRegistered(!verifyUser.newUser)
         await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
       }catch(error){
-        console.log("[ERROR] SIGNIN 2 : ", error)
+        console.error("[ERROR] SIGNIN 2 : ", error)
       }
     }
   }

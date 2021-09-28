@@ -22,7 +22,6 @@ export function Questions({
     setEndQuestions
   },
 }: IQuestionProps) {
-  console.log(currentQuestionContent.question)
   
 
   const selectNextQuestion = (value: string): number => {

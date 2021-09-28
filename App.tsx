@@ -24,7 +24,6 @@ export default function App(){
 
   
 
-  //console.log(userToken)
   return (
     <AuthContextProvider>
       <NavigationContainer>

@@ -46,9 +46,6 @@ function QuestionsLocale({ handleOK }: any) {
       isLastQuestion: false,
     });
 
-
-  console.log(endQuestions);
-
   const handlerBackQuestion = () => {
     setCurrentQuestion(currentQuestionContent.previousQuestion - 1);
   };
@@ -66,10 +63,10 @@ function QuestionsLocale({ handleOK }: any) {
             handleOK(true);
           }
         } catch (error) {
-          console.log("deu ruim", error);
+          console.error("deu ruim", error);
         }
       })();
-      console.log("TERMINOU AS QUESTÕES");
+      // TODO: Loading para entrada no app
     }
   }, [endQuestions]);
 
@@ -126,7 +123,6 @@ function Search() {
   const handlerButtonSearch = (type:string) => {
     setType(type);
     setModalOpen(true);
-    console.log("CLICOU");
   };
 
   return (
@@ -163,7 +159,7 @@ export function AncientPlus({ ...props }) {
           setValue(auth.isRegisteredComplete);
         }
       } catch (error) {
-        console.log("deu ruim", error);
+        console.error("Falha ao entrar na opção de Ancient Plus", error);
       }
     })();
   }, []);

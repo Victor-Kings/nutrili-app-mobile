@@ -41,7 +41,6 @@ apiBackendAuthenticated.interceptors.response.use(
   },
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
-      console.log("FODASESEUTESTE", error.response.data.error);
       if (error.response?.data.error === "invalid_token") {
         const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
         const originalConfig = error.config;
@@ -53,7 +52,6 @@ apiBackendAuthenticated.interceptors.response.use(
 
           if (!isRefreshing) {
             isRefreshing = true;
-            console.log("MEU FORM DATA: ", formData, "\n");
             apiBackendAuthenticated
               .post("/oauth/token", formData, {
                 headers: {
@@ -61,7 +59,6 @@ apiBackendAuthenticated.interceptors.response.use(
                 },
               })
               .then(async (response) => {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", response);
                 const { access_token } = response.data;
 
                 await AsyncStorage.setItem(
@@ -82,7 +79,7 @@ apiBackendAuthenticated.interceptors.response.use(
                 failedRequestsQueue = [];
               })
               .catch((err) => {
-                console.log("falhou a reautenticação");
+                console.error("falhou a reautenticação");
                 failedRequestsQueue.forEach((request) => request.onFailed(err));
                 failedRequestsQueue = [];
               })
@@ -114,7 +111,6 @@ apiBackendAuthenticated.interceptors.response.use(
 const mapToFormData = (refresh_token: string) => {
   var bodyFormData = new FormData();
   bodyFormData.append("grant_type", "refresh_token");
-  console.log("REFRESH", refresh_token);
   bodyFormData.append("refresh_token", `${refresh_token}`);
   return bodyFormData;
 };
