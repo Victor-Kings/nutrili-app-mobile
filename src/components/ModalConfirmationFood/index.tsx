@@ -35,7 +35,7 @@ const ModalConfirmationFood = ({
   const [edit, setEdit] = useState<boolean>(false);
   const [addFood, setAddFood] = useState<boolean>(false);
   const [listFood, setListFood] = useState<any>(responseFood||[""]);
-
+  
   useEffect(() => {
     setListFood(responseFood||[""]);
   }, [responseFood]);
@@ -67,7 +67,7 @@ const ModalConfirmationFood = ({
           <ScrollView keyboardShouldPersistTaps="handled">
             <TextHeader>Alimentos Encontrados:</TextHeader>
             <ContainerViews>
-              {listFood.map((value: string, i: number) => (
+              {listFood!=[]?listFood.map((value: string, i: number) => (
                 <CardFood key={`${value}${i}`} color="#fff">
                   <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
                   {edit && (
@@ -79,7 +79,8 @@ const ModalConfirmationFood = ({
                     </TouchableOpacity>
                   )}
                 </CardFood>
-              ))}
+              )):<div>Não encontrado nenhum alimento</div>
+              }
               {addFood && edit && <Input handlerAddFood={handlerAddFood} />}
               {edit && (
                 <CardAddFood

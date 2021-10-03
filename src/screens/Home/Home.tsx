@@ -52,9 +52,9 @@ const Home = () => {
   async function takePhoto() {
     // TODO: precisa de um loading ate a resposta da IA
     if (camRef) {
-      const data = await camRef.current.takePictureAsync();
-      await sendImageIA(data);
-      setcapturedPhoto(data.uri);
+      //const data = await camRef.current.takePictureAsync();
+      await sendImageIA("data");
+      setcapturedPhoto("data.uri");
       setModalOpen(true);
     }
   }
@@ -74,7 +74,7 @@ const Home = () => {
 
   async function sendImageIA(ImageData: any) {
     try {
-      const recognizedFoods = new SendImageService().execute(ImageData);
+      const recognizedFoods = await new SendImageService().execute(ImageData);
       setResponseFood(recognizedFoods);
     } catch (error) {
       console.error(error);
@@ -99,7 +99,7 @@ const Home = () => {
     //     console.error(error)
     // })
   }
-
+  
   return (
     <Container>
       <MainCamera camRef={camRef} />
