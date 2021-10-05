@@ -1,12 +1,15 @@
 const foods = [
   {
-    lunch: ["arroz", "feijão", "salada"],
+    title: "ALMOÇO",
+    data: ["arroz", "feijão", "salada"],
   },
   {
-    breakfast: ["pão", "torrada", "melão", "café"],
+    title: "CAFÉ DA MANHÃ",
+    data: ["pão", "torrada", "melão", "café"],
   },
   {
-    dinner: ["bife", "salada", "salame", "feijão", "batata frita"],
+    title: "JANTA",
+    data: ["bife", "salada", "salame", "feijão", "batata frita"],
   },
 ];
 

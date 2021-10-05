@@ -1,51 +1,26 @@
 import React from "react";
-import { SectionList, StyleSheet, ScrollView, Text, View } from "react-native";
-import { Container, Title, listStyle } from "./styles";
-import { foods } from "../../../__mocks__/diet";
+import { ContainerBox, Title, List, Container, ItemTitle, ItemContent } from "./styles";
+import { IContentProps } from "./Diet.interface";
 
-const Diet = () => {
-  return (
-    <View style={listStyle.container}>
+const Diet = ({ content }: IContentProps) => {
+ const Item = (({item} : any) => (<ItemContent>{'\u2022 ' + item}</ItemContent>))
+
+ return (
+    <Container>
       <Title>DIETA</Title>
-      <Container>
-        <SectionList
-          style={{
-            flex: 1,
-            width: "100%",
-            paddingHorizontal: "1%",
-            paddingTop: "5%",
-          }}
-          sections={[
-            {
-              title: "CAFÉ DA MANHÃ",
-              data: ["• Devin", "• Dan", "• Dominic", "• a", "• a", "• b", "• c", "• x", "• c"],
-            },
-            {
-              title: "ALMOÇO",
-              data: ["Devin", "Dan", "Dominic", "a", "a", "b", "c", "x", "c"],
-            },
-            {
-              title: "JANTA",
-              data: [
-                "Jackson",
-                "James",
-                "Jillian",
-                "Jimmy",
-                "Joel",
-                "John",
-                "Julie",
-                "m",
-                "n",
-              ],
-            },
-          ]}
-          renderItem={({ item }) => <Text style={listStyle.item}>{item}</Text>}
-          renderSectionHeader={({ section }) => (
-            <Text style={listStyle.sectionHeader}>{section.title}</Text>
+      <ContainerBox>
+        <List
+         keyExtractor={(item:any, index) => item+index} 
+          sections={
+            content
+          }
+          renderItem={({ item }) => <Item item={item}/>}
+          renderSectionHeader={({ section: {title} } : any) => (
+            <ItemTitle>{title}</ItemTitle>
           )}
-        />
-      </Container>
-    </View>
+          /> 
+      </ContainerBox>
+    </Container>
   );
 };
 

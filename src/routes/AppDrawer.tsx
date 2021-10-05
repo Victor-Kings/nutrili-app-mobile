@@ -6,6 +6,7 @@ import Home from '../screens/Home/Home';
 import Notifications from '../screens/Notifications/Notifications';
 import Diet from "../screens/Diet/Diet";
 import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
+import { foods } from "../../__mocks__/diet";
 
 const Drawer = createDrawerNavigator();
 
@@ -51,7 +52,7 @@ export function AppDrawer() {
       <Drawer.Screen name="Diet">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <Diet />
+            <Diet content={foods} />
           </MainTemplate>
         )}
       </Drawer.Screen>
