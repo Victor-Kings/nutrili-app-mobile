@@ -4,6 +4,7 @@ import { ContentDrawer } from "../screens/ContentDrawer/ContentDrawer";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from '../screens/Home/Home';
 import Notifications from '../screens/Notifications/Notifications';
+import Diet from "../screens/Diet/Diet";
 
 const Drawer = createDrawerNavigator();
 
@@ -43,6 +44,13 @@ export function AppDrawer() {
         {(props) => (
           <MainTemplate {...props} content={content}>
             <Notifications content={contentNoti} />
+          </MainTemplate>
+        )}
+      </Drawer.Screen>
+      <Drawer.Screen name="Diet">
+        {(props) => (
+          <MainTemplate {...props} content={content}>
+            <Diet />
           </MainTemplate>
         )}
       </Drawer.Screen>

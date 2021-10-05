@@ -25,11 +25,11 @@ const getLocalToken = async () => {
 };
 
 export const apiBackend = axios.create({
-  baseURL: "http://192.168.0.108:5000",
+  baseURL: "http://34.95.193.205:8000",
 });
 
 export const apiBackendAuthenticated = axios.create({
-  baseURL: "http://192.168.0.108:5000",
+  baseURL: "http://34.95.193.205:8000",
   headers: {
     Authorization: `Bearer ${getLocalToken}`,
   },

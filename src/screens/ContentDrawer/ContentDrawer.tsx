@@ -5,6 +5,9 @@ import IconBack from "../../assets/img/iconBack.svg";
 import IconResults from "../../assets/img/iconResults.svg";
 import IconPlus from "../../assets/img/iconPlus.svg";
 import IconNotification from "../../assets/img/iconNotification.svg";
+import IconPhotography from "../../assets/img/iconPhotography.svg";
+import IconNutritionalInformation from "../../assets/img/iconNutritionalInformation.svg"
+import IconRecommendedDiet from "../../assets/img/iconRecommendedDiet.svg"
 
 import {
   Container,
@@ -18,6 +21,7 @@ import {
 } from "./styles";
 
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
+import { manifest } from "expo-updates";
 
 export function ContentDrawer({ ...props }) {
   const handlerOnClickBack = () => {
@@ -76,8 +80,8 @@ export function ContentDrawer({ ...props }) {
 
           <BodyButtons>
             <ButtonMenu
-              text="RESULTADOS"
-              Icon={IconResults}
+              text="TIRAR FOTO DA ALIMENTAÇÃO"
+              Icon={IconPhotography}
               sizeText={18}
               sizeImageHeight={80}
               sizeImageWidth={80}
@@ -86,8 +90,8 @@ export function ContentDrawer({ ...props }) {
               page="Home"
             />
             <ButtonMenu
-              text="ANCIÃO PLUS"
-              Icon={IconPlus}
+              text="INFORMAÇÃO NUTRICIONAL"
+              Icon={IconNutritionalInformation}
               sizeText={18}
               sizeImageHeight={80}
               sizeImageWidth={80}
@@ -108,14 +112,14 @@ export function ContentDrawer({ ...props }) {
               page="Notifications"
             />
             <ButtonMenu
-              text="ANCIÃO PLUS"
-              Icon={IconPlus}
+              text="DIETA"
+              Icon={IconRecommendedDiet}
               sizeText={18}
               sizeImageHeight={80}
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
-              page="Home"
+              page="Diet"
             />
           </BodyButtons>
         </Body>
