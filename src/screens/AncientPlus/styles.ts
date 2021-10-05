@@ -1,16 +1,7 @@
+import { TouchableOpacity } from 'react-native';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
-interface ITextProps {
-   size?: number;
-   color?: string | undefined;
-   marginBottom?: string | undefined;
-}
-
-type OpaqueColorValue = symbol & { __TYPE__: 'Color' };
-export type ColorValue = string | OpaqueColorValue;
-
-interface ICardFoodProps {
-   color?: ColorValue | undefined;
-}
+import { Button } from '../../components/ButtonSearch/styles';
 
 export const Container = styled.View`
    align-items: center;
@@ -20,24 +11,16 @@ export const Container = styled.View`
    padding-top: 20%;
 `;
 
-export const ContentContainer = styled.View`
-   background-color: #FFFFFF;
-   width: 90%;
-   height: 80%;
-`;
+interface ITextProps {
+   size?: number;
+}
 
-export const BackButtonContainer = styled.View`
-   margin-top: 5%;
-   margin-left:5px;
-   align-self:flex-start;
-`;
+type OpaqueColorValue = symbol & { __TYPE__: 'Color' };
+export type ColorValue = string | OpaqueColorValue;
 
-export const TextContainer = styled.View`
-   width: 80%;
-   align-items: center;
-   align-self: center;
-   padding-bottom: 5%;
-`;
+interface ICardFoodProps {
+   color?: ColorValue | undefined;
+}
 
 export const ContainerButtons = styled.View`
     width: 100%;
@@ -56,12 +39,12 @@ export const ButtonTouch = styled.TouchableOpacity`
 `;
 
 export const Title = styled.Text`
-   align-self: center;
-   margin: 50px auto;
-   color: ${({ color }: ITextProps): any => color ? color : '#414141'};
-   font-size: 22px;
-   text-align: center;
+    align-self: flex-start;
+    margin: 50px 0 5px 12%;
+    color: #9C9C9C;
+    font-size: 20px;
 `;
+
 
 export const TextButton = styled.Text`
    color: white;
@@ -96,4 +79,33 @@ export const SquaresBottom = styled.View`
    position:absolute;
    bottom: -30%; left: -10%;
    transform: rotate(12deg);
+`;
+
+export const TextCustom = styled.Text`
+   font-family: 'OpenSans_600SemiBold';
+   font-size: 26px;
+   line-height: 35px;
+   text-align: center;
+   color:#8C8C8C;
+   width: 95%;
+   align-self: center;
+   padding-top: 35px;
+`;
+
+export const TextCustomLittleSize = styled.Text`
+   padding-top: 50px;
+   font-family: 'OpenSans_600SemiBold';
+   font-size: 18px;
+   line-height: 35px;
+   text-align: left;
+   color:#8C8C8C;
+   width: 95%;
+   align-self: center;
+   padding-bottom: 0px;
+`;
+
+export const ContainerSearch = styled.View`
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
 `;

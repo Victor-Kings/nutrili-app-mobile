@@ -17,16 +17,16 @@ export function AuthContextProvider({ children }: any) {
     try{
      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
     }catch(error){
-      console.log("[ERROR] SIGNIN 1 : ", error)
+      console.error("[ERROR] SIGNIN 1 : ", error)
     }
     if(data !== null){
       try{
-        const isNewUser = await authService.verifyIsUser(data.access_token);
-        const authData = mapToAuthenticationToken(data, !isNewUser.newUser);
-        setIsRegistered(!isNewUser.newUser)
+        const verifyUser = await authService.verifyIsUser(data.access_token);
+        const authData = mapToAuthenticationToken(data, !verifyUser.newUser, verifyUser.ancientPlusComplete);
+        setIsRegistered(!verifyUser.newUser)
         await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
       }catch(error){
-        console.log("[ERROR] SIGNIN 2 : ", error)
+        console.error("[ERROR] SIGNIN 2 : ", error)
       }
     }
   }
@@ -50,11 +50,12 @@ export function AuthContextProvider({ children }: any) {
     }
   },[])
 
- const mapToAuthenticationToken= (data: IResponseAuthToken, isValid: boolean): IAuthProps =>{
+ const mapToAuthenticationToken= (data: IResponseAuthToken, isRegistered: boolean, isRegisteredComplete: boolean): IAuthProps =>{
     const response = {
         access_token: data.access_token, 
         refresh_token: data.refresh_token,
-        isRegistered: isValid
+        isRegistered,
+        isRegisteredComplete        
     }
     return response;
   }

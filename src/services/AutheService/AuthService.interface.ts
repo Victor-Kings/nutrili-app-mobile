@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 export interface IAuthenticationToken{
     access_token: string,
     refresh_token: string,
-    isRegister: boolean
+    isRegister: boolean,
 }
 
 export interface IResponseAuthToken{
@@ -12,7 +12,8 @@ export interface IResponseAuthToken{
 }
 
 export interface IIsRegister{
-    newUser:boolean
+    newUser:boolean;
+    ancientPlusComplete: boolean;
 }
 export interface IAuthServiceProps {
     authenticate:(phoneNumber: string, smsToken: string)=>Promise<IResponseAuthToken>

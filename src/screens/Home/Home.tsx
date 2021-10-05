@@ -50,7 +50,7 @@ const Home = () => {
   }
 
   async function takePhoto() {
-    console.log("FetchingInfos...");
+    // TODO: precisa de um loading ate a resposta da IA
     if (camRef) {
       const data = await camRef.current.takePictureAsync();
       await sendImageIA(data);
@@ -63,9 +63,8 @@ const Home = () => {
     setModalOpen(false);
     try {
       const data = await new SendFoodsArrayService().execute(responseFood);
-      console.log(data);
     } catch (error) {
-      console.log("[ERROR]");
+      console.error("Erro ao enviar os alimentos para a API");
     }
     // await api.post("/post_recognized_foods",{
     //   Recognized_Foods: responseFood

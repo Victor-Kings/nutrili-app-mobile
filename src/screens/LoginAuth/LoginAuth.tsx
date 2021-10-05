@@ -27,7 +27,7 @@ export function LoginAuth({ ...props }: any) {
   const [startTimer, setStartTimer] = useState(false);
 
   const { signIn }: any = useAuthContext();
-  const phoneNumber:string = props.route.params.phoneNumber;
+  const phoneNumber: string = props.route.params.phoneNumber;
 
   const handler = (page?: string) => {
     props.navigation.navigate(page);
@@ -35,24 +35,24 @@ export function LoginAuth({ ...props }: any) {
 
   useEffect(() => {
     var controle = true;
-   
-      if (initialTime > 0) {
-        setTimeout(() => {
-          if(controle){
-            setInitialTime(initialTime - 1);
-          }
-        }, 1000);
-      }
 
-      if (initialTime === 0 && startTimer) {
-        if(controle){
-          setStartTimer(false);
+    if (initialTime > 0) {
+      setTimeout(() => {
+        if (controle) {
+          setInitialTime(initialTime - 1);
         }
+      }, 1000);
+    }
+
+    if (initialTime === 0 && startTimer) {
+      if (controle) {
+        setStartTimer(false);
       }
-    
-  return function cleanUp() {
-    controle = false;
-  };
+    }
+
+    return function cleanUp() {
+      controle = false;
+    };
 
   }, [initialTime, consentedSms]);
 
@@ -64,31 +64,16 @@ export function LoginAuth({ ...props }: any) {
   };
 
   useEffect(() => {
-    console.log(code.length)
-   
-    // async function FODASE() {
-    //   try {
-    //       const response = await fetch(
-    //           `https://www.reddit.com/r/${subreddit}.json`
-    //       );
-    //       const json = await response.json();
-    //       setPosts(json.data.children.map(it => it.data));
-    //   } catch (e) {
-    //       console.error(e);
-    //   }
-    //};
-    
-      if (code.length === 6) {
-        (async () => {
-          try{
-            await signIn(phoneNumber.toUpperCase(), code);
-            props.navigation.navigate("LoginQuestion");
-          }catch(error){
-            Alert.alert("Ocorreu alguem erro no login");
-          }
-        })();
-      }
-  
+    if (code.length === 6) {
+      (async () => {
+        try {        
+          await signIn(phoneNumber.toUpperCase(), code);
+          props.navigation.navigate("LoginQuestion");
+        } catch (error) {
+          Alert.alert("Ocorreu alguem erro no login");
+        }
+      })();
+    }
   }, [code]);
 
   const AuthScreen = () => {
@@ -129,7 +114,7 @@ export function LoginAuth({ ...props }: any) {
           <TextInput
             onChangeText={onChangeCode}
             value={code}
-            placeholder="CD23KIUJ"
+            placeholder="CD23KJ"
             style={InputCode}
             placeholderTextColor="#C9C9C9"
           />

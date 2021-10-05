@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Alert } from "react-native";
 import { IInsertCustomProps } from "./InsertCustom.interface";
 import { Picker } from "@react-native-picker/picker";
-import { ButtonTouch, TextButton } from "../styles";
+import { ButtonTouch, TextButton } from "../../screens/LoginQuestions/styles";
 import {
   ContainerButtons,
   ContainerSingleButton,
@@ -37,7 +37,6 @@ export function InsertsCustom({ handleOnchange, content }: IInsertCustomProps) {
   };
 
   const handlerResponse = (value: string) => {
-    console.log("HANDLE VALUE: " + value);
     setResponse(value);
   };
 

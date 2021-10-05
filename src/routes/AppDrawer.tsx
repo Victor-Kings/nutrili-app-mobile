@@ -5,6 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from '../screens/Home/Home';
 import Notifications from '../screens/Notifications/Notifications';
 import Diet from "../screens/Diet/Diet";
+import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
 
 const Drawer = createDrawerNavigator();
 
@@ -54,7 +55,13 @@ export function AppDrawer() {
           </MainTemplate>
         )}
       </Drawer.Screen>
-      {/* <Drawer.Screen name="Settings" component={()=>(<View>AAAAAAAAA</View>)} options={{ title: '2' }} /> */}
+      <Drawer.Screen name="AncientPlus">
+        {(props) => (
+          <MainTemplate {...props} content={content}>
+            <AncientPlus />
+          </MainTemplate>
+        )}
+      </Drawer.Screen>
     </Drawer.Navigator>
   );
 }

@@ -57,7 +57,7 @@ export function ContentDrawer({ ...props }) {
         <Body>
           <BodyButtons>
             <ButtonMenu
-              text="RESULTADOS"
+              text="RRRRRR"
               Icon={IconResults}
               sizeText={18}
               sizeImageHeight={80}
@@ -74,7 +74,7 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
-              page="Home"
+              page="AncientPlus"
             />
           </BodyButtons>
 
