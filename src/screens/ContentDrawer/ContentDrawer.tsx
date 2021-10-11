@@ -97,7 +97,7 @@ export function ContentDrawer({ ...props }) {
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
-              page="Home"
+              page="NutritionalInformation"
             />
           </BodyButtons>
           <BodyButtons>
