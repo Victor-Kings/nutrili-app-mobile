@@ -22,7 +22,6 @@ const Notifications = () => {
       
     useFocusEffect(
         React.useCallback(() => {
-      
             fetchNotificationsData()
         }, [])
       );
