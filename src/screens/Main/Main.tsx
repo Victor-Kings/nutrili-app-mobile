@@ -7,11 +7,11 @@ import { useAuthContext } from '../../context/authContext'
 
 
 export default function Main() {
-  //const {isRegistered} =useAuthContext();
+  const {isRegistered} = useAuthContext();
 
   return (
     <>
-      {true ? (
+      {isRegistered ? (
         <AppDrawer />
       )
         : (

@@ -1,5 +1,4 @@
 import React from "react";
-import {Image, Text} from "react-native"
 import { Container, ContainerScore, ImagePerfil, Infos, Name } from "./styles"
 import {ButtonSmall} from '../../../../components/ButtonSmall/ButtonSmall'
 import IconStartFilled from '../../../../assets/img/iconStarFilled.svg'
@@ -7,8 +6,7 @@ import IconStartVoid from '../../../../assets/img/iconStarVoid.svg'
 import IconStarHalf from '../../../../assets/img/iconStarHalf.svg'
 import {ICardNutritionistProps} from './CardNutriitionist.interface'
 
-export const CardNutritionist = ({city, name, score: scoreProp, state, profilePicture, phone}:ICardNutritionistProps) =>{
-
+export const CardNutritionist = ({city, name, score: scoreProp, state, profilePicture, phone, id, handlerSelectPatient,closeModal}:ICardNutritionistProps) =>{
     let score = scoreProp;
     
     let stars = [];
@@ -29,6 +27,11 @@ export const CardNutritionist = ({city, name, score: scoreProp, state, profilePi
             count--;
         }
     }
+
+    const clickCard = (id:string)=>{
+        closeModal!()
+        handlerSelectPatient(id)
+    }
     
     return(
         <Container>
@@ -42,7 +45,7 @@ export const CardNutritionist = ({city, name, score: scoreProp, state, profilePi
             <ContainerScore>
                 {stars}
             </ContainerScore>
-            <ButtonSmall buttonLabel="SELECIONAR" handlerClick={()=>console.log("INDO?")}/>
+            <ButtonSmall buttonLabel="SELECIONAR" handlerClick={()=>clickCard(id)}/>
         </Container>
     )
 }

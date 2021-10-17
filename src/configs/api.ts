@@ -13,7 +13,7 @@ interface IFailed {
 let failedRequestsQueue: IFailed[] = [];
 
 export const apiRecognize = axios.create({
-  baseURL: "http://192.168.0.104:8090",
+  baseURL: "http://192.168.0.109:8090",
 });
 
 const getLocalToken = async () => {
@@ -25,11 +25,11 @@ const getLocalToken = async () => {
 };
 
 export const apiBackend = axios.create({
-  baseURL: "http://34.95.193.205:8000",
+  baseURL: "http://192.168.0.109:5000",
 });
 
 export const apiBackendAuthenticated = axios.create({
-  baseURL: "http://34.95.193.205:8000",
+  baseURL: "http://192.168.0.109:5000",
   headers: {
     Authorization: `Bearer ${getLocalToken}`,
   },

@@ -22,7 +22,7 @@ export function AuthContextProvider({ children }: any) {
     if(data !== null){
       try{
         const verifyUser = await authService.verifyIsUser(data.access_token);
-        const authData = mapToAuthenticationToken(data, !verifyUser.newUser, verifyUser.ancientPlusComplete);
+        const authData = mapToAuthenticationToken(data, !verifyUser.newUser, verifyUser.ancientPlusComplete);//NewUser é true se não preencheu form
         setIsRegistered(!verifyUser.newUser)
         await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
       }catch(error){

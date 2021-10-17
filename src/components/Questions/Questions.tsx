@@ -44,7 +44,7 @@ export function Questions({
           setPayloadUser({ ...payloadUser, name: data });
           break;
         case 2:
-          setPayloadUser({ ...payloadUser, gender: data });
+          setPayloadUser({ ...payloadUser, gender: data=="masculino"?"M":"F" });
           break;
         case 3:
           setPayloadUser({ ...payloadUser, birth: data });

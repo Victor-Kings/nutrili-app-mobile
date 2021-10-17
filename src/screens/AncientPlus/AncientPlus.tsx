@@ -3,7 +3,6 @@ import { QuestionsTemplate } from "../../components/QuestionsTemplate/QuestionsT
 import {
   ICurrentQuestionContent,
   IpayloadResponses,
-  IPayloadUser,
 } from "../LoginQuestions/LoginQuestions.interface";
 import {
   ButtonTouch,
@@ -16,18 +15,19 @@ import {
 } from "./styles";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { formFindNutritionist } from "../../../__mocks__/form";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { RegisterDataUserService } from "../../services/RegisterDataUserService/RegisterDataUserService";
 import { Questions } from "../../components/Questions/Questions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const";
 import { IAuthProps } from "../../context/authContext.interface";
 import { ButtonSearch } from "../../components/ButtonSearch/ButtonSearch";
-import IconFinder from "../../assets/img/iconFinder.svg";
-import IconLocale from "../../assets/img/iconLocale.svg";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Octicons } from '@expo/vector-icons'; 
 import { ModalSearchNutritionist } from "../../components/ModalSearchNutritionist";
+import { useNavigation } from '@react-navigation/native';
+import { SearchNutritionistService } from "../../services/SearchNutritionistService/SearchNutritionistService";
+import { AuthService } from "../../services/AutheService/AuthService";
 
 
 
@@ -110,9 +110,11 @@ function QuestionsLocale({ handleOK }: any) {
     </QuestionsTemplate>
   );
 }
+type ISearchProps = {
+  handlerSelectPatient:(id:string)=>void
+}
 
-
-function Search() {
+function Search({handlerSelectPatient}:ISearchProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [type, setType] = useState<string>('');
 
@@ -142,13 +144,25 @@ function Search() {
           handlerClick={()=>handlerButtonSearch("city")}
         />
       </ContainerSearch>
-      {modalOpen&&<ModalSearchNutritionist closeModal={handlerModal}  modalOpen={modalOpen} requisitionType={type}/>}
+      {modalOpen&&<ModalSearchNutritionist closeModal={handlerModal}  modalOpen={modalOpen} requisitionType={type} handlerSelectPatient={handlerSelectPatient}/>}
     </QuestionsTemplate>
   );
 }
-
-export function AncientPlus({ ...props }) {
+export function AncientPlus() {
+  const navigation = useNavigation()
   const [value, setValue] = useState(false);
+
+  const handlerSelectPatient = async (id:string) => {
+    console.log("INDO?",id)
+    try{
+      await new SearchNutritionistService().acceptNutritionist(id)
+      alert("Solicitação enviada para o nutricionista selecionado, fique de olho nas notificações")
+      navigation.navigate("Home" as never,{} as never)
+    }catch(err){
+        console.error("HandlerSelectPatient",err);
+        
+    }
+  } 
 
   useEffect(() => {
     (async () => {
@@ -157,14 +171,20 @@ export function AncientPlus({ ...props }) {
         if (auth_token) {
           const auth: IAuthProps = JSON.parse(auth_token);
           setValue(auth.isRegisteredComplete);
+          const data = await new AuthService().verifyIsUser(auth.access_token);
+          if(!data.ableToSearchNutritionist){
+            alert("Não é qualificado para buscar um nutricionista")
+            navigation.navigate("Home" as never,{} as never)
+          }
         }
+
       } catch (error) {
         console.error("Falha ao entrar na opção de Ancient Plus", error);
       }
     })();
   }, []);
 
-  const render = value ? <QuestionsLocale handleOK={setValue} /> : <Search />;
+  const render = value ? <Search handlerSelectPatient={handlerSelectPatient} /> : <QuestionsLocale handleOK={setValue} />;
 
   return <Container>{render}</Container>;
 }

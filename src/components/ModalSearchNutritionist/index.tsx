@@ -43,6 +43,7 @@ export const ModalSearchNutritionist = ({
   closeModal,
   modalOpen,
   requisitionType,
+  handlerSelectPatient,
 }: IModalProps) => {
   const [list, setList] = useState<ISearchNutritionist[]|[]>();
   const [valueInput, setValueInput] = useState<string>("");
@@ -56,7 +57,10 @@ export const ModalSearchNutritionist = ({
         score={item.score}
         state={item.state}
         profilePicture={item.profilePicture}
-      />
+        id={item.id}
+        handlerSelectPatient={handlerSelectPatient}
+        closeModal={closeModal}
+        />
     );
   };
 
@@ -78,6 +82,9 @@ export const ModalSearchNutritionist = ({
         await eventSearchNutritionist()
       })();
     }
+    if (valueInput.length === 0) {
+      setList([])
+    }
   }, [valueInput]);
 
   return (
@@ -91,7 +98,6 @@ export const ModalSearchNutritionist = ({
       <View style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
         <ContainerModal>
           <SearchBar onChange={setValueInput} onClickButton={eventSearchNutritionist}/>
-          <Text>{valueInput}</Text>
           <ContainerCards
             data={list}
             renderItem={renderCards}

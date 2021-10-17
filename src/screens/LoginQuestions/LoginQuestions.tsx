@@ -26,7 +26,7 @@ export function LoginQuestions({ ...props }: any) {
   const { registeredDatas }: any = useAuthContext();
   const [payloadResponses, setPayloadResponses] = useState<IpayloadResponses[] | null>(null);
   const [payloadUser, setPayloadUser] = useState<IPayloadUser>({
-    isNutricionist: false,
+    isNutritionist: false,
   });
   const [currentQuestionContent, setCurrentQuestionContent] =
   useState<ICurrentQuestionContent>({

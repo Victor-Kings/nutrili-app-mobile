@@ -5,4 +5,7 @@ export interface ICardNutritionistProps{
     state: string;
     profilePicture: string;
     phone: string;
+    id: string
+    handlerSelectPatient:(id:string)=>void
+    closeModal?:()=>void
 }

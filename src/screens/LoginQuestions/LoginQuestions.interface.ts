@@ -21,7 +21,7 @@ export interface IPayloadUser{
     phone?: string,
     gender?: string,
     birth?: string,
-    isNutricionist: boolean,
+    isNutritionist: boolean,
 }
 
 export interface IpayloadResponses{

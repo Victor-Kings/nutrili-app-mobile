@@ -14,6 +14,7 @@ export interface IResponseAuthToken{
 export interface IIsRegister{
     newUser:boolean;
     ancientPlusComplete: boolean;
+    ableToSearchNutritionist:boolean;
 }
 export interface IAuthServiceProps {
     authenticate:(phoneNumber: string, smsToken: string)=>Promise<IResponseAuthToken>

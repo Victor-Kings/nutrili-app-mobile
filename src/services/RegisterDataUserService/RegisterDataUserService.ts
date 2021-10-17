@@ -22,10 +22,11 @@ export class RegisterDataUserService implements IRegisterDataUserServiceProps {
     response: IPayloadUser,
   ): Promise<AxiosResponse> => {
     const token = await getAccessToken()
-    return await apiBackendAuthenticated.put("/user/updateUser", response, {
+    const data = await apiBackendAuthenticated.put("/user/updateUser", response, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    return data
   };
 }

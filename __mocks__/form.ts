@@ -106,7 +106,7 @@ const form = [
         typeForm: "healthForm",
         question: "Altura",
         typeAnswer: "insertNumber",
-        unityMeasure: 'm',
+        unityMeasure: 'cm',
         placeholder: "",
         checkQuestions: {
             fields: undefined
