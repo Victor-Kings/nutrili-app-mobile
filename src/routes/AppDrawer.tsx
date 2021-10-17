@@ -48,7 +48,7 @@ export function AppDrawer() {
       <Drawer.Screen name="Notifications">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <Notifications content={contentNoti} />
+            <Notifications />
           </MainTemplate>
         )}
       </Drawer.Screen>

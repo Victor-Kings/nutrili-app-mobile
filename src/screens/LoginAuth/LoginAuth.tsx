@@ -57,7 +57,7 @@ export function LoginAuth({ ...props }: any) {
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
-
+    console.log("AAAAAAAAAAAAAAAAA")
     await authService.sendNumberToReceiverSMSToken(phoneNumber);
     setInitialTime(60);
     setConsentedSms(true);

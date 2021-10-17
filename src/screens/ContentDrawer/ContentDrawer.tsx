@@ -57,7 +57,7 @@ export function ContentDrawer({ ...props }) {
         <Body>
           <BodyButtons>
             <ButtonMenu
-              text="RRRRRR"
+              text="A fazer"
               Icon={IconResults}
               sizeText={18}
               sizeImageHeight={80}

@@ -14,7 +14,7 @@ export const Container = styled.View`
     align-items: center;
 `;
 
-export const ContainerCard = styled.View`
+export const ContainerCard = styled.TouchableOpacity`
     background-color: white;
     margin: 4%;
     border-radius: 4px;
