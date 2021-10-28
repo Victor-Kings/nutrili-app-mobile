@@ -6,8 +6,10 @@ import Home from '../screens/Home/Home';
 import Notifications from '../screens/Notifications/Notifications';
 import NutritionalInformation from '../screens/NutritionalInformation/NutritionalInformation';
 import Diet from "../screens/Diet/Diet";
+import Results from "../screens/Results/Results"
 import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
 import { foods } from "../../__mocks__/diet";
+import { foodDatas } from "../../__mocks__/foodDatas"
 import { informations } from "../../__mocks__/informations"
 
 
@@ -55,14 +57,21 @@ export function AppDrawer() {
       <Drawer.Screen name="Diet">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <Diet content={foods} />
+            <Diet content={ foods } />
+          </MainTemplate>
+        )}
+      </Drawer.Screen>
+      <Drawer.Screen name="Results">
+        {(props) => (
+          <MainTemplate {...props} content={content}>
+            <Results content={ foodDatas } />
           </MainTemplate>
         )}
       </Drawer.Screen>
       <Drawer.Screen name="NutritionalInformation">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <NutritionalInformation content={informations} />
+            <NutritionalInformation content={ informations } />
           </MainTemplate>
         )}
       </Drawer.Screen>

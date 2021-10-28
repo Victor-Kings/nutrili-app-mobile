@@ -57,14 +57,14 @@ export function ContentDrawer({ ...props }) {
         <Body>
           <BodyButtons>
             <ButtonMenu
-              text="A fazer"
+              text="RESULTADOS"
               Icon={IconResults}
               sizeText={18}
               sizeImageHeight={80}
               sizeImageWidth={80}
               containerSize={140}
               handleClick={handler}
-              page="Home"
+              page="Results"
             />
             <ButtonMenu
               text="ANCIÃO PLUS"
