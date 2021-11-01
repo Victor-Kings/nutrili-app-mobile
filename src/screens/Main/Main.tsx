@@ -7,7 +7,7 @@ import { useAuthContext } from '../../context/authContext'
 
 
 export default function Main() {
-  const {isRegistered} = useAuthContext();
+  const {isRegistered} = {isRegistered:true}//useAuthContext();
 
   return (
     <>

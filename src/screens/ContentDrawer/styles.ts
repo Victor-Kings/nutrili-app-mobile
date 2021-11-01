@@ -28,7 +28,7 @@ export const Header = styled.View`
     flex-direction: row;
 `;
 
-export const HeaderContentUser = styled.View`
+export const HeaderContentUser = styled.TouchableOpacity`
     width: 60%;
     height: 100%;
     display: flex;

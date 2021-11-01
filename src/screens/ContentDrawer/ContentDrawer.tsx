@@ -21,7 +21,7 @@ import {
 } from "./styles";
 
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
-import { manifest } from "expo-updates";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export function ContentDrawer({ ...props }) {
   const handlerOnClickBack = () => {
@@ -45,7 +45,7 @@ export function ContentDrawer({ ...props }) {
             handleClick={handler}
             page="Home"
           ></ButtonMenu>
-          <HeaderContentUser>
+          <HeaderContentUser onPress={()=>handler("Profile")}>
             <Avatar
               source={{
                 uri: "https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_960_720.png",

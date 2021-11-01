@@ -7,11 +7,11 @@ import Notifications from '../screens/Notifications/Notifications';
 import NutritionalInformation from '../screens/NutritionalInformation/NutritionalInformation';
 import Diet from "../screens/Diet/Diet";
 import Results from "../screens/Results/Results"
+import { Profile } from "../screens/Profile/Profile";
 import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
 import { foods } from "../../__mocks__/diet";
 import { foodDatas } from "../../__mocks__/foodDatas"
 import { informations } from "../../__mocks__/informations"
-
 
 const Drawer = createDrawerNavigator();
 
@@ -80,6 +80,11 @@ export function AppDrawer() {
           <MainTemplate {...props} content={content}>
             <AncientPlus />
           </MainTemplate>
+        )}
+      </Drawer.Screen>
+      <Drawer.Screen name="Profile">
+        {(props) => (
+          <Profile  {...props} content={content}/>
         )}
       </Drawer.Screen>
     </Drawer.Navigator>
