@@ -132,3 +132,17 @@ export const TextButton = styled.Text`
     font-size: 20px;
     font-weight: 800;
 `;
+
+export const InsertString = styled.TextInput`
+    height: 50px;
+    width: 90%;
+    background-color: #DAEBFB;
+    border-radius: 9px;
+    border: 2px;
+    border-color: #4197E5;
+    margin-bottom: 5%;
+    padding: 2%;
+    color: gray;
+    font-size: 20px;
+    margin-left: 5%;
+`;
