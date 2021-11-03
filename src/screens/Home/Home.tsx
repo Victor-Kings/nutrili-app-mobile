@@ -7,9 +7,6 @@ import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
 import { SendFoodsArrayService } from "../../services/SendFoodsArrayService/SendFoodsArrayService";
 import { SendImageService } from "../../services/SendImageService/SendImageService";
-import { apiBackendAuthenticated } from "../../configs/api";
-import { useAuthContext } from "../../context/authContext";
-import { AxiosError } from "axios";
 
 function ArrayOrganizeFoods(data: any) {
   var foods = [];
@@ -63,13 +60,11 @@ const Home = () => {
     setModalOpen(false);
     try {
       const data = await new SendFoodsArrayService().execute(responseFood);
+      console.log("RETORNO IA", data);
+      //TODO enviar para o backend
     } catch (error) {
       console.error("Erro ao enviar os alimentos para a API");
     }
-    // await api.post("/post_recognized_foods",{
-    //   Recognized_Foods: responseFood
-    // })
-    // .then((apiResponse) => { console.log(apiResponse.data) })
   };
 
   async function sendImageIA(ImageData: any) {
@@ -79,25 +74,6 @@ const Home = () => {
     } catch (error) {
       console.error(error);
     }
-
-    // var form = new FormData();
-    // form.append("file1", {
-    //   type: "image/jpeg",
-    //   name: `alimento.jpg`,
-    //   uri: ImageData.uri,
-    // });
-    // await api
-    // .post("/post_image", form, {
-    //     headers: {
-    //     "Content-Type": "multipart/form-data",
-    //     },
-    // })
-    // .then((apiResponse) => {
-    //   setResponseFood(apiResponse.data.Recognized_Foods)
-    // })
-    // .catch((error)=>{
-    //     console.error(error)
-    // })
   }
 
   return (
