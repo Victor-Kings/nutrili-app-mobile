@@ -158,12 +158,12 @@ export function Profile({ navigation, content }: any) {
       officeAddress: undefined,
       password: undefined,
       personalAddress: {
-        cep: fieldsContent?.personalAddress?.cep ? fieldsContent?.personalAddress?.cep.toString().substr(0,5)+"-"+fieldsContent?.personalAddress?.cep.toString().substr(-3) : "39500-000",
-        city: fieldsContent?.personalAddress?.city || "vazio",
-        neighborhood: fieldsContent?.personalAddress?.neighborhood || "vazio",
-        number: fieldsContent?.personalAddress?.number || "vazio",
-        state: fieldsContent?.personalAddress?.state || "NA",
-        street: fieldsContent?.personalAddress?.street || "vazio"
+        cep: fieldsContent?.personalAddress?.cep ? fieldsContent?.personalAddress?.cep.toString().substr(0,5)+"-"+fieldsContent?.personalAddress?.cep.toString().substr(-3) : undefined,
+        city: fieldsContent?.personalAddress?.city || undefined,
+        neighborhood: fieldsContent?.personalAddress?.neighborhood || undefined,
+        number: fieldsContent?.personalAddress?.number || undefined,
+        state: fieldsContent?.personalAddress?.state || undefined,
+        street: fieldsContent?.personalAddress?.street || undefined
       },
       phone: undefined,
     };

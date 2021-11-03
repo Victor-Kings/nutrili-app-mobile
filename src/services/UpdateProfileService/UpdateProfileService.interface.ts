@@ -4,12 +4,12 @@ export interface IUpdateProfileServiceProps {
 }
 
 export interface Address {
-    cep: string;
-    state: string;
-    city: string;
-    neighborhood: string;
-    street: string;
-    number: string;
+    cep: string | undefined;
+    state: string | undefined;
+    city: string | undefined;
+    neighborhood: string | undefined;
+    street: string | undefined;
+    number: string | undefined;
 }
 
 export interface IPayloadUpdate {
