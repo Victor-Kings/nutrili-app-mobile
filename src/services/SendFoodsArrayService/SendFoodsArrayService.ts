@@ -1,4 +1,5 @@
-import {apiRecognize} from "../../configs/api";
+import { AxiosResponse } from "axios";
+import {apiBackendAuthenticated, apiRecognize, getAccessToken} from "../../configs/api";
 import { ISendFoodService,ResponseData } from "./SendFoodsArrayService.interface";
 
 
@@ -10,4 +11,29 @@ export class SendFoodsArrayService implements ISendFoodService {
     });
     return data;
   }
+
+  sendFoodDataToBack = async (
+    responseData: ResponseData[]
+  ): Promise<AxiosResponse> =>{
+    const token = await getAccessToken()
+    return await apiBackendAuthenticated.post("/meal/mealTime",mapResponse(responseData), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+}
+
+const mapResponse= ( responseData: ResponseData[])=>{
+  let newResponseData;
+  
+  responseData.forEach((element)=>{
+    newResponseData.push({
+      name:element.Food,
+      color:element.Color,
+      category:element.Category
+    })
+  })
+
+  return newResponseData
 }

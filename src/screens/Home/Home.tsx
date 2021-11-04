@@ -60,8 +60,7 @@ const Home = () => {
     setModalOpen(false);
     try {
       const data = await new SendFoodsArrayService().execute(responseFood);
-      console.log("RETORNO IA", data);
-      //TODO enviar para o backend
+      await new SendFoodsArrayService().sendFoodDataToBack(data)
     } catch (error) {
       console.error("Erro ao enviar os alimentos para a API");
     }

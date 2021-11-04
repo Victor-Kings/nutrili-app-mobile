@@ -8,7 +8,7 @@ export class SendImageService implements ISendImageService {
       
     var form = new FormData();
 
-    form.append("image", {
+    form.append("file1", {
       type: "image/jpeg",
       name: `alimento.jpg`,
       uri: ImageData.uri,
