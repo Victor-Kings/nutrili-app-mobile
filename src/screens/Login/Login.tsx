@@ -1,5 +1,5 @@
-import React, { useRef, useState,useEffect } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useRef, useState } from "react";
+
 import {
   PlaceHolder,
   Container,
@@ -12,20 +12,12 @@ import {
 import { TextInputMask } from "react-native-masked-text";
 import Logo from "../../assets/img/LogoNutrili.svg";
 import { Alert, KeyboardAvoidingView, ScrollView } from "react-native";
-import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const";
-import { IAuthProps } from "../../context/authContext.interface";
+
 export function Login({ navigation }: any) {
   const [number, onChangeNumber] = useState("");
   const numberRef = useRef<any>(null);
 
-  useEffect(()=>{
-    async () =>{
-    const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
-    if(auth_token){
-     const auth:IAuthProps = JSON.parse(auth_token)
-     setIsRegistered(auth.isRegistered);
-    }
-  },[])
+
   const handlerLogin = () => {
     const numberUnmask = numberRef.current.getRawValue();
     if (numberUnmask && numberUnmask.length == 11) {

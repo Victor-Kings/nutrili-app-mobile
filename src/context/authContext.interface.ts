@@ -9,6 +9,7 @@ export interface IResponseAuthToken{
     refresh_token: string,
 }
 export interface IAuthContext{
+    setIsRegistered:(register: boolean) => void;
     isRegistered?:boolean| null;
     signIn:(phoneNumber: string, smsToken: string) => void;
     registeredDatas:()=>Promise<void>;

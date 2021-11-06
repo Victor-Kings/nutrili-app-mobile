@@ -9,7 +9,6 @@ export class GraphicDataService implements IGraphDataProps {
           Authorization: `Bearer ${token}`,
         }
       })
-      console.log("!!!!", data);
       
       return data
     }

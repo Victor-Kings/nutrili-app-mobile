@@ -153,7 +153,6 @@ export function AncientPlus() {
   const [value, setValue] = useState(false);
 
   const handlerSelectPatient = async (id:string) => {
-    console.log("INDO?",id)
     try{
       await new SearchNutritionistService().acceptNutritionist(id)
       alert("Solicitação enviada para o nutricionista selecionado, fique de olho nas notificações")

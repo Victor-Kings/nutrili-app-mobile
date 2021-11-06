@@ -9,7 +9,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState<INotifications[]>([])
-    console.log(notifications);
     
     const fetchNotificationsData = useCallback(async () => {
         try {

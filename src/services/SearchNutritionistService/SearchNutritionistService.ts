@@ -14,12 +14,10 @@ export class SearchNutritionistService implements ISearchNutritionistService {
         },
       }
     );
-    console.log(data)
     return data;
   }
 
   async acceptNutritionist(nutritionistId: string): Promise<AxiosResponse> {
-    console.log("data")
     const {data} = await apiBackendAuthenticated.post(
       "/nutritionist/requestNutritionist",
       null,
@@ -29,7 +27,6 @@ export class SearchNutritionistService implements ISearchNutritionistService {
         },
       },
    ); 
-    console.log(data)
     return data;
   }
 }

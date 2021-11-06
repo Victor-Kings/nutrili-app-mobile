@@ -19,6 +19,6 @@ export interface IGetDataProfileApi {
 }
 
 export interface IGetDataProfileProps {
-    execute: () => Promise<IGetDataProfileApi[]>
+    execute: () => Promise<IGetDataProfileApi>
   }
   

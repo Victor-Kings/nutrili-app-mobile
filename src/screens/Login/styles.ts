@@ -11,7 +11,6 @@ interface ICardFoodProps {
     color?: ColorValue | undefined;
 }
 
-
 export const PlaceHolder = {
     color: "#575757",
     height: 40,
@@ -36,7 +35,6 @@ export const Title = styled.Text`
     color: #9C9C9C;
     font-size: 20px;
 `;
-
 
 export const ButtonTouch = styled.TouchableOpacity`
     max-width: 180px;
