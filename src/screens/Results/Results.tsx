@@ -11,16 +11,19 @@ import {
 } from "./styles";
 import { IContentProps } from "./Results.interface";
 import { VictoryPie } from "victory-native";
+import { GraphicDataService } from "../../services/GraphicDataService/GraphicDataService";
+import { IGraphData } from "../../services/GraphicDataService/GraphicDataService.interface";
 
 const PieChart = () => {
   return <VictoryPie />;
 };
 
-interface a {
+interface IPercentProps {
   y: number;
+  x: string;
 }
 
-const Results = ({ content }: IContentProps) => {
+const Results = () => {
   const nameLabel = [
     "Frutas",
     "Legumes",
@@ -44,6 +47,7 @@ const Results = ({ content }: IContentProps) => {
     "#81D0FD",
     "#074264",
     "#552323",
+    "#FFB6B6B6",
   ];
 
   const [graphicData, setGraphicData] = useState<any[] | undefined>(undefined);
@@ -53,52 +57,58 @@ const Results = ({ content }: IContentProps) => {
   const [graphicColor, setgraphicColor] = useState<any[] | undefined>(
     undefined
   );
+  const [content, setContent] = useState<any[]>()
 
   useEffect(() => {
-    //TODO: CHAMADA DO BACKEND AQUI
 
-    var percent: a[] = [];
-    var category: any = [];
-    var colors: any = [];
-    content.map((value) => {
-      percent.push({ y: value.percent });
-      category.push({ category: value.category });
-      colors.push(Colors[value.category - 1]);
-    });
+    (async () => {
+      const response = await new GraphicDataService().execute();
+      setContent(response)
+      var percent: IPercentProps[] = [];
+      var category: any = [];
+      var colors: any = [];
+      response.map((value) => {
+        percent.push({ y: value.percentage, x: `${value.percentage}%` });
+        category.push({ category: value.type });
+        colors.push(Colors[value.type - 1]);
+      });
 
-    setGraphicData(percent);
-    setGaphicCategoryData(category);
-    setgraphicColor(colors);
+      setGraphicData(percent);
+      setGaphicCategoryData(category);
+      setgraphicColor(colors);
+    })();
   }, []);
 
   return (
     <Container>
-      <ContainerBox>
-        <Title>Cores Consumidas:</Title>
+      {graphicData != undefined && (
+        <ContainerBox>
+          <Title>Cores Consumidas:</Title>
 
-        <ContainerGraphic>
-          <VictoryPie
-            data={graphicData}
-            width={350}
-            height={350}
-            colorScale={graphicColor}
-            labels={() => null}
-          />
-        </ContainerGraphic>
+          <ContainerGraphic>
+            <VictoryPie
+              data={graphicData}
+              width={350}
+              height={350}
+              colorScale={graphicColor}
+              // labels={() => null}
+            />
+          </ContainerGraphic>
 
-        <LabelBox>
-          {content.map((value, index) => (
-            <Subtitles key={`${value.percent}-${index}`}>
-              {graphicColor && <Rectangle color={graphicColor[index]} />}
-              {graphicCategoryData && (
-                <LabelSubtitles>
-                  {nameLabel[graphicCategoryData[index].category - 1]}
-                </LabelSubtitles>
-              )}
-            </Subtitles>
-          ))}
-        </LabelBox>
-      </ContainerBox>
+          <LabelBox>
+            {content && content.map((value, index) => (
+              <Subtitles key={`${value.percent}-${index}`}>
+                {graphicColor && <Rectangle color={graphicColor[index]} />}
+                {graphicCategoryData && (
+                  <LabelSubtitles>
+                    {nameLabel[graphicCategoryData[index].category - 1]}
+                  </LabelSubtitles>
+                )}
+              </Subtitles>
+            ))}
+          </LabelBox>
+        </ContainerBox>
+      )}
     </Container>
   );
 };

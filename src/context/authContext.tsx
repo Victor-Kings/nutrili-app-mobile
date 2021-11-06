@@ -61,7 +61,7 @@ export function AuthContextProvider({ children }: any) {
   }
 
   return (
-    <AuthContext.Provider value={{ isRegistered, signIn, registeredDatas}}>
+    <AuthContext.Provider value={{ isRegistered, signIn, registeredDatas, setIsRegistered}}>
       {children}
     </AuthContext.Provider>
   );

@@ -24,6 +24,7 @@ import {
 } from "./styles";
 import { UpdateProfileService } from "../../services/UpdateProfileService/UpdateProfileService";
 import { IPayloadUpdate } from "../../services/UpdateProfileService/UpdateProfileService.interface";
+import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
 interface Address {
   cep?: string;
   state?: string;
@@ -36,10 +37,6 @@ interface FieldsContent {
   gender?: string;
   birth?: string;
   weight?: number;
-  city?: string;
-  neighborhood?: string;
-  street?: string;
-  number?: string;
   height?: number;
   phone?: string;
   image?: string;
@@ -84,6 +81,10 @@ export function Profile({ navigation, content }: any) {
   }
 
   useEffect(() => {
+    (async()=>{
+      const response = await new GetDataProfile().execute();
+      // setFieldsContent(FieldsContent)
+    })()
     setFieldsContent(FieldsContent);
   }, []);
 
@@ -344,6 +345,12 @@ export function Profile({ navigation, content }: any) {
 
         <TextTittleForm>Altura:</TextTittleForm>
         <TextContentForm>{fieldsContent?.height}</TextContentForm>
+
+        <TextTittleForm>Idade:</TextTittleForm>
+        <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
+
+        <TextTittleForm>ENDEREÇO:</TextTittleForm>
+        <TextContentForm>{`${fieldsContent?.personalAddress?.street}, ${fieldsContent?.personalAddress?.number}, ${fieldsContent?.personalAddress?.neighborhood}, ${fieldsContent?.personalAddress?.city} - ${fieldsContent?.personalAddress?.state}`}</TextContentForm>
 
         <TextTittleForm>Idade:</TextTittleForm>
         <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
