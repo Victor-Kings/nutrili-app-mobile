@@ -52,9 +52,9 @@ const Home = () => {
   async function takePhoto() {
     // TODO: precisa de um loading ate a resposta da IA
     if (camRef) {
-      //const data = await camRef.current.takePictureAsync();
-      await sendImageIA("data");
-      setcapturedPhoto("data.uri");
+      const data = await camRef.current.takePictureAsync();
+      await sendImageIA(data);
+      setcapturedPhoto(data.uri);
       setModalOpen(true);
     }
   }
