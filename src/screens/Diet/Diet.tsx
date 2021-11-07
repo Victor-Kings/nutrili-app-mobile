@@ -14,18 +14,20 @@ import { IContentProps } from "./Diet.interface";
 
 import { GetDietService } from "../../services/GetDietService/GetDietService";
 import { IGetData } from "../../services/GetDietService/GetDietService.interface";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Diet = ({ content }: IContentProps) => {
   const [diet, setDiet] = useState<IGetData[] | undefined>(undefined);
 
   const Item = ({ item }: any) => <ItemContent>{"\u2022 " + item}</ItemContent>;
 
-  useEffect(() => {
-    (async () => {
-      const result = await new GetDietService().execute();
-      setDiet(result);
-    })();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const result = await new GetDietService().execute();
+        setDiet(result);
+      })();
+    }, []))
 
   return (
     <Container>

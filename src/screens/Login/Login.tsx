@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import {
   PlaceHolder,
@@ -12,11 +12,28 @@ import {
 import { TextInputMask } from "react-native-masked-text";
 import Logo from "../../assets/img/LogoNutrili.svg";
 import { Alert, KeyboardAvoidingView, ScrollView } from "react-native";
+import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const";
+import { IAuthProps } from "../../context/authContext.interface";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from "@react-navigation/native";
 
 export function Login({ navigation }: any) {
   const [number, onChangeNumber] = useState("");
-  const numberRef = useRef<any>(null);
+  const numberRef = useRef<any>(null);  
 
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
+        if (auth_token) {
+          const auth: IAuthProps = JSON.parse(auth_token);
+          if (auth) {
+            navigation.navigate("Home")
+          }
+        }
+      })();
+    }, [])
+  )
 
   const handlerLogin = () => {
     const numberUnmask = numberRef.current.getRawValue();

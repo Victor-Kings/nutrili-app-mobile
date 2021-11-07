@@ -7,6 +7,7 @@ import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
 import { SendFoodsArrayService } from "../../services/SendFoodsArrayService/SendFoodsArrayService";
 import { SendImageService } from "../../services/SendImageService/SendImageService";
+import { useFocusEffect } from "@react-navigation/native";
 
 function ArrayOrganizeFoods(data: any) {
   var foods = [];
@@ -24,19 +25,21 @@ const Home = () => {
   const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-  useEffect(() => {
-    let controle = true;
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      if (controle) {
-        setHasPermission(status === "granted");
-      }
-    })();
-    
-    return function cleanUp() {
-      controle = false;
-    };
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let controle = true;
+      (async () => {
+        const { status } = await Camera.requestPermissionsAsync();
+        if (controle) {
+          setHasPermission(status === "granted");
+        }
+      })();
+      
+      return function cleanUp() {
+        controle = false;
+      };
+    }, []))
 
   if (hasPermission === null) {
     return <View />;
@@ -49,9 +52,9 @@ const Home = () => {
   async function takePhoto() {
     // TODO: precisa de um loading ate a resposta da IA
     if (camRef) {
-      const data = await camRef.current.takePictureAsync();
-      await sendImageIA(data);
-      setcapturedPhoto(data.uri);
+      //const data = await camRef.current.takePictureAsync();
+      await sendImageIA("data");
+      setcapturedPhoto("data.uri");
       setModalOpen(true);
     }
   }
@@ -60,6 +63,8 @@ const Home = () => {
     setModalOpen(false);
     try {
       const data = await new SendFoodsArrayService().execute(responseFood);
+      console.log(data);
+      
       await new SendFoodsArrayService().sendFoodDataToBack(data)
     } catch (error) {
       console.error("Erro ao enviar os alimentos para a API");
@@ -68,7 +73,7 @@ const Home = () => {
 
   async function sendImageIA(ImageData: any) {
     try {
-      const recognizedFoods = new SendImageService().execute(ImageData);
+      const recognizedFoods = await new SendImageService().execute(ImageData);
       setResponseFood(recognizedFoods);
     } catch (error) {
       console.error(error);

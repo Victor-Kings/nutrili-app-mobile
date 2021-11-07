@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {  useState, useRef } from "react";
 import { Platform, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MenuLogo from "../../assets/img/menu.svg";
@@ -26,6 +26,7 @@ import { UpdateProfileService } from "../../services/UpdateProfileService/Update
 import { IPayloadUpdate } from "../../services/UpdateProfileService/UpdateProfileService.interface";
 import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
 import { IGetDataProfileApi } from "../../services/GetDataProfile/GetDataProfile.interface";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function Profile({ navigation, content }: any) {
   const [fieldsContent, setFieldsContent] = useState<
@@ -48,17 +49,17 @@ export function Profile({ navigation, content }: any) {
   function close() {
     pickerRef.current.blur();
   }
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const response = await new GetDataProfile().execute();
+        setFieldsContent(response);
+      })();
+    }, []))
 
-  useEffect(() => {
-    (async () => {
-      const response = await new GetDataProfile().execute();
-      setFieldsContent(response);
-    })();
-  }, []);
-
-  const setAge = () => {
+  const setAge = (date:string) => {
     const currentDate = new Date();
-    const correctDate = fieldsContent?.birth!.split("/");
+    const correctDate = date!.split("/");
     const birthDate = new Date(
       `${correctDate![1]}/${correctDate![0]}/${correctDate![2]}`
     );
@@ -72,7 +73,7 @@ export function Profile({ navigation, content }: any) {
     return age;
   };
 
-  function formatDate(value?: string) {
+  function maskDate(value?: string) {
     if (value)
       return value
         .replace(/\D/g, "")
@@ -80,6 +81,16 @@ export function Profile({ navigation, content }: any) {
         .replace(/(\d{2})(\d)/, "$1/$2")
         .replace(/(\d{4})(\d)/, "$1");
     return "";
+  }
+
+  function formatDate(value?: string){
+    if(value){
+      var date:any 
+      date= value.split(" ")
+      date= date[0].split('-')
+      return `${date[2]}/${date[1]}/${date[0]}`
+    }
+    return ""
   }
   
   function formCEP(value?: string) {
@@ -192,7 +203,7 @@ export function Profile({ navigation, content }: any) {
                 onChangeText={(value) =>
                   setFieldsContent({ ...fieldsContent, birth: value })
                 }
-                value={formatDate(fieldsContent?.birth)}
+                value={maskDate(fieldsContent?.birth)}
                 placeholder={fieldsContent?.birth}
                 keyboardType="number-pad"
               />
@@ -224,7 +235,7 @@ export function Profile({ navigation, content }: any) {
               />
 
               <TextTittleForm>Idade:</TextTittleForm>
-              <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
+              <TextContentForm>{fieldsContent ? setAge(fieldsContent.birth) : ""}</TextContentForm>
 
               <TextTittleForm>CEP:</TextTittleForm>
               <InsertString
@@ -317,7 +328,7 @@ export function Profile({ navigation, content }: any) {
         </TextContentForm>
 
         <TextTittleForm>Aniversário:</TextTittleForm>
-        <TextContentForm>{fieldsContent?.birth}</TextContentForm>
+        <TextContentForm>{formatDate(fieldsContent?.birth)}</TextContentForm>
 
         <TextTittleForm>Peso:</TextTittleForm>
         <TextContentForm>{fieldsContent?.weight}</TextContentForm>
@@ -326,13 +337,10 @@ export function Profile({ navigation, content }: any) {
         <TextContentForm>{fieldsContent?.height}</TextContentForm>
 
         <TextTittleForm>Idade:</TextTittleForm>
-        <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
+        <TextContentForm>{fieldsContent ? setAge(formatDate(fieldsContent?.birth)) : ""}</TextContentForm>
 
         <TextTittleForm>ENDEREÇO:</TextTittleForm>
         <TextContentForm>{`${fieldsContent?.address?.street}, ${fieldsContent?.address?.number}, ${fieldsContent?.address?.neighborhood}, ${fieldsContent?.address?.city} - ${fieldsContent?.address?.state}`}</TextContentForm>
-
-        <TextTittleForm>Idade:</TextTittleForm>
-        <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
       </>
     );
   };

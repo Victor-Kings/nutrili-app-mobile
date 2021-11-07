@@ -20,10 +20,10 @@ const Notifications = () => {
       }, [])
       
     useFocusEffect(
-        React.useCallback(() => {
-            fetchNotificationsData()
-        }, [])
-      );
+      React.useCallback(() => {
+          fetchNotificationsData()
+      }, [])
+    );
 
   const handlerViewNotification = async (idNotification: string, id: number, status: boolean) => {
     try {

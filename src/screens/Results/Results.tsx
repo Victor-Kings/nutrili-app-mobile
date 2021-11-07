@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Title,
   ContainerBox,
@@ -9,10 +9,9 @@ import {
   Subtitles,
   LabelSubtitles,
 } from "./styles";
-import { IContentProps } from "./Results.interface";
 import { VictoryPie } from "victory-native";
 import { GraphicDataService } from "../../services/GraphicDataService/GraphicDataService";
-import { IGraphData } from "../../services/GraphicDataService/GraphicDataService.interface";
+import { useFocusEffect } from "@react-navigation/native";
 
 const PieChart = () => {
   return <VictoryPie />;
@@ -59,25 +58,26 @@ const Results = () => {
   );
   const [content, setContent] = useState<any[]>()
 
-  useEffect(() => {
-
-    (async () => {
-      const response = await new GraphicDataService().execute();
-      setContent(response)
-      var percent: IPercentProps[] = [];
-      var category: any = [];
-      var colors: any = [];
-      response.map((value) => {
-        percent.push({ y: value.percentage, x: `${value.percentage}%` });
-        category.push({ category: value.type });
-        colors.push(Colors[value.type - 1]);
-      });
-
-      setGraphicData(percent);
-      setGaphicCategoryData(category);
-      setgraphicColor(colors);
-    })();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const response = await new GraphicDataService().execute();
+        setContent(response)
+        var percent: IPercentProps[] = [];
+        var category: any = [];
+        var colors: any = [];
+        response.map((value) => {
+          percent.push({ y: value.percentage, x: `${value.percentage}%` });
+          category.push({ category: value.type });
+          colors.push(Colors[value.type - 1]);
+        });
+  
+        setGraphicData(percent);
+        setGaphicCategoryData(category);
+        setgraphicColor(colors);
+      })();
+    }, [])
+  );
 
   return (
     <Container>

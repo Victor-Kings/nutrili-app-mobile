@@ -3,6 +3,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOCAL_STORAGE_AUTH_TOKEN } from "./const";
 import { IAuthProps } from "../context/authContext.interface";
 import { IAuthenticationToken } from "../services/AutheService/AuthService.interface";
+import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
+import { navigate } from "../routes/rootNavigator";
 
 let isRefreshing = false;
 
@@ -13,7 +17,7 @@ interface IFailed {
 let failedRequestsQueue: IFailed[] = [];
 
 export const apiRecognize = axios.create({
-  baseURL: "http://localhost:8090",
+  baseURL: "http://192.168.0.176:8090",
 });
 
 const getLocalToken = async () => {
@@ -78,10 +82,16 @@ apiBackendAuthenticated.interceptors.response.use(
                 );
                 failedRequestsQueue = [];
               })
-              .catch((err) => {
+              .catch(async (err) => {
                 console.error("falhou a reautenticação");
                 failedRequestsQueue.forEach((request) => request.onFailed(err));
                 failedRequestsQueue = [];
+                try {
+                  await AsyncStorage.removeItem(LOCAL_STORAGE_AUTH_TOKEN);
+                } catch (e) {
+                  console.log("E A VIATURA DA PAIXAO", e);
+                }
+                navigate('Login','Auth');
               })
               .finally(() => {
                 isRefreshing = false;
@@ -100,9 +110,14 @@ apiBackendAuthenticated.interceptors.response.use(
               },
             });
           });
-        } else {
-          // deslogar usuário
         }
+      } else {
+        try {
+          await AsyncStorage.removeItem(LOCAL_STORAGE_AUTH_TOKEN);
+        } catch (e) {
+          console.log("E A VIATURA DA PAIXAO", e);
+        }
+        navigate('Login','Auth');
       }
     }
   }
@@ -115,13 +130,13 @@ const mapToFormData = (refresh_token: string) => {
   return bodyFormData;
 };
 
-export const getAccessToken = async ():Promise<string | null> => {
-  const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
-  
-  if(auth_token){
-    const auth:IAuthenticationToken = JSON.parse(auth_token)
-    return auth.access_token
- }
+export const getAccessToken = async (): Promise<string | null> => {
+  const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
 
-  return null
-}
+  if (auth_token) {
+    const auth: IAuthenticationToken = JSON.parse(auth_token);
+    return auth.access_token;
+  }
+
+  return null;
+};

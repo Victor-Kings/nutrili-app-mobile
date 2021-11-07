@@ -25,7 +25,7 @@ import { ButtonSearch } from "../../components/ButtonSearch/ButtonSearch";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Octicons } from '@expo/vector-icons'; 
 import { ModalSearchNutritionist } from "../../components/ModalSearchNutritionist";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { SearchNutritionistService } from "../../services/SearchNutritionistService/SearchNutritionistService";
 import { AuthService } from "../../services/AutheService/AuthService";
 
@@ -53,7 +53,7 @@ function QuestionsLocale({ handleOK }: any) {
   const handleOnClickStart = () => {
     setStartedQuestions(true);
   };
-
+  
   useEffect(() => {
     if (endQuestions != false) {
       (async () => {
@@ -163,25 +163,26 @@ export function AncientPlus() {
     }
   } 
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
-        if (auth_token) {
-          const auth: IAuthProps = JSON.parse(auth_token);
-          setValue(auth.isRegisteredComplete);
-          const data = await new AuthService().verifyIsUser(auth.access_token);
-          if(!data.ableToSearchNutritionist){
-            alert("Não é qualificado para buscar um nutricionista")
-            navigation.navigate("Home" as never,{} as never)
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        try {
+          const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
+          if (auth_token) {
+            const auth: IAuthProps = JSON.parse(auth_token);
+            setValue(auth.isRegisteredComplete);
+            const data = await new AuthService().verifyIsUser(auth.access_token);
+            if(!data.ableToSearchNutritionist){
+              alert("Não é qualificado para buscar um nutricionista")
+              navigation.navigate("Home" as never,{} as never)
+            }
           }
+  
+        } catch (error) {
+          console.error("Falha ao entrar na opção de Ancient Plus", error);
         }
-
-      } catch (error) {
-        console.error("Falha ao entrar na opção de Ancient Plus", error);
-      }
-    })();
-  }, []);
+      })();
+    }, []))
 
   const render = value ? <Search handlerSelectPatient={handlerSelectPatient} /> : <QuestionsLocale handleOK={setValue} />;
 

@@ -15,16 +15,17 @@ export class SendFoodsArrayService implements ISendFoodService {
     responseData: ResponseData[]
   ): Promise<AxiosResponse> =>{
     const token = await getAccessToken()
-    return await apiBackendAuthenticated.post("/meal/mealTime",mapResponse(responseData), {
+   const {data} =  await apiBackendAuthenticated.post("/meal/mealTime", mapResponse(responseData), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    return data
   }
 }
 
 const mapResponse= ( responseData: ResponseData[])=>{
-  let newResponseData;
+  let newResponseData: { name: string; color: string; category: string; }[] = [];
   
   responseData.forEach((element)=>{
     newResponseData.push({

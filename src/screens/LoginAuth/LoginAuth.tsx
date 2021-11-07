@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { TextInput, KeyboardAvoidingView, ScrollView, Alert } from "react-native";
+import {
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  Alert,
+} from "react-native";
 import {
   Container,
   SquaresTopRight,
@@ -18,7 +23,7 @@ import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import IconBack from "../../assets/img/iconBackBlue.svg";
 import { useAuthContext } from "../../context/authContext";
 import { AuthService } from "../../services/AutheService/AuthService";
-
+import { navigate } from "../../routes/rootNavigator";
 export function LoginAuth({ ...props }: any) {
   const authService = new AuthService();
   const [consentedSms, setConsentedSms] = useState(false);
@@ -53,7 +58,6 @@ export function LoginAuth({ ...props }: any) {
     return function cleanUp() {
       controle = false;
     };
-
   }, [initialTime, consentedSms]);
 
   const handleOnClick = async () => {
@@ -65,9 +69,17 @@ export function LoginAuth({ ...props }: any) {
   useEffect(() => {
     if (code.length === 6) {
       (async () => {
-        try {        
-          await signIn(phoneNumber.toUpperCase(), code);
-          props.navigation.navigate("LoginQuestion");
+        try {
+          const isRegistered = await signIn(phoneNumber.toUpperCase(), code);
+          console.log(
+            "rtyuiopfghjmk,.ghjklçfghjklçfghjklghklfghjklfghjkfghjklfghjklvbnm,hm,hjklhjk",
+            isRegistered
+          );
+          if (isRegistered) {
+            props.navigation.navigate("Home");
+          } else {
+            props.navigation.navigate("LoginQuestion");
+          }
         } catch (error) {
           Alert.alert("Ocorreu alguem erro no login");
         }
