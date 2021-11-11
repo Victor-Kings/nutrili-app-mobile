@@ -11,7 +11,6 @@ export class NotificationsService implements IGetNotificationsProps {
         Authorization: `Bearer ${token}`,
       }
     })
-    console.log(data);
     
     return data
   }
@@ -32,7 +31,6 @@ export class NotificationsService implements IGetNotificationsProps {
         }
       }
     )
-    console.log('Service:', data)
     return data
   }
 }

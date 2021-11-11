@@ -12,7 +12,7 @@ export function AuthContextProvider({ children }: any) {
   const authService = new AuthService();
   const [isRegistered, setIsRegistered] =  useState<boolean|null>()
 
-  const signIn = async (phoneNumber: string, smsToken: string) => {
+  const signIn = async (phoneNumber: string, smsToken: string): Promise<boolean> => {
     let data:IResponseAuthToken | null = null
     try{
      data = await authService.authenticate(phoneNumber, smsToken.toUpperCase());
@@ -25,10 +25,12 @@ export function AuthContextProvider({ children }: any) {
         const authData = mapToAuthenticationToken(data, !verifyUser.newUser, verifyUser.ancientPlusComplete);//NewUser é true se não preencheu form
         setIsRegistered(!verifyUser.newUser)
         await AsyncStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, JSON.stringify(authData));
+        return !verifyUser.newUser
       }catch(error){
         console.error("[ERROR] SIGNIN 2 : ", error)
       }
     }
+    return false
   }
 
   const registeredDatas = async () => {
@@ -40,16 +42,9 @@ export function AuthContextProvider({ children }: any) {
     }
   }
 
-  useEffect(()=>{
-    async () =>{
-      const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
-      if(auth_token){
-       const auth:IAuthProps = JSON.parse(auth_token)
-       setIsRegistered(auth.isRegistered);
-      }
-    }
-  },[])
-
+  const signOut = () =>{
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+  }
  const mapToAuthenticationToken= (data: IResponseAuthToken, isRegistered: boolean, isRegisteredComplete: boolean): IAuthProps =>{
     const response = {
         access_token: data.access_token, 
@@ -61,7 +56,7 @@ export function AuthContextProvider({ children }: any) {
   }
 
   return (
-    <AuthContext.Provider value={{ isRegistered, signIn, registeredDatas}}>
+    <AuthContext.Provider value={{ isRegistered, signIn, registeredDatas, setIsRegistered, signOut}}>
       {children}
     </AuthContext.Provider>
   );

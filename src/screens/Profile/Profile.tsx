@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {  useState, useRef } from "react";
 import { Platform, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MenuLogo from "../../assets/img/menu.svg";
@@ -24,47 +24,14 @@ import {
 } from "./styles";
 import { UpdateProfileService } from "../../services/UpdateProfileService/UpdateProfileService";
 import { IPayloadUpdate } from "../../services/UpdateProfileService/UpdateProfileService.interface";
-interface Address {
-  cep?: string;
-  state?: string;
-  city?: string;
-  neighborhood?: string;
-  street?: string;
-  number?: string;
-}
-interface FieldsContent {
-  gender?: string;
-  birth?: string;
-  weight?: number;
-  city?: string;
-  neighborhood?: string;
-  street?: string;
-  number?: string;
-  height?: number;
-  phone?: string;
-  image?: string;
-  name?: string;
-  personalAddress?: Address;
-}
-
-const FieldsContent = {
-  gender: "M",
-  birth: "10/10/2000",
-  weight: 60,
-  height: 100,
-  name: "",
-  personalAddress: {
-    cep: "",
-    state: "",
-    city: "",
-    neighborhood: "",
-    street: "",
-    number: "",
-  },
-};
+import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
+import { IGetDataProfileApi } from "../../services/GetDataProfile/GetDataProfile.interface";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function Profile({ navigation, content }: any) {
-  const [fieldsContent, setFieldsContent] = useState<FieldsContent>();
+  const [fieldsContent, setFieldsContent] = useState<
+    IGetDataProfileApi | undefined
+  >();
   const [isChanging, setIsChanging] = useState<boolean>(false);
 
   const [imageProfile, setImageProfile] = useState<any>(null);
@@ -82,14 +49,17 @@ export function Profile({ navigation, content }: any) {
   function close() {
     pickerRef.current.blur();
   }
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const response = await new GetDataProfile().execute();
+        setFieldsContent(response);
+      })();
+    }, []))
 
-  useEffect(() => {
-    setFieldsContent(FieldsContent);
-  }, []);
-
-  const setAge = () => {
+  const setAge = (date:string) => {
     const currentDate = new Date();
-    const correctDate = fieldsContent?.birth!.split("/");
+    const correctDate = date!.split("/");
     const birthDate = new Date(
       `${correctDate![1]}/${correctDate![0]}/${correctDate![2]}`
     );
@@ -103,7 +73,7 @@ export function Profile({ navigation, content }: any) {
     return age;
   };
 
-  function formatDate(value?: string) {
+  function maskDate(value?: string) {
     if (value)
       return value
         .replace(/\D/g, "")
@@ -112,13 +82,20 @@ export function Profile({ navigation, content }: any) {
         .replace(/(\d{4})(\d)/, "$1");
     return "";
   }
-  ///^([\d]{2})\.*([\d]{3})-*([\d]{3})/
+
+  function formatDate(value?: string){
+    if(value){
+      var date:any 
+      date= value.split(" ")
+      date= date[0].split('-')
+      return `${date[2]}/${date[1]}/${date[0]}`
+    }
+    return ""
+  }
+  
   function formCEP(value?: string) {
     var validateCep = /^([\d]{2})\.*([\d]{3})-*([\d]{3})/;
-    if (value)
-      return value
-        .replace(/(\d{5})(\d{3})/, "$1-$2")
-    //return value.replace(validateCep, "$1.$2-$3");
+    if (value) return value.replace(/(\d{5})(\d{3})/, "$1-$2");
   }
 
   const pickImage = async () => {
@@ -158,12 +135,16 @@ export function Profile({ navigation, content }: any) {
       officeAddress: undefined,
       password: undefined,
       personalAddress: {
-        cep: fieldsContent?.personalAddress?.cep ? fieldsContent?.personalAddress?.cep.toString().substr(0,5)+"-"+fieldsContent?.personalAddress?.cep.toString().substr(-3) : undefined,
-        city: fieldsContent?.personalAddress?.city || undefined,
-        neighborhood: fieldsContent?.personalAddress?.neighborhood || undefined,
-        number: fieldsContent?.personalAddress?.number || undefined,
-        state: fieldsContent?.personalAddress?.state || undefined,
-        street: fieldsContent?.personalAddress?.street || undefined
+        cep: fieldsContent?.address?.cep
+          ? fieldsContent?.address?.cep.toString().substr(0, 5) +
+            "-" +
+            fieldsContent?.address?.cep.toString().substr(-3)
+          : undefined,
+        city: fieldsContent?.address?.city || undefined,
+        neighborhood: fieldsContent?.address?.neighborhood || undefined,
+        number: fieldsContent?.address?.number || undefined,
+        state: fieldsContent?.address?.state || undefined,
+        street: fieldsContent?.address?.street || undefined,
       },
       phone: undefined,
     };
@@ -184,148 +165,158 @@ export function Profile({ navigation, content }: any) {
     if (isChanging) {
       return (
         <>
-          <TextTittleForm>Nome:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({ ...fieldsContent, name: value })
-            }
-            value={fieldsContent?.name}
-            placeholder="Nome"
-            keyboardType="default"
-          />
-          <TextTittleForm>Genêro:</TextTittleForm>
-          <PickerContainer>
-            <Picker
-              ref={pickerRef}
-              selectedValue={fieldsContent?.gender}
-              onValueChange={(itemValue, itemIndex) =>
-                setFieldsContent({ ...fieldsContent, gender: itemValue })
-              }
-              dropdownIconColor="#84878a"
-              itemStyle={{ fontSize: 20, fontWeight: "700" }}
-            >
-              {["", "Masculino", "Feminino"].map((value, index) => (
-                <Picker.Item
-                  label={value}
-                  value={value}
-                  key={index}
-                  color="#84878a"
-                />
-              ))}
-            </Picker>
-          </PickerContainer>
+          {fieldsContent && (
+            <>
+              <TextTittleForm>Nome:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({ ...fieldsContent, name: value })
+                }
+                value={fieldsContent?.name}
+                placeholder="Nome"
+                keyboardType="default"
+              />
+              <TextTittleForm>Genêro:</TextTittleForm>
+              <PickerContainer>
+                <Picker
+                  ref={pickerRef}
+                  selectedValue={fieldsContent?.gender}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setFieldsContent({ ...fieldsContent, gender: itemValue })
+                  }
+                  dropdownIconColor="#84878a"
+                  itemStyle={{ fontSize: 20, fontWeight: "700" }}
+                >
+                  {["", "Masculino", "Feminino"].map((value, index) => (
+                    <Picker.Item
+                      label={value}
+                      value={value}
+                      key={index}
+                      color="#84878a"
+                    />
+                  ))}
+                </Picker>
+              </PickerContainer>
 
-          <TextTittleForm>Aniversário:</TextTittleForm>
-          <InsertNumber
-            onChangeText={(value) =>
-              setFieldsContent({ ...fieldsContent, birth: value })
-            }
-            value={formatDate(fieldsContent?.birth)}
-            placeholder={content.placeholder}
-            keyboardType="number-pad"
-          />
+              <TextTittleForm>Aniversário:</TextTittleForm>
+              <InsertNumber
+                onChangeText={(value) =>
+                  setFieldsContent({ ...fieldsContent, birth: value })
+                }
+                value={maskDate(fieldsContent?.birth)}
+                placeholder={fieldsContent?.birth}
+                keyboardType="number-pad"
+              />
 
-          <TextTittleForm>Peso:</TextTittleForm>
-          <InsertNumber
-            onChangeText={(value) =>
-              setFieldsContent({ ...fieldsContent, weight: parseInt(value) })
-            }
-            value={`${fieldsContent?.weight}`}
-            placeholder={content.placeholder}
-            keyboardType="number-pad"
-          />
+              <TextTittleForm>Peso:</TextTittleForm>
+              <InsertNumber
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    weight: parseInt(value),
+                  })
+                }
+                value={`${fieldsContent?.weight}`}
+                placeholder={`${fieldsContent?.weight}`}
+                keyboardType="number-pad"
+              />
 
-          <TextTittleForm>Altura:</TextTittleForm>
-          <InsertNumber
-            onChangeText={(value) =>
-              setFieldsContent({ ...fieldsContent, height: parseInt(value) })
-            }
-            value={`${fieldsContent?.height}`}
-            placeholder={content.placeholder}
-            keyboardType="number-pad"
-          />
+              <TextTittleForm>Altura:</TextTittleForm>
+              <InsertNumber
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    height: parseInt(value),
+                  })
+                }
+                value={`${fieldsContent?.height}`}
+                placeholder={`${fieldsContent?.height}`}
+                keyboardType="number-pad"
+              />
 
-          <TextTittleForm>Idade:</TextTittleForm>
-          <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
+              <TextTittleForm>Idade:</TextTittleForm>
+              <TextContentForm>{fieldsContent ? setAge(fieldsContent.birth) : ""}</TextContentForm>
 
-          <TextTittleForm>CEP:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: { ...fieldsContent?.personalAddress,cep: value },
-              })
-            }
-            value={formCEP(fieldsContent?.personalAddress?.cep)}
-            placeholder="CEP"
-            keyboardType="numeric"
-            maxLength={9}
-          />
-          <TextTittleForm>Rua:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: {...fieldsContent?.personalAddress, street: value },
-              })
-            }
-            value={fieldsContent?.personalAddress?.street}
-            placeholder="Rua"
-            keyboardType="default"
-          />
-          <TextTittleForm>Número:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: {...fieldsContent?.personalAddress, number: value },
-              })
-            }
-            value={fieldsContent?.personalAddress?.number}
-            placeholder="Número"
-            keyboardType="numeric"
-          />
+              <TextTittleForm>CEP:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, cep: value },
+                  })
+                }
+                value={formCEP(fieldsContent?.address?.cep)}
+                placeholder="CEP"
+                keyboardType="numeric"
+                maxLength={9}
+              />
+              <TextTittleForm>Rua:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, street: value },
+                  })
+                }
+                value={fieldsContent?.address?.street}
+                placeholder="Rua"
+                keyboardType="default"
+              />
+              <TextTittleForm>Número:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, number: value },
+                  })
+                }
+                value={fieldsContent?.address?.number}
+                placeholder="Número"
+                keyboardType="numeric"
+              />
 
-          <TextTittleForm>Cidade:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: {...fieldsContent?.personalAddress, city: value },
-              })
-            }
-            value={fieldsContent?.personalAddress?.city}
-            placeholder="Cidade"
-            keyboardType="default"
-          />
-          
-          <TextTittleForm>Bairro:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: {...fieldsContent?.personalAddress, neighborhood: value },
-              })
-            }
-            value={fieldsContent?.personalAddress?.neighborhood}
-            placeholder="Bairro"
-            keyboardType="default"
-          />
+              <TextTittleForm>Cidade:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, city: value },
+                  })
+                }
+                value={fieldsContent?.address?.city}
+                placeholder="Cidade"
+                keyboardType="default"
+              />
 
-          <TextTittleForm>Estado:</TextTittleForm>
-          <InsertString
-            onChangeText={(value) =>
-              setFieldsContent({
-                ...fieldsContent,
-                personalAddress: {...fieldsContent?.personalAddress, state: value },
-              })
-            }
-            value={fieldsContent?.personalAddress?.state}
-            autoCapitalize="characters"
-            maxLength={2}
-            placeholder="Cidade"
-            keyboardType="default"
-          />
+              <TextTittleForm>Bairro:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, neighborhood: value },
+                  })
+                }
+                value={fieldsContent?.address?.neighborhood}
+                placeholder="Bairro"
+                keyboardType="default"
+              />
+
+              <TextTittleForm>Estado:</TextTittleForm>
+              <InsertString
+                onChangeText={(value) =>
+                  setFieldsContent({
+                    ...fieldsContent,
+                    address: { ...fieldsContent.address, state: value },
+                  })
+                }
+                value={fieldsContent?.address?.state}
+                autoCapitalize="characters"
+                maxLength={2}
+                placeholder="Cidade"
+                keyboardType="default"
+              />
+            </>
+          )}
         </>
       );
     }
@@ -337,7 +328,7 @@ export function Profile({ navigation, content }: any) {
         </TextContentForm>
 
         <TextTittleForm>Aniversário:</TextTittleForm>
-        <TextContentForm>{fieldsContent?.birth}</TextContentForm>
+        <TextContentForm>{formatDate(fieldsContent?.birth)}</TextContentForm>
 
         <TextTittleForm>Peso:</TextTittleForm>
         <TextContentForm>{fieldsContent?.weight}</TextContentForm>
@@ -346,7 +337,10 @@ export function Profile({ navigation, content }: any) {
         <TextContentForm>{fieldsContent?.height}</TextContentForm>
 
         <TextTittleForm>Idade:</TextTittleForm>
-        <TextContentForm>{fieldsContent ? setAge() : ""}</TextContentForm>
+        <TextContentForm>{fieldsContent ? setAge(formatDate(fieldsContent?.birth)) : ""}</TextContentForm>
+
+        <TextTittleForm>ENDEREÇO:</TextTittleForm>
+        <TextContentForm>{`${fieldsContent?.address?.street}, ${fieldsContent?.address?.number}, ${fieldsContent?.address?.neighborhood}, ${fieldsContent?.address?.city} - ${fieldsContent?.address?.state}`}</TextContentForm>
       </>
     );
   };
@@ -356,7 +350,13 @@ export function Profile({ navigation, content }: any) {
       <ContainerContent>
         <HeaderContent>
           <ImagePerfilContainer>
-            <ImagePerfil source={{ uri: imageProfile || content.perfil }} />
+            <ImagePerfil
+              source={{
+                uri:
+                  imageProfile ||
+                  "https://diariodecuiaba.nyc3.digitaloceanspaces.com/storage/webdisco/2020/06/14/1200x900/d5426f95dedf886c1c5ec4bf093815c2.jpg",
+              }}
+            />
           </ImagePerfilContainer>
           {isChanging && (
             <ChangeImg onPress={pickImage}>

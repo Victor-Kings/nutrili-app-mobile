@@ -10,8 +10,8 @@ import Results from "../screens/Results/Results"
 import { Profile } from "../screens/Profile/Profile";
 import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
 import { foods } from "../../__mocks__/diet";
-import { foodDatas } from "../../__mocks__/foodDatas"
 import { informations } from "../../__mocks__/informations"
+import { AuthStack } from "./AuthStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +40,8 @@ export function AppDrawer() {
       drawerStyle={{ width: "100%", backgroundColor: "#4197E5" }}
       drawerContent={(props: any) => <ContentDrawer {...props} />}
     >
+      <Drawer.Screen name={"Auth"} component={AuthStack}/>
+
       <Drawer.Screen name="Home">
         {(props) => (
           <MainTemplate {...props} content={content}>
@@ -64,7 +66,7 @@ export function AppDrawer() {
       <Drawer.Screen name="Results">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <Results content={ foodDatas } />
+            <Results />
           </MainTemplate>
         )}
       </Drawer.Screen>
@@ -87,6 +89,7 @@ export function AppDrawer() {
           <Profile  {...props} content={content}/>
         )}
       </Drawer.Screen>
+
     </Drawer.Navigator>
   );
 }

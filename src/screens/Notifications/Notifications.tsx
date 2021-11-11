@@ -9,7 +9,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState<INotifications[]>([])
-    console.log(notifications);
     
     const fetchNotificationsData = useCallback(async () => {
         try {
@@ -21,10 +20,10 @@ const Notifications = () => {
       }, [])
       
     useFocusEffect(
-        React.useCallback(() => {
-            fetchNotificationsData()
-        }, [])
-      );
+      React.useCallback(() => {
+          fetchNotificationsData()
+      }, [])
+    );
 
   const handlerViewNotification = async (idNotification: string, id: number, status: boolean) => {
     try {

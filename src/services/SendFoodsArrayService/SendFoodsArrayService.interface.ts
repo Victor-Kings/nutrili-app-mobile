@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+
 export interface ResponseData{
     Food: string
     Category: string
@@ -6,4 +8,5 @@ export interface ResponseData{
 
 export interface ISendFoodService{
     execute:(responseFood:any) => Promise<ResponseData[]>
+    sendFoodDataToBack:(responseData: any)=> Promise<AxiosResponse>
 }
