@@ -20,4 +20,5 @@ export interface IAuthServiceProps {
     authenticate:(phoneNumber: string, smsToken: string)=>Promise<IResponseAuthToken>
     sendNumberToReceiverSMSToken: (phoneNumber: string)=>Promise<AxiosResponse>
     verifyIsUser:(token: string)=>Promise<IIsRegister>
+    logout:(token: string)=>Promise<AxiosResponse>
 }

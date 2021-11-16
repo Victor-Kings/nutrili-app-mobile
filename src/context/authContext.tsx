@@ -42,8 +42,18 @@ export function AuthContextProvider({ children }: any) {
     }
   }
 
-  const signOut = () =>{
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+  const signOut = async () =>{
+    try{
+      const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
+      if (auth_token) {
+        const auth: IAuthProps = JSON.parse(auth_token);
+        await AsyncStorage.removeItem(LOCAL_STORAGE_AUTH_TOKEN);
+        await authService.logout(auth.access_token);
+      }
+    }catch(error){
+       console.error("[ERROR] SIGNOUT: ", error)
+    }
+    
   }
  const mapToAuthenticationToken= (data: IResponseAuthToken, isRegistered: boolean, isRegisteredComplete: boolean): IAuthProps =>{
     const response = {

@@ -13,19 +13,32 @@ export const ButtonMenu: FC<IButtomMenuProps> = ({
   sizeText = 18,
   containerSize = 80,
   page,
-  color
+  color,
 }) => {
   const handle = () => {
     if (handleClick) {
-      handleClick(page);
+      if (page) {
+        handleClick(page);
+      } else {
+        handleClick();
+      }
     }
   };
 
   return (
     <Container containerSize={containerSize}>
       <Button onPress={handle}>
-        {Icon ? <Icon width={RFValue(sizeImageHeight)} height={RFValue(sizeImageWidth)} /> : <></>}
-        <Text size={sizeText} color={color}>{text}</Text>
+        {Icon ? (
+          <Icon
+            width={RFValue(sizeImageHeight)}
+            height={RFValue(sizeImageWidth)}
+          />
+        ) : (
+          <></>
+        )}
+        <Text size={sizeText} color={color}>
+          {text}
+        </Text>
       </Button>
     </Container>
   );

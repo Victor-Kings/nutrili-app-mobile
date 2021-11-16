@@ -2,15 +2,15 @@ import React from "react";
 import MainTemplate from "../components/MainTemplate";
 import { ContentDrawer } from "../screens/ContentDrawer/ContentDrawer";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Home from '../screens/Home/Home';
-import Notifications from '../screens/Notifications/Notifications';
-import NutritionalInformation from '../screens/NutritionalInformation/NutritionalInformation';
+import Home from "../screens/Home/Home";
+import Notifications from "../screens/Notifications/Notifications";
+import NutritionalInformation from "../screens/NutritionalInformation/NutritionalInformation";
 import Diet from "../screens/Diet/Diet";
-import Results from "../screens/Results/Results"
+import Results from "../screens/Results/Results";
 import { Profile } from "../screens/Profile/Profile";
 import { AncientPlus } from "../screens/AncientPlus/AncientPlus";
 import { foods } from "../../__mocks__/diet";
-import { informations } from "../../__mocks__/informations"
+import { informations } from "../../__mocks__/informations";
 import { AuthStack } from "./AuthStack";
 
 const Drawer = createDrawerNavigator();
@@ -21,26 +21,21 @@ const content = {
   name: "Silvio Santos",
 };
 
-const contentNoti = [
-  {
-    sender: "Sistema",
-    message: "Lorem ipsum dolor sit amet, consectetur.Lorem ipsum.",
-    isNew: false
-  },
-  {
-    sender: "Dr linda Murfhy",
-    message: "Lorem ipsum dolor sit amet, consectetur.Lorem ipsum. ipsum vipsumipsumipsumipsumipsum.",
-    isNew: true
-  }
-]
-
 export function AppDrawer() {
   return (
     <Drawer.Navigator
       drawerStyle={{ width: "100%", backgroundColor: "#4197E5" }}
-      drawerContent={(props: any) => <ContentDrawer {...props} />}
+      drawerContent={(props: any) => (
+        <ContentDrawer {...props} content={content} />
+      )}
     >
-      <Drawer.Screen name={"Auth"} component={AuthStack}/>
+      <Drawer.Screen
+        options={{
+          swipeEnabled: false,
+        }}
+        name={"Auth"}
+        component={AuthStack}
+      />
 
       <Drawer.Screen name="Home">
         {(props) => (
@@ -59,7 +54,7 @@ export function AppDrawer() {
       <Drawer.Screen name="Diet">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <Diet content={ foods } />
+            <Diet content={foods} />
           </MainTemplate>
         )}
       </Drawer.Screen>
@@ -73,7 +68,7 @@ export function AppDrawer() {
       <Drawer.Screen name="NutritionalInformation">
         {(props) => (
           <MainTemplate {...props} content={content}>
-            <NutritionalInformation content={ informations } />
+            <NutritionalInformation content={informations} />
           </MainTemplate>
         )}
       </Drawer.Screen>
@@ -85,11 +80,8 @@ export function AppDrawer() {
         )}
       </Drawer.Screen>
       <Drawer.Screen name="Profile">
-        {(props) => (
-          <Profile  {...props} content={content}/>
-        )}
+        {(props) => <Profile {...props} content={content} />}
       </Drawer.Screen>
-
     </Drawer.Navigator>
   );
 }

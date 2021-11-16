@@ -1,25 +1,24 @@
-import { Image } from 'react-native';
-import {apiRecognize} from "../../configs/api";
+import { apiBackendAuthenticated, getAccessToken} from "../../configs/api";
 import { ISendImageService } from "./SendImageService.interface";
 import FormData from "form-data";
-import Imagem from '../../assets/maca.jpg'
 export class SendImageService implements ISendImageService {
   async execute(ImageData: any): Promise<any> {
-      
+    const token = await getAccessToken();
     var form = new FormData();
 
-    form.append("image", {
+    form.append("pic", {
       type: "image/jpeg",
       name: `alimento.jpg`,
-      uri: Image.resolveAssetSource(Imagem).uri // log(ImageData.uri,
+      uri: ImageData.uri,
     });
 
-    const {data:{Recognized_Foods}} = await apiRecognize.post("/post_image", form, {
+    const Recognized_Foods = await apiBackendAuthenticated.post("/api/getLabelDetection", form, {
         headers: {
-        "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
         },
     })
-
-    return Recognized_Foods;
+    
+    return Recognized_Foods.data;
   }
 }

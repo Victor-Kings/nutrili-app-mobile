@@ -1,13 +1,17 @@
-import React from "react";
-import { Text } from "react-native";
+import React,{useState, useEffect} from "react";
+import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import IconBack from "../../assets/img/iconBack.svg";
 import IconResults from "../../assets/img/iconResults.svg";
 import IconPlus from "../../assets/img/iconPlus.svg";
 import IconNotification from "../../assets/img/iconNotification.svg";
 import IconPhotography from "../../assets/img/iconPhotography.svg";
-import IconNutritionalInformation from "../../assets/img/iconNutritionalInformation.svg"
-import IconRecommendedDiet from "../../assets/img/iconRecommendedDiet.svg"
+import IconNutritionalInformation from "../../assets/img/iconNutritionalInformation.svg";
+import IconRecommendedDiet from "../../assets/img/iconRecommendedDiet.svg";
+import IconLogout from "../../assets/img/iconLogout.svg";
+import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
+import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   Container,
@@ -21,16 +25,42 @@ import {
 } from "./styles";
 
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { useAuthContext } from "../../context/authContext";
 
-export function ContentDrawer({ ...props }) {
+export function ContentDrawer({ navigation, children, content }: any) {
+  const { signOut }: any = useAuthContext();
+  const [contentData, setContentData] = useState<null|{perfil: string, name:string}>(null);
+
+  const fetchData = async () => {
+    try{
+      const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
+      if (auth_token) {
+        const response = await new GetDataProfile().execute();
+        setContentData({ perfil: response.profilePic, name: response.name });
+      }
+    }catch(error){
+       console.error("[ERROR] SIGNOUT: ", error)
+    }
+  
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+  
   const handlerOnClickBack = () => {
-    props.navigation.closeDrawer()
+    navigation.closeDrawer();
   };
 
   const handler = (page?: string) => {
-    props.navigation.navigate(page);
-  }
+    navigation.navigate(page);
+  };
+
+  const handlerLogout = async() => {
+    await signOut()
+    navigation.navigate("Login")
+  };
+
   return (
     <Container>
       <SafeAreaView />
@@ -45,83 +75,96 @@ export function ContentDrawer({ ...props }) {
             handleClick={handler}
             page="Home"
           ></ButtonMenu>
-          <HeaderContentUser onPress={()=>handler("Profile")}>
+        {contentData&&<HeaderContentUser onPress={() => handler("Profile")}>
             <Avatar
               source={{
-                uri: "https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_960_720.png",
+                uri: contentData.perfil,
               }}
             />
-            <TextNameUser>Silvio S.</TextNameUser>
-          </HeaderContentUser>
+            <TextNameUser>{contentData.name}</TextNameUser>
+          </HeaderContentUser>}
         </Header>
         <Body>
-          <BodyButtons>
-            <ButtonMenu
-              text="RESULTADOS"
-              Icon={IconResults}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="Results"
-            />
-            <ButtonMenu
-              text="ANCIÃO PLUS"
-              Icon={IconPlus}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="AncientPlus"
-            />
-          </BodyButtons>
+          <ScrollView>
+            <BodyButtons>
+              <ButtonMenu
+                text="RESULTADOS"
+                Icon={IconResults}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="Results"
+              />
+              <ButtonMenu
+                text="ANCIÃO PLUS"
+                Icon={IconPlus}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="AncientPlus"
+              />
+            </BodyButtons>
 
-          <BodyButtons>
-            <ButtonMenu
-              text="TIRAR FOTO DA ALIMENTAÇÃO"
-              Icon={IconPhotography}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="Home"
-            />
-            <ButtonMenu
-              text="INFORMAÇÃO NUTRICIONAL"
-              Icon={IconNutritionalInformation}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="NutritionalInformation"
-            />
-          </BodyButtons>
-          <BodyButtons>
-            <ButtonMenu
-              text="NOTIFICAÇÕES"
-              Icon={IconNotification}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="Notifications"
-            />
-            <ButtonMenu
-              text="DIETA"
-              Icon={IconRecommendedDiet}
-              sizeText={18}
-              sizeImageHeight={80}
-              sizeImageWidth={80}
-              containerSize={140}
-              handleClick={handler}
-              page="Diet"
-            />
-          </BodyButtons>
+            <BodyButtons>
+              <ButtonMenu
+                text="TIRAR FOTO DA ALIMENTAÇÃO"
+                Icon={IconPhotography}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="Home"
+              />
+              <ButtonMenu
+                text="INFORMAÇÃO NUTRICIONAL"
+                Icon={IconNutritionalInformation}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="NutritionalInformation"
+              />
+            </BodyButtons>
+            <BodyButtons>
+              <ButtonMenu
+                text="NOTIFICAÇÕES"
+                Icon={IconNotification}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="Notifications"
+              />
+              <ButtonMenu
+                text="DIETA"
+                Icon={IconRecommendedDiet}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handler}
+                page="Diet"
+              />
+            </BodyButtons>
+            <BodyButtons>
+              <ButtonMenu
+                text="SAIR"
+                Icon={IconLogout}
+                sizeText={18}
+                sizeImageHeight={80}
+                sizeImageWidth={80}
+                containerSize={140}
+                handleClick={handlerLogout}
+              />
+            </BodyButtons>
+          </ScrollView>
         </Body>
       </ContentBody>
     </Container>

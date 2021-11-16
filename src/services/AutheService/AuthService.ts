@@ -35,10 +35,15 @@ export class AuthService implements IAuthServiceProps {
         return data;
     }
 
-    async logout(): Promise<void> {
-        
+    logout = async (token: string): Promise<AxiosResponse> => {
+        const response = await apiBackend.post('/user/logout',{}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        return response
     }
-
+    
     getCurrentToken = async ():Promise<IAuthenticationToken | null> => {
        const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)
        

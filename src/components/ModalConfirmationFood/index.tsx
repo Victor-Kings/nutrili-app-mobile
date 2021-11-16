@@ -50,7 +50,7 @@ const ModalConfirmationFood = ({
   };
   const confirmationButton = () => {
     if (edit) setEdit(false);
-    else handleModal();
+    else handleModal(listFood);
   };
   const buttonText = !edit ? (
     <TextButton size={24}>CONFIRMAR</TextButton>
@@ -67,7 +67,7 @@ const ModalConfirmationFood = ({
           <ScrollView keyboardShouldPersistTaps="handled">
             <TextHeader>Alimentos Encontrados:</TextHeader>
             <ContainerViews>
-              {listFood.map((value: string, i: number) => (
+              {listFood?(listFood.map((value: string, i: number) => (
                 <CardFood key={`${value}${i}`} color="#fff">
                   <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
                   {edit && (
@@ -79,7 +79,10 @@ const ModalConfirmationFood = ({
                     </TouchableOpacity>
                   )}
                 </CardFood>
-              ))}
+              ))):(
+                <CardFood color="#fff"/>
+              )
+            }
               {addFood && edit && <Input handlerAddFood={handlerAddFood} />}
               {edit && (
                 <CardAddFood

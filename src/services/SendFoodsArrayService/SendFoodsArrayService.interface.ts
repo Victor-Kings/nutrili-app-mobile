@@ -7,6 +7,5 @@ export interface ResponseData{
 }
 
 export interface ISendFoodService{
-    execute:(responseFood:any) => Promise<ResponseData[]>
-    sendFoodDataToBack:(responseData: any)=> Promise<AxiosResponse>
+    execute:(responseFood:any) => Promise<AxiosResponse>
 }

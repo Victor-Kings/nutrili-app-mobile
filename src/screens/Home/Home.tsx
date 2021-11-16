@@ -59,13 +59,10 @@ const Home = () => {
     }
   }
 
-  const handleModal = async () => {
+  const handleModal = async (foods:string[]) => {
     setModalOpen(false);
     try {
-      const data = await new SendFoodsArrayService().execute(responseFood);
-      console.log(data);
-      
-      await new SendFoodsArrayService().sendFoodDataToBack(data)
+      await new SendFoodsArrayService().execute(foods);
     } catch (error) {
       console.error("Erro ao enviar os alimentos para a API");
     }

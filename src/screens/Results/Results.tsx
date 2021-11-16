@@ -16,7 +16,6 @@ import { useFocusEffect } from "@react-navigation/native";
 const PieChart = () => {
   return <VictoryPie />;
 };
-
 interface IPercentProps {
   y: number;
   x: string;
@@ -34,6 +33,7 @@ const Results = () => {
     "Leites e Derivados",
     "Óleos e Gorduras",
     "Oleaginosas",
+    "Produtos Açucarados"
   ];
   const Colors = [
     "#F6A13E",
@@ -50,9 +50,7 @@ const Results = () => {
   ];
 
   const [graphicData, setGraphicData] = useState<any[] | undefined>(undefined);
-  const [graphicCategoryData, setGaphicCategoryData] = useState<
-    any[] | undefined
-  >(undefined);
+  const [graphicCategoryData, setGaphicCategoryData] = useState<any[] | undefined>(undefined);
   const [graphicColor, setgraphicColor] = useState<any[] | undefined>(
     undefined
   );
@@ -68,7 +66,7 @@ const Results = () => {
         var colors: any = [];
         response.map((value) => {
           percent.push({ y: value.percentage, x: `${value.percentage}%` });
-          category.push({ category: value.type });
+          category.push({ category: value.type});
           colors.push(Colors[value.type - 1]);
         });
   
@@ -91,21 +89,20 @@ const Results = () => {
               width={350}
               height={350}
               colorScale={graphicColor}
-              // labels={() => null}
             />
           </ContainerGraphic>
 
           <LabelBox>
-            {content && content.map((value, index) => (
+            {content && content.map((value, index) =>
               <Subtitles key={`${value.percent}-${index}`}>
                 {graphicColor && <Rectangle color={graphicColor[index]} />}
                 {graphicCategoryData && (
                   <LabelSubtitles>
-                    {nameLabel[graphicCategoryData[index].category - 1]}
+                    {nameLabel[(graphicCategoryData[index].category)-1]}
                   </LabelSubtitles>
                 )}
               </Subtitles>
-            ))}
+            )}
           </LabelBox>
         </ContainerBox>
       )}
