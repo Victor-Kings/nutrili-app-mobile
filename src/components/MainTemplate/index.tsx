@@ -31,7 +31,7 @@ const MainTemplate = ({navigation, children, content}:any) =>{
      return(
        <Container>
             <Header>
-                <HeaderContent>
+                <HeaderContent  onPress={()=> navigation.navigate("Profile") }>
                     <ImagePerfil source={{uri:contentData?.perfil}}/>
                     <TextHeader>
                        {contentData?.name}

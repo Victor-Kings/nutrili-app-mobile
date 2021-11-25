@@ -15,7 +15,7 @@ export const Header = styled.View`
     padding-left: 5%;
     padding-bottom: 2%;
 `;
-export const HeaderContent = styled.View`
+export const HeaderContent = styled.TouchableOpacity`
     align-items: center;
     flex-direction: row;
     width: 80%;

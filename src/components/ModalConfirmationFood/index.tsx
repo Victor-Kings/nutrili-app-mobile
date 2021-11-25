@@ -72,10 +72,9 @@ const ModalConfirmationFood = ({
                   <TextCardFood>{`\u2022 ${value}`}</TextCardFood>
                   {edit && (
                     <TouchableOpacity
-                      style={{ backgroundColor: "black" }}
                       onPress={() => removeItem(value)}
                     >
-                      <Text style={{ color: "red" }}>Remove</Text>
+                      <Text style={{ color: "red" }}>Remover</Text>
                     </TouchableOpacity>
                   )}
                 </CardFood>

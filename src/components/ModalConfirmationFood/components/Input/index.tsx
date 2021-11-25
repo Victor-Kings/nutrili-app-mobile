@@ -15,7 +15,6 @@ const Input = ({handlerAddFood}:any) => {
                 onChangeText={onChangeText}
                 value={text}/>
             <TouchableOpacity
-                style={{ backgroundColor: "black" }}
                 onPress={() => sendNewFood()}
             >
                 <Text style={{ color: "green" }}>Adicionar</Text>
