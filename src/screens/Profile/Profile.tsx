@@ -27,6 +27,7 @@ import { IPayloadUpdate } from "../../services/UpdateProfileService/UpdateProfil
 import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
 import { IGetDataProfileApi } from "../../services/GetDataProfile/GetDataProfile.interface";
 import { useFocusEffect } from "@react-navigation/native";
+import { correctionUrlImage } from "../../utils/correctionImage";
 
 export function Profile({ navigation, content }: any) {
   const [fieldsContent, setFieldsContent] = useState<
@@ -53,7 +54,7 @@ export function Profile({ navigation, content }: any) {
     React.useCallback(() => {
       (async () => {
         const response = await new GetDataProfile().execute();
-        setFieldsContent(response);
+        setFieldsContent({...response, birth: formatDate(response.birth)});
       })();
     }, []))
 
@@ -198,12 +199,12 @@ export function Profile({ navigation, content }: any) {
                 </Picker>
               </PickerContainer>
 
-              <TextTittleForm>Aniversário:</TextTittleForm>
+              <TextTittleForm>Nascimento:</TextTittleForm>
               <InsertNumber
                 onChangeText={(value) =>
                   setFieldsContent({ ...fieldsContent, birth: value })
                 }
-                value={maskDate(fieldsContent?.birth)}
+                value={fieldsContent?.birth}
                 placeholder={fieldsContent?.birth}
                 keyboardType="number-pad"
               />
@@ -213,11 +214,11 @@ export function Profile({ navigation, content }: any) {
                 onChangeText={(value) =>
                   setFieldsContent({
                     ...fieldsContent,
-                    weight: parseInt(value),
+                    weight: !!value?parseInt(value):0,
                   })
                 }
-                value={`${fieldsContent?.weight}`}
-                placeholder={`${fieldsContent?.weight}`}
+                value={fieldsContent?.weight?`${fieldsContent?.weight}`:""}
+                placeholder={fieldsContent?.weight?`${fieldsContent?.weight}`:""}
                 keyboardType="number-pad"
               />
 
@@ -328,7 +329,7 @@ export function Profile({ navigation, content }: any) {
         </TextContentForm>
 
         <TextTittleForm>Aniversário:</TextTittleForm>
-        <TextContentForm>{formatDate(fieldsContent?.birth)}</TextContentForm>
+        <TextContentForm>{fieldsContent?.birth}</TextContentForm>
 
         <TextTittleForm>Peso:</TextTittleForm>
         <TextContentForm>{fieldsContent?.weight}</TextContentForm>
@@ -337,10 +338,10 @@ export function Profile({ navigation, content }: any) {
         <TextContentForm>{fieldsContent?.height}</TextContentForm>
 
         <TextTittleForm>Idade:</TextTittleForm>
-        <TextContentForm>{fieldsContent ? setAge(formatDate(fieldsContent?.birth)) : ""}</TextContentForm>
+        <TextContentForm>{fieldsContent ? setAge(fieldsContent?.birth) : ""}</TextContentForm>
 
         <TextTittleForm>ENDEREÇO:</TextTittleForm>
-        <TextContentForm>{`${fieldsContent?.address?.street}, ${fieldsContent?.address?.number}, ${fieldsContent?.address?.neighborhood}, ${fieldsContent?.address?.city} - ${fieldsContent?.address?.state}`}</TextContentForm>
+        <TextContentForm>{fieldsContent?.address?`${fieldsContent?.address?.street}, ${fieldsContent?.address?.number}, ${fieldsContent?.address?.neighborhood}, ${fieldsContent?.address?.city} - ${fieldsContent?.address?.state}`:""}</TextContentForm>
       </>
     );
   };
@@ -350,13 +351,15 @@ export function Profile({ navigation, content }: any) {
       <ContainerContent>
         <HeaderContent>
           <ImagePerfilContainer>
-            <ImagePerfil
-              source={{
-                uri:
-                  imageProfile ||
-                  "https://diariodecuiaba.nyc3.digitaloceanspaces.com/storage/webdisco/2020/06/14/1200x900/d5426f95dedf886c1c5ec4bf093815c2.jpg",
-              }}
+            {imageProfile ?    
+              <ImagePerfil
+              source={{uri: imageProfile }}
             />
+            :  
+            <ImagePerfil
+              source={{uri: fieldsContent?.profilePic ? correctionUrlImage(fieldsContent?.profilePic!) : "https://diariodecuiaba.nyc3.digitaloceanspaces.com/storage/webdisco/2020/06/14/1200x900/d5426f95dedf886c1c5ec4bf093815c2.jpg"}}
+            />
+            }
           </ImagePerfilContainer>
           {isChanging && (
             <ChangeImg onPress={pickImage}>

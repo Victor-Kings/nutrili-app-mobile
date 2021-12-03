@@ -12,6 +12,7 @@ import IconLogout from "../../assets/img/iconLogout.svg";
 import { GetDataProfile } from "../../services/GetDataProfile/GetDataProfile";
 import { LOCAL_STORAGE_AUTH_TOKEN } from "../../configs/const"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsDrawerOpen } from '@react-navigation/drawer';
 
 import {
   Container,
@@ -26,11 +27,12 @@ import {
 
 import { ButtonMenu } from "../../components/ButtonMenu/ButtonMenu";
 import { useAuthContext } from "../../context/authContext";
+import { correctionUrlImage } from "../../utils/correctionImage";
 
 export function ContentDrawer({ navigation, children, content }: any) {
   const { signOut }: any = useAuthContext();
   const [contentData, setContentData] = useState<null|{perfil: string, name:string}>(null);
-
+  const isDrawerOpen = useIsDrawerOpen()
   const fetchData = async () => {
     try{
       const auth_token = await AsyncStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN);
@@ -45,8 +47,10 @@ export function ContentDrawer({ navigation, children, content }: any) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [])
+    if(isDrawerOpen){
+      fetchData();
+    }
+  }, [isDrawerOpen])
   
   const handlerOnClickBack = () => {
     navigation.closeDrawer();
@@ -75,10 +79,10 @@ export function ContentDrawer({ navigation, children, content }: any) {
             handleClick={handler}
             page="Home"
           ></ButtonMenu>
-        {contentData&&<HeaderContentUser onPress={() => handler("Profile")}>
+        {contentData && <HeaderContentUser onPress={() => handler("Profile")}>
             <Avatar
-              source={{
-                uri: contentData.perfil,
+              source = {{
+                uri: contentData.perfil?correctionUrlImage(contentData.perfil):"https://diariodecuiaba.nyc3.digitaloceanspaces.com/storage/webdisco/2020/06/14/1200x900/d5426f95dedf886c1c5ec4bf093815c2.jpg"
               }}
             />
             <TextNameUser>{contentData.name}</TextNameUser>

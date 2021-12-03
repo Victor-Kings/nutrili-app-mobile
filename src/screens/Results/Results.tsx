@@ -65,7 +65,7 @@ const Results = () => {
         var category: any = [];
         var colors: any = [];
         response.map((value) => {
-          percent.push({ y: value.percentage, x: `${value.percentage}%` });
+          percent.push({ y: value.percentage, x: `${value.percentage.toFixed(2)}%` });
           category.push({ category: value.type});
           colors.push(Colors[value.type - 1]);
         });
@@ -86,9 +86,11 @@ const Results = () => {
           <ContainerGraphic>
             <VictoryPie
               data={graphicData}
-              width={350}
-              height={350}
+              width={320}
+              height={320}
               colorScale={graphicColor}
+              labelRadius={({ innerRadius }) => 110 }
+              style={{ labels: { fill: "black", fontSize: 16, fontWeight: "bold" } }}
             />
           </ContainerGraphic>
 
@@ -98,7 +100,7 @@ const Results = () => {
                 {graphicColor && <Rectangle color={graphicColor[index]} />}
                 {graphicCategoryData && (
                   <LabelSubtitles>
-                    {nameLabel[(graphicCategoryData[index].category)-1]}
+                    {nameLabel[(graphicCategoryData[index]?.category)-1]}
                   </LabelSubtitles>
                 )}
               </Subtitles>

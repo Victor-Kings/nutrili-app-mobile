@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import { Container, ButtonPhoto } from "./styles";
 import { Camera } from "expo-camera";
+import { useIsFocused } from '@react-navigation/native';
 
 import MainCamera from "../../components/MainCamera";
 import ModalConfirmationFood from "../../components/ModalConfirmationFood";
@@ -23,23 +24,23 @@ const Home = () => {
   const [responseFood, setResponseFood] = useState<any>();
   const camRef = useRef<any>(null);
   const [capturedPhoto, setcapturedPhoto] = useState<any>(null);
+  const isFocused = useIsFocused();
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(()=>{
       let controle = true;
       (async () => {
         const { status } = await Camera.requestPermissionsAsync();
-        if (controle) {
-          setHasPermission(status === "granted");
-        }
+       if (controle) {
+          setHasPermission(true);
+      }
       })();
       
       return function cleanUp() {
         controle = false;
       };
-    }, []))
+  }, [])
 
   if (hasPermission === null) {
     return <View />;
@@ -79,7 +80,7 @@ const Home = () => {
 
   return (
     <Container>
-      <MainCamera camRef={camRef} />
+      {isFocused && <MainCamera camRef={camRef} />}
       <ButtonPhoto onPress={takePhoto}>
         <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
           TIRAR FOTO DA REFEIÇÃO

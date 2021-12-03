@@ -53,6 +53,7 @@ export function LoginQuestions({ ...props }: any) {
           console.error('Falha no cadastro', error)
         }
         registeredDatas()
+        props.navigation.navigate("Home")
       })();
     }
   }, [endQuestions]);

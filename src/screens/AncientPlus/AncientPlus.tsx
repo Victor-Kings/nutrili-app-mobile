@@ -53,19 +53,20 @@ function QuestionsLocale({ handleOK }: any) {
   const handleOnClickStart = () => {
     setStartedQuestions(true);
   };
-  
+  const sendResponse = async () => {
+    
+    try {
+      await registerDataUserService.sendResponseQuestions(payloadResponses);
+      if (handleOK) {
+        handleOK(false);
+      }
+    } catch (error) {
+      console.error("ERRO AncientPlus--: ", error);
+    }
+  }
   useEffect(() => {
     if (endQuestions != false) {
-      (async () => {
-        try {
-          await registerDataUserService.sendResponseQuestions(payloadResponses);
-          if (handleOK) {
-            handleOK(true);
-          }
-        } catch (error) {
-          console.error("deu ruim", error);
-        }
-      })();
+      sendResponse()
       // TODO: Loading para entrada no app
     }
   }, [endQuestions]);
@@ -88,10 +89,10 @@ function QuestionsLocale({ handleOK }: any) {
     <Questions Params={paramsQuestions} />
   ) : (
     <>
-      <Text>
+      <TextCustom style={{paddingBottom: 20}}>
         Precisamos fazer algumas perguntas adicionais, antes de escolher o
         nutricionista, para que possamos ser precisos em sua análise
-      </Text>
+        </TextCustom>
       <ContainerButtons>
         <ButtonTouch color="#4197E5" onPress={handleOnClickStart}>
           <TextButton>COMEÇAR</TextButton>
@@ -184,7 +185,7 @@ export function AncientPlus() {
       })();
     }, []))
 
-  const render = value ? <Search handlerSelectPatient={handlerSelectPatient} /> : <QuestionsLocale handleOK={setValue} />;
+  const render = !value ? <Search handlerSelectPatient={handlerSelectPatient} /> : <QuestionsLocale handleOK={setValue} />;
 
   return <Container>{render}</Container>;
 }
